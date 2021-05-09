@@ -1,0 +1,72 @@
+/* Font faces */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --background: #F4F4FA;
+    --primary: #FFCE25;
+    --secondary: #FB3640;
+    --secondary-shadow: rgba(251, 54, 64, .7);
+}
+
+* {
+    font-family: Montserrat;
+}
+
+body {
+    background-color: var(--background);
+}
+
+#welcome {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../img/banner.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    padding-top: 350px;
+    padding-bottom: 200px;
+    margin-top: -200px;
+}
+
+.btn {
+    padding: 8px 20px;
+}
+
+.btn-danger {
+    background-color: var(--secondary);
+    box-shadow: 0 5px 10px var(--secondary-shadow);
+}
+
+.btn-danger:hover {
+    background-color: var(--secondary);
+    box-shadow: 0 5px 15px var(--secondary-shadow);
+}
+
+.card {
+    border-radius: 20px;
+}
+
+#rekomendasi .card-img {
+    filter: brightness(75%);
+}
+
+@media(min-width: 992px) {
+    .navbar {
+        padding-top: 30px;
+    }
+
+    a.nav-link {
+        margin-top: 4px;
+    }
+    
+    a.nav-link::after {
+        content: "";
+        display: block;
+        border-bottom: 4px solid white;
+        transition: opacity .3s ease;
+        margin-top: 19px;
+        margin-bottom: -19px;
+        opacity: 0;
+    }
+
+    a.nav-link:hover::after {
+        opacity: 1;
+    }
+}
