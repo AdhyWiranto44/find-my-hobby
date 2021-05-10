@@ -6,9 +6,9 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
                     <h1 class="fw-bold text-light">Find My Hobby</h1>
                     <p class="text-light">Cari kegemaranmu sekarang!</p>
-                    <form action="/s/hobi" class="d-flex bg-white p-3 shadow mt-4" style="border-radius: 15px;">
+                    <form action="/" method="POST" class="d-flex bg-white p-3 shadow mt-4" style="border-radius: 15px;">
                         <input type="text" class="form-control border-0" id="search" name="search" placeholder="contoh: Menulis" autofocus />
-                        <button class="btn btn-danger border-0" style="border-radius: 10px;">Cari</button>
+                        <button type="submit" class="btn btn-danger border-0" style="border-radius: 10px;">Cari</button>
                     </form>
                 </div>
             </div>
@@ -22,19 +22,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-4 col-lg-3">
-                <a href="/kategori/hobi">
-                    <div class="card bg-dark text-white border-0 shadow overflow-hidden mb-4">
-                        <img src="/img/hobi.webp" class="card-img w-100" alt="rekomendasi hobi" />
-                        <div class="card-img-overlay d-flex">
-                            <div class="mt-auto">
-                                <h5 class="card-title fw-bold">Menulis</h5>
-                                <p class="card-text text-justify">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+            <% if (hobbies.length > 0) { %>
+                <% hobbies.forEach(hobby => { %>
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <a href="/d/<%= hobby.category[0].slug %>/<%= hobby.slug %> ">
+                            <div class="card bg-dark text-white border-0 shadow overflow-hidden mb-4">
+                                <img src="/img/hobi.webp" class="card-img w-100" alt="rekomendasi hobi" />
+                                <div class="card-img-overlay d-flex">
+                                    <div class="mt-auto">
+                                        <h5 class="card-title fw-bold"><%= hobby.name %></h5>
+                                        <p class="card-text text-justify"><%= hobby.description.substring(0,50) %> ...</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
+                <% }) %>
+            <% } else { %>
+                <p>Maaf, data kosong</p>
+            <% } %>
         </div>
     </div>
 
@@ -45,15 +51,17 @@
             </div>
         </div>
         <div class="row mb-5">
-            <div class="col-12 col-md-4 col-lg-3">
-                <a class=" text-decoration-none text-dark" href="">
-                    <div class="card bg-light shadow border-0 mb-4">
-                        <div class="card-body text-center pb-2">
-                            <h6 class="card-title">Olahraga</h6>
+            <% categories.forEach(category => { %>
+                <div class="col-12 col-md-4 col-lg-3">
+                    <a class=" text-decoration-none text-dark" href="/a/<%= category.slug %> ">
+                        <div class="card bg-light shadow border-0 mb-4">
+                            <div class="card-body text-center pb-2">
+                                <h6 class="card-title"><%= category.name %> </h6>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            <% }) %>
         </div>
     </div>
 

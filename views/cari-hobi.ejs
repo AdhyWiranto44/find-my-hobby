@@ -38,6 +38,10 @@
         .btn-danger:hover {
             box-shadow: 0 var(--secondary-shadow);
         }
+
+        #hobbies .card-img {
+            filter: brightness(75%);
+        }
     </style>
 
     <title>Find My Hobby</title>
@@ -57,36 +61,46 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                     <div class="navbar-nav d-flex align-items-center justify-content-between">
-                        <form action="/s/hobi" class="d-flex bg-white p-1" style="border-radius: 15px;">
+                        <form action="/" method="POST" class="d-flex bg-white p-1" style="border-radius: 15px;">
                             <input type="text" class="form-control border-0" id="search" name="search" placeholder="contoh: Menulis" />
                             <button class="btn btn-danger border-0" style="border-radius: 10px;">Cari</button>
                         </form>
-                        <a class="nav-link fw-bold" href="#">CARIKAN SAYA HOBI</a>
+                        <a class="nav-link fw-bold" href="/carikan-saya-hobi">CARIKAN SAYA HOBI</a>
                     </div>
                 </div>
         </div>
     </nav>
 
-    <div class="container" style="margin-top: 130px;">
+    <div id="hobbies" class="container" style="margin-top: 130px;">
         <div class="row mt-4">
             <div class="col-12">
-                <h5><b>Mencari:</b> Menulis</h5>
+                <% if (kind === "kategori") { %>
+                    <h5><b>Kategori:</b> <%= hobbies[0].category[0].name %> </h5>
+                <% } else if (kind === "mencari") { %>
+                    <h5><b>Mencari:</b> <%= search %> </h5>
+                <% } %>
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-12 col-md-4 col-lg-3">
-                <a href="/kategori/hobi">
-                    <div class="card bg-dark text-white border-0 shadow overflow-hidden mb-4">
-                        <img src="/img/hobi.webp" class="card-img w-100" alt="rekomendasi hobi" />
-                        <div class="card-img-overlay d-flex">
-                            <div class="mt-auto">
-                                <h5 class="card-title fw-bold">Menulis</h5>
-                                <p class="card-text text-justify">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+            <% if (hobbies.length > 0) { %>
+                <% hobbies.forEach(hobby => { %>
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <a href="/d/<%= hobby.category[0].slug %>/<%= hobby.slug %> ">
+                            <div class="card bg-dark text-white border-0 shadow overflow-hidden mb-4">
+                                <img src="/img/hobi.webp" class="card-img w-100" alt="<%= hobby.name %>" />
+                                <div class="card-img-overlay d-flex">
+                                    <div class="mt-auto">
+                                        <h5 class="card-title fw-bold"><%= hobby.name %></h5>
+                                        <p class="card-text text-justify"><%= hobby.description %></p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
+                <% }) %>
+            <% } else { %>
+                <p>Maaf, yang anda cari tidak ada</p>
+            <% } %>
         </div>
     </div>
 
