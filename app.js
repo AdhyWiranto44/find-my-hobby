@@ -11,6 +11,19 @@ app.get("/", (req, res) => {
     res.render("index", {currentDate: new Date().getFullYear()});
 })
 
+app.get("/kategori/hobi", (req, res) => {
+    res.render("hobi", {currentDate: new Date().getFullYear()});
+})
+
+app.get("/s/hobi", (req, res) => {
+    res.render("cari-hobi");
+})
+
+app.get("/saran-hobi", (req, res) => {
+    res.render("saran-hobi");
+})
+
+
 app.listen(PORT, () => {
     "http://localhost:" + PORT
 });
