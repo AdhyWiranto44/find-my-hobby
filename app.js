@@ -355,7 +355,7 @@ app.post("/admin/tampil-semua-hobi", (req, res) => {
 app.get("/admin/tambah-hobi-baru", (req, res) => {
     if (req.isAuthenticated()) {
         Category.find((err, foundCategory) => {
-            res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", categories: foundCategory});
+            res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", hobby: "", categories: foundCategory});
         })
     } else {
         res.redirect("/auth/login");
