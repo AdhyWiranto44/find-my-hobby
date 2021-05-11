@@ -57,7 +57,9 @@ const suggestionSchema = mongoose.Schema({
     name: String,
     slug: String,
     description: String,
-    category: categorySchema,
+    category: [categorySchema],
+    img: String,
+    visited_count: Number,
     created_at: Date,
     updated_at: Date
 })
@@ -145,11 +147,56 @@ const coding = new Hobby({
     updated_at: Date()
 })
 
+const mendayung = new Suggestion({
+    name: "Mendayung perahu",
+    slug: "mendayung-perahu",
+    description: "ya mendayung",
+    category: [{
+        _id: "6098e75d306eb4115cbe2618",
+        name: "Teknologi",
+        slug: "teknologi"
+    }],
+    img: "",
+    visited_count: 0,
+    created_at: Date(),
+    updated_at: Date()
+})
+
+const memancing = new Suggestion({
+    name: "Memancing",
+    slug: "memancing",
+    description: "ya mendayung",
+    category: [{
+        _id: "6098e75d306eb4115cbe2618",
+        name: "Teknologi",
+        slug: "teknologi"
+    }],
+    img: "",
+    visited_count: 0,
+    created_at: Date(),
+    updated_at: Date()
+})
+
+const berlayar = new Suggestion({
+    name: "Berlayar",
+    slug: "berlayar",
+    description: "ya mendayung",
+    category: [{
+        _id: "6098e75d306eb4115cbe2618",
+        name: "Teknologi",
+        slug: "teknologi"
+    }],
+    img: "",
+    visited_count: 0,
+    created_at: Date(),
+    updated_at: Date()
+})
+
 // User.register({username: "admin", created_at: Date(), updated_at: Date()}, "1234");
 // Category.insertMany([category1, category2, category3, category4, category5]);
 // menyanyi.save();
 // Hobby.insertMany([menari, coding]);
-
+// Suggestion.insertMany([mendayung, memancing, berlayar]);
 
 // Routes
 app.get("/", (req, res) => {
@@ -324,7 +371,11 @@ app.get("/auth/logout", (req, res) => {
 
 app.get("/admin/dashboard", (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("dashboard", {title: "Dashboard"});
+        Hobby.find((err, foundHobbies) => {
+            Suggestion.find((err, foundSuggestions) => {
+                res.render("dashboard", {title: "Dashboard", hobbies_length: foundHobbies.length, suggestions_length: foundSuggestions.length});
+            })
+        })
     } else {
         res.redirect("/auth/login");
     }
@@ -538,6 +589,71 @@ app.post("/admin/mengubah-kategori", (req, res) => {
     
     Category.findByIdAndUpdate(kategori.id_kategori, {name: kategori.name}, (err) => {
         res.redirect("/admin/tampil-kategori");
+    })
+})
+
+app.get("/admin/tampil-saran-hobi", (req, res) => {
+    if (req.isAuthenticated()) {
+        Suggestion.find((err, foundSuggestions) => {
+            res.render("tampil-saran-hobi", {title: "Tampil Saran Hobi", suggestions: foundSuggestions});
+        }).sort({created_at: -1});
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
+app.post("/admin/menerima-saran-hobi", (req, res) => {
+    const tambahSaran = req.body.tambahSaran;
+
+    Suggestion.findOne({_id: tambahSaran}, (err, foundSuggestion) => {
+        if (err) {
+            res.redirect("/admin/tampil-saran-hobi");
+        } else {
+            Hobby.findOne({slug: foundSuggestion.slug}, (err, foundHobby) => {
+                if (err) {
+                    res.redirect("/admin/tampil-saran-hobi");
+                } else {
+                    if (foundHobby === null) {
+                        const saranHobi = new Hobby({
+                            name: foundSuggestion.name,
+                            slug: foundSuggestion.slug,
+                            description: foundSuggestion.name,
+                            category: [{
+                                _id: foundSuggestion.category[0]._id,
+                                name: foundSuggestion.category[0].name,
+                                slug: foundSuggestion.category[0].slug
+                            }],
+                            img: foundSuggestion.img,
+                            visited_count: 0,
+                            created_at: Date(),
+                            updated_at: Date()
+                        })
+                        saranHobi.save();
+                        Suggestion.findByIdAndRemove(foundSuggestion._id, (err) => {
+                            if (err) {
+                                res.redirect("/admin/tampil-saran-hobi");
+                            } else {
+                                res.redirect("/admin/tampil-semua-hobi");
+                            }
+                        })
+                    } else {
+                        res.redirect("/admin/tampil-saran-hobi");
+                    }
+                }
+            })
+        }
+    })
+})
+
+app.post("/admin/menolak-saran-hobi", (req, res) => {
+    const tolakSaran = req.body.tolakSaran;
+
+    Suggestion.findByIdAndRemove(tolakSaran, (err) => {
+        if (err) {
+            res.redirect("/admin/tampil-saran-hobi");
+        } else {
+            res.redirect("/admin/tampil-saran-hobi");
+        }
     })
 })
 

@@ -1,0 +1,28 @@
+<%- include("backend-templates/backend-header") %>
+
+<div class="row">
+    <% if (suggestions.length !== 0) { %>
+        <% suggestions.forEach(suggestion => { %>
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="card px-3 shadow-sm border-0">
+                    <div class="card-body px-0"><h4 class="card-title mb-2"><%= suggestion.name %></h4>
+                    <span class="badge bg-light text-dark mb-3"><%= suggestion.category[0].name %></span>
+                    <p class="card-text"><%= suggestion.description %></p>
+                    <form action="/admin/menerima-saran-hobi" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-primary mr-2" onClick="return confirm('Yakin ingin menerima saran hobi ini? <%= suggestion.name %>')" name="tambahSaran" value="<%= suggestion._id %>"><span class="ti-plus"></span> Terima</button>
+                    </form>
+                    <form action="/admin/menolak-saran-hobi" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger mr-2" onClick="return confirm('Yakin ingin menolak saran hobi ini? <%= suggestion.name %>')" name="tolakSaran" value="<%= suggestion._id %>"><span class="ti-trash"></span> Tolak</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <div class="col-lg">
+            <h3>Belum ada saran hobi lagi</h3>
+        </div>
+    <% } %>
+</div>
+
+<%- include("backend-templates/backend-footer") %>
