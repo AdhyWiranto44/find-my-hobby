@@ -71,6 +71,10 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+const showAlert = function(color, message) {
+    return `<div class="alert ${color} alert-dismissible fade show shadow-sm" role="alert">${message}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+}
+
 const category1 = new Category({
     name: "Teknologi",
     slug: "teknologi"
@@ -276,6 +280,144 @@ app.get("/saran-hobi", (req, res) => {
     res.render("saran-hobi");
 })
 
+app.get("/auth/login", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.redirect("/admin/dashboard");
+    } else {
+        res.render("login", {currentDate: new Date().getFullYear()});
+    }
+})
+
+app.post("/auth/login", (req, res) => {
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    })
+
+    User.findOne({username: user.username}, (err, foundUser) => {
+        if (err) {
+            console.log(err);
+            res.redirect("/auth/login");
+        } else {
+            if (foundUser !== null) {
+                req.login(user, (err) => {
+                    if (err) {
+                        console.log(err);
+                        res.redirect("/auth/login");
+                    } else {
+                        passport.authenticate('local')(req, res, function() {
+                            res.redirect('/admin/dashboard');
+                        });
+                    }
+                })
+            } else {
+                res.redirect("/auth/login");
+            }
+        }
+    })
+})
+
+app.get("/auth/logout", (req, res) => {
+    req.logout();
+    res.redirect("/auth/login");
+})
+
+app.get("/admin/dashboard", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("dashboard", {title: "Dashboard"});
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
+app.get("/admin/tampil-semua-hobi", (req, res) => {
+    if (req.isAuthenticated()) {
+        Hobby.find((err, foundHobbies) => {
+            res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
+        }).sort({created_at: -1});
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
+app.post("/admin/tampil-semua-hobi", (req, res) => {
+    const search = req.body.search;
+
+    if (search !== "") {
+        Hobby.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundHobbies) => {
+            res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
+        })
+    } else {
+        res.redirect("/admin/tampil-semua-hobi");
+    }
+})
+
+app.get("/admin/tambah-hobi-baru", (req, res) => {
+    if (req.isAuthenticated()) {
+        Category.find((err, foundCategory) => {
+            res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", categories: foundCategory});
+        })
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
+app.post("/admin/tambah-hobi-baru", (req, res) => {
+    const hobiBaru = req.body;
+
+    Category.findOne({_id: hobiBaru.category}, (err, foundCategory) => {
+        if (err) {
+            res.redirect("/admin/tambah-hobi-baru");
+        } else {
+            if (foundCategory !== null) {
+                const newHobby = new Hobby({
+                    name: hobiBaru.name,
+                    slug: hobiBaru.name.replace(/\s+/g, '-').toLowerCase(),
+                    description: hobiBaru.description,
+                    category: [foundCategory],
+                    img: "",
+                    visited_count: 0,
+                    created_at: Date(),
+                    updated_at: Date()
+                });
+
+                newHobby.save();
+                res.redirect("/admin/tampil-semua-hobi");
+            } else {
+                res.redirect("/admin/tambah-hobi-baru");
+            }
+        }
+    })
+})
+
+app.post("/admin/menghapus-hobi", (req, res) => {
+    const hapusHobi = req.body.hapusHobi;
+
+    Hobby.findByIdAndRemove({_id: hapusHobi}, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/admin/tampil-semua-hobi");
+        }
+    })
+})
+
+app.get("/admin/mengubah-hobi/:slug", (req, res) => {
+    if (req.isAuthenticated()) {
+        const slugHobi = req.params.slug;
+        Hobby.findOne({slug: slugHobi}, (err, foundHobby) => {
+            if (foundHobby !== null) {
+                Category.find((err, foundCategory) => {
+                    res.render("tambah-hobi-baru", {title: "Mengubah Hobi", hobby: foundHobby, categories: foundCategory, alert: ""});
+                })
+            } else {
+                res.redirect("/admin/tampil-semua-hobi");
+            }
+        })
+    } else {
+        res.redirect("/auth/login");
+    }
+})
 
 app.listen(PORT, () => {
     "http://localhost:" + PORT
