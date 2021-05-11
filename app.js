@@ -419,6 +419,128 @@ app.get("/admin/mengubah-hobi/:slug", (req, res) => {
     }
 })
 
+app.post("/admin/mengubah-hobi", (req, res) => {
+    const hobi = req.body;
+
+    Category.findOne({_id: hobi.category}, (err, foundCategory) => {
+        if (err) {
+            res.redirect("/admin/tampil-semua-hobi");
+        } else {
+            if (foundCategory !== null) {
+                const hobiTerubah = {
+                    name: hobi.name,
+                    description: hobi.description,
+                    category: [foundCategory],
+                    img: "",
+                    updated_at: Date()
+                };
+
+                Hobby.findByIdAndUpdate(hobi.id_hobi, hobiTerubah, (err) => {
+                    res.redirect("/admin/tampil-semua-hobi");
+                })
+            } else {
+                res.redirect("/admin/tampil-semua-hobi");
+            }
+        }
+    })
+    
+})
+
+app.get("/admin/tambah-kategori", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("tambah-kategori", {title: "Tambah Kategori", alert: "", category: ""});
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
+app.post("/admin/tambah-kategori", (req, res) => {
+    const kategoriBaru = req.body;
+
+    Category.findOne({name: kategoriBaru.name}, (err, foundCategory) => {
+        if (err) {
+            res.redirect("/admin/tambah-kategori");
+        } else {
+            if (foundCategory === null) {
+                const newCategory = new Category({
+                    name: kategoriBaru.name,
+                    slug: kategoriBaru.name.replace(/\s+/g, '-').toLowerCase()
+                });
+
+                newCategory.save();
+                res.redirect("/admin/tampil-kategori");
+            } else {
+                res.redirect("/admin/tambah-kategori");
+            }
+        }
+    })
+})
+
+app.get("/admin/tampil-kategori", (req, res) => {
+    if (req.isAuthenticated()) {
+        Category.find((err, foundCategories) => {
+            if (err) {
+                res.redirect("/admin/dashboard");
+            } else {
+                if (foundCategories !== null) {
+                    res.render("tampil-kategori", {title: "Tampil Kategori", alert: "", categories: foundCategories});
+                } else {
+                    res.redirect("/admin/dashboard");
+                }
+            }
+        })
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
+app.post("/admin/tampil-kategori", (req, res) => {
+    const search = req.body.search;
+
+    if (search !== "") {
+        Category.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundCategories) => {
+            res.render("tampil-kategori", {title: "Tampil Kategori", categories: foundCategories});
+        })
+    } else {
+        res.redirect("/admin/tampil-kategori");
+    }
+})
+
+app.post("/admin/menghapus-kategori", (req, res) => {
+    const hapusKategori = req.body.hapusKategori;
+
+    Category.findByIdAndRemove({_id: hapusKategori}, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/admin/tampil-kategori");
+        }
+    })
+})
+
+app.get("/admin/mengubah-kategori/:slug", (req, res) => {
+    if (req.isAuthenticated()) {
+        const slugKategori = req.params.slug;
+        Category.findOne({slug: slugKategori}, (err, foundCategory) => {
+            if (foundCategory !== null) {
+                res.render("tambah-kategori", {title: "Mengubah Kategori", category: foundCategory, alert: ""});
+            } else {
+                res.redirect("/admin/tampil-kategori");
+            }
+        })
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
+app.post("/admin/mengubah-kategori", (req, res) => {
+    const kategori = req.body;
+    
+    Category.findByIdAndUpdate(kategori.id_kategori, {name: kategori.name}, (err) => {
+        res.redirect("/admin/tampil-kategori");
+    })
+})
+
 app.listen(PORT, () => {
     "http://localhost:" + PORT
 });

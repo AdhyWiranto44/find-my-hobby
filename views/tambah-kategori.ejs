@@ -1,0 +1,26 @@
+<%- include("backend-templates/backend-header") %>
+
+<div class="row">
+    <div class="col-lg-6">
+        <%- alert %>
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <% if (title === "Mengubah Kategori") { %>
+                    <form action="/admin/mengubah-kategori" method="POST">
+                <% } else { %>
+                    <form action="/admin/tambah-kategori" method="POST">
+                <% } %>
+                <input type="hidden" class="form-control bg-light p-2" id="id_kategori" name="id_kategori" value="<%= category !== "" ? category._id : "" %>">
+                <div class="form-group mb-3 bg-white" style="border-radius: 15px;">
+                    <label class="text-muted" for="name"><small>Nama Kategori</small></label>
+                    <input type="text" class="form-control bg-light p-2" id="name" name="name" value="<%= category !== "" ? category.name : "" %>" required autofocus>
+                </div>
+                <a href="/admin/tampil-kategori" class="btn btn-outline-secondary mr-2"><span class="ti-arrow-left"></span> Batal</a>
+                <button type="submit" class="btn btn-primary font-weight-bold"><span class="ti-plus"></span> Tambah</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("backend-templates/backend-footer") %>
