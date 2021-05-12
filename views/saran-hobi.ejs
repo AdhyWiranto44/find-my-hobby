@@ -46,25 +46,34 @@
 
     <div class="container">
         <div class="row my-4">
-            <div class="col text-center">
+            <div class="col-lg-6 text-center mx-auto">
                 <h2 class="fw-bold">Saran Hobi</h2>
                 <p>Beri kami saran untuk hobi yang belum ditambahkan</p>
+                <%- alert %>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-lg-6 mx-auto">
-                <form>
+                <form action="/tambah-saran-hobi" method="POST">
                     <div class="form-group mb-3 bg-white p-3 shadow-sm" style="border-radius: 15px;">
-                        <label class="text-muted fw-bold" for="judul"><small>Judul Hobi</small></label>
-                        <input type="text" class="form-control p-2 border-0 border-bottom border-3 border-primary rounded-0" id="judul" name="judul" required autocomplete="off">
+                        <label class="text-muted" for="name"><small>Nama Hobi</small></label>
+                        <input type="text" class="form-control p-2 border-0 border-bottom border-3 border-secondary rounded-0" id="name" name="name" required autocomplete="off" autofocus>
                     </div>
                     <div class="form-group mb-3 bg-white p-3 shadow-sm" style="border-radius: 15px;">
-                        <label class="text-muted fw-bold" for="judul"><small>Deskripsi</small></label>
-                        <textarea class="form-control p-2 border-0 border-bottom border-3 border-primary rounded-0" id="deskripsi" name="deskripsi" rows="8" required autocomplete="off"></textarea>
+                        <label class="text-muted" for="description"><small>Deskripsi</small></label>
+                        <textarea class="form-control p-2 border-0 border-bottom border-3 border-secondary rounded-0" id="description" name="description" rows="8" required autocomplete="off"></textarea>
+                    </div>
+                    <div class="form-group mb-3 bg-white p-3 shadow-sm" style="border-radius: 15px;">
+                        <label class="text-muted" for="category"><small>Category</small></label>
+                        <select class="form-control p-2 border-0 border-bottom border-3 border-secondary rounded-0" name="category" style="border-radius: 15px;">
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category._id %>"><%= category.name %></option>
+                            <% }) %>
+                        </select>
                     </div>
                     <div class="form-group mb-4 bg-white p-3 shadow-sm" style="border-radius: 15px;">
-                        <label class="text-muted fw-bold" for="judul"><small>Email</small></label>
-                        <input type="email" class="form-control p-2 border-0 border-bottom border-3 border-primary rounded-0" id="email" name="email" required autocomplete="off">
+                        <label class="text-muted" for="email"><small>Email</small></label>
+                        <input type="email" class="form-control p-2 border-0 border-bottom border-3 border-secondary rounded-0" id="email" name="email" required autocomplete="off">
                     </div>
                     <a href="/" class="btn btn-outline-dark" style="border-radius: 10px;">&lt; Kembali</a>
                     <button type="submit" class="btn btn-danger px-3 py-2 fw-bold border-0" style="border-radius: 10px;">Submit</button>

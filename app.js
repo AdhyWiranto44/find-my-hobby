@@ -60,6 +60,7 @@ const suggestionSchema = mongoose.Schema({
     category: [categorySchema],
     img: String,
     visited_count: Number,
+    suggester_email: String,
     created_at: Date,
     updated_at: Date
 })
@@ -74,7 +75,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 const showAlert = function(color, message) {
-    return `<div class="alert ${color} alert-dismissible fade show shadow-sm" role="alert">${message}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+    return `<div class="alert ${color} alert-dismissible fade show" role="alert">${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`;
 }
 
 const category1 = new Category({
@@ -158,6 +159,7 @@ const mendayung = new Suggestion({
     }],
     img: "",
     visited_count: 0,
+    suggester_email: "adhy@gmail.com",
     created_at: Date(),
     updated_at: Date()
 })
@@ -173,6 +175,7 @@ const memancing = new Suggestion({
     }],
     img: "",
     visited_count: 0,
+    suggester_email: "adhy@gmail.com",
     created_at: Date(),
     updated_at: Date()
 })
@@ -188,6 +191,7 @@ const berlayar = new Suggestion({
     }],
     img: "",
     visited_count: 0,
+    suggester_email: "adhy@gmail.com",
     created_at: Date(),
     updated_at: Date()
 })
@@ -321,10 +325,6 @@ app.get("/carikan-saya-hobi", (req, res) => {
             res.redirect(`/d/${hobbyCategory}/${recommendedHobby}`);
         }
     }).sort({visited_count: -1});
-})
-
-app.get("/saran-hobi", (req, res) => {
-    res.render("saran-hobi");
 })
 
 app.get("/auth/login", (req, res) => {
@@ -617,7 +617,7 @@ app.post("/admin/menerima-saran-hobi", (req, res) => {
                         const saranHobi = new Hobby({
                             name: foundSuggestion.name,
                             slug: foundSuggestion.slug,
-                            description: foundSuggestion.name,
+                            description: foundSuggestion.description,
                             category: [{
                                 _id: foundSuggestion.category[0]._id,
                                 name: foundSuggestion.category[0].name,
@@ -653,6 +653,57 @@ app.post("/admin/menolak-saran-hobi", (req, res) => {
             res.redirect("/admin/tampil-saran-hobi");
         } else {
             res.redirect("/admin/tampil-saran-hobi");
+        }
+    })
+})
+
+app.get("/saran-hobi", (req, res) => {
+    Category.find((err, foundCategories) => {
+        res.render("saran-hobi", {title: "Form Saran Hobi", alert: "", categories: foundCategories});
+    })
+})
+
+app.post("/tambah-saran-hobi", (req, res) => {
+    const saranHobi = req.body;
+
+    Suggestion.findOne({name: saranHobi.name}, (err, foundSuggestion) => {
+        if (err) {
+            Category.find((err, foundCategories) => {
+                res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories});
+            })
+        } else {
+            if (foundSuggestion === null) {
+                Category.findOne({_id: saranHobi.category}, (err, foundCategory) => {
+                    if (err) {
+                        Category.find((err, foundCategories) => {
+                            res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories});
+                        })
+                    } else {
+                        if (foundCategory !== null) {
+                            const newSuggestion = new Suggestion({
+                                name: saranHobi.name,
+                                slug: saranHobi.name.replace(/\s+/g, '-').toLowerCase(),
+                                description: saranHobi.description,
+                                category: [foundCategory],
+                                img: "",
+                                visited_count: 0,
+                                suggester_email: saranHobi.email,
+                                created_at: Date(),
+                                updated_at: Date()
+                            });
+            
+                            newSuggestion.save();
+                            Category.find((err, foundCategories) => {
+                                res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-success", "Saran hobi berhasil kami terima."), categories: foundCategories});
+                            })
+                        }
+                    }
+                })
+            } else {
+                Category.find((err, foundCategories) => {
+                    res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Sudah pernah ada yang menambahkan saran hobi tersebut! Silakan sarankan hobi yang lain."), categories: foundCategories});
+                })
+            }
         }
     })
 })
