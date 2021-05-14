@@ -26,8 +26,11 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // MongoDB
-mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
+
+// mongodb://127.0.0.1:27017/${process.env.DB_NAME}
+// mongodb+srv://find-my-hobby-admin:<password>@cluster0.k9fdy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 const userSchema = mongoose.Schema({
     username: String,
@@ -331,7 +334,21 @@ app.get("/auth/login", (req, res) => {
     if (req.isAuthenticated()) {
         res.redirect("/admin/dashboard");
     } else {
-        res.render("login", {currentDate: new Date().getFullYear()});
+        User.findOne((err, foundUser) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundUser === null) { // jika belum ada user yang terdaftar
+                  User.register({username: "adhywiranto44"}, "MinaIsMine!44", (err, user) => {
+                    if (err) {
+                        console.log(err);
+                        res.redirect('/');
+                    }
+                  })
+                }
+                res.render("login", {currentDate: new Date().getFullYear()});
+            }
+        })
     }
 })
 
@@ -708,6 +725,6 @@ app.post("/tambah-saran-hobi", (req, res) => {
     })
 })
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
     "http://localhost:" + PORT
 });

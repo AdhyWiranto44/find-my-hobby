@@ -11,7 +11,10 @@ Find My Hobby merupakan website yang berisi daftar hobi, dimana pengunjung dapat
 
 
 ### Teknologi
-- MongoDB ⇒ NoSQL DBMS
-- Express ⇒ Routing
-- React ⇒ UI Component
-- Bootstrap v5 ⇒ UI Styling
+- MongoDB
+- NodeJS
+- Express
+- Bootstrap v5
+
+### Referensi
+- [https://www.discoverahobby.com/](https://www.discoverahobby.com/) ⇒ Inspirasi desain web
