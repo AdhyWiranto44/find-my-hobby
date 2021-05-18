@@ -16,6 +16,9 @@
                     <div class="card-body px-0">
                     <a class="text-dark text-underline-dark" href="/d/<% hobby.category[0].slug %> /<%= hobby.slug %>"><h4 class="card-title mb-2"><%= hobby.name %></h4></a>
                     <span class="badge bg-light text-dark mb-3"><%= hobby.category[0].name %></span>
+                    <% if (hobby.suggester_email || hobby.suggester_email === "") { %>
+                        <h6 class="mb-3 small">Oleh: <%= hobby.suggester_email %> </h6>
+                    <% } %>
                     <p class="card-text"><%= hobby.description.substring(0, 30) + "..." %></p>
                     <a href="/admin/mengubah-hobi/<%= hobby.slug %>" class="btn btn-warning mr-2"><span class="ti-pencil-alt"></span> Ubah</a>
                     <form action="/admin/menghapus-hobi" method="POST" class="d-inline">
