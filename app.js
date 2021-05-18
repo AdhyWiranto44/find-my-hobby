@@ -26,11 +26,11 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // MongoDB
-mongoose.connect(`mongodb+srv://find-my-hobby-admin:<password>@cluster0.k9fdy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 // mongodb://127.0.0.1:27017/${process.env.DB_NAME}
-// mongodb+srv://find-my-hobby-admin:<password>@cluster0.k9fdy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+// mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority
 
 const userSchema = mongoose.Schema({
     username: String,
