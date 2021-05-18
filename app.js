@@ -26,7 +26,7 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // MongoDB
-mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb+srv://find-my-hobby-admin:<password>@cluster0.k9fdy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 // mongodb://127.0.0.1:27017/${process.env.DB_NAME}
@@ -425,7 +425,7 @@ app.get("/admin/tambah-hobi-baru", (req, res) => {
     if (req.isAuthenticated()) {
         Category.find((err, foundCategory) => {
             res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", hobby: "", categories: foundCategory});
-        })
+        }).sort({name: 1});
     } else {
         res.redirect("/auth/login");
     }
@@ -478,7 +478,7 @@ app.get("/admin/mengubah-hobi/:slug", (req, res) => {
             if (foundHobby !== null) {
                 Category.find((err, foundCategory) => {
                     res.render("tambah-hobi-baru", {title: "Mengubah Hobi", hobby: foundHobby, categories: foundCategory, alert: ""});
-                })
+                }).sort({name: 1});
             } else {
                 res.redirect("/admin/tampil-semua-hobi");
             }
@@ -557,7 +557,7 @@ app.get("/admin/tampil-kategori", (req, res) => {
                     res.redirect("/admin/dashboard");
                 }
             }
-        })
+        }).sort({name: 1});
     } else {
         res.redirect("/auth/login");
     }
@@ -614,7 +614,7 @@ app.get("/admin/tampil-saran-hobi", (req, res) => {
     if (req.isAuthenticated()) {
         Suggestion.find((err, foundSuggestions) => {
             res.render("tampil-saran-hobi", {title: "Tampil Saran Hobi", suggestions: foundSuggestions});
-        }).sort({created_at: -1});
+        }).sort({name: 1});
     } else {
         res.redirect("/auth/login");
     }
@@ -679,7 +679,7 @@ app.post("/admin/menolak-saran-hobi", (req, res) => {
 app.get("/saran-hobi", (req, res) => {
     Category.find((err, foundCategories) => {
         res.render("saran-hobi", {title: "Form Saran Hobi", alert: "", categories: foundCategories});
-    })
+    }).sort({name: 1});
 })
 
 app.post("/tambah-saran-hobi", (req, res) => {
