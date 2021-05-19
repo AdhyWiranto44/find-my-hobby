@@ -30,7 +30,7 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // MongoDB
-mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 // mongodb://127.0.0.1:27017/${process.env.DB_NAME}
@@ -40,26 +40,29 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Routes
-app.get("/", (req, res) => {
-    Hobby.find((err, foundHobbies) => {
-        if (err) {
-            res.redirect("/");
-        } else {
-            if (foundHobbies !== null) {
-                Category.find((err, foundCategory) => {
-                    res.render("index", {currentDate: new Date().getFullYear(), hobbies: foundHobbies, categories: foundCategory});
-                })
-            } else {
-                res.redirect("/");
-            }
-        }
-    }).limit(5).sort({visited_count: -1});
-})
 
-app.post("/", (req, res) => {
-    res.redirect("/s/"+req.body.search);
-})
+app.route("/")
+
+    .get((req, res) => {
+        Hobby.find((err, foundHobbies) => {
+            if (err) {
+                res.redirect("/");
+            } else {
+                if (foundHobbies !== null) {
+                    Category.find((err, foundCategory) => {
+                        res.render("index", {currentDate: new Date().getFullYear(), hobbies: foundHobbies, categories: foundCategory});
+                    })
+                } else {
+                    res.redirect("/");
+                }
+            }
+        }).limit(5).sort({visited_count: -1});
+    })
+
+    .post((req, res) => {
+        res.redirect("/s/"+req.body.search);
+    });
+
 
 app.get("/a/:kategori", (req, res) => {
     const kategori = req.params.kategori;
@@ -85,7 +88,7 @@ app.get("/a/:kategori", (req, res) => {
             }
         }
     })
-})
+});
 
 app.get("/d/:kategori/:hobi", (req, res) => {
     const kategori = req.params.kategori;
@@ -120,7 +123,7 @@ app.get("/d/:kategori/:hobi", (req, res) => {
             }
         }
     })
-})
+});
 
 app.get("/s/", (req, res) => {
 
@@ -135,7 +138,7 @@ app.get("/s/", (req, res) => {
             }
         }
     })
-})
+});
 
 app.get("/s/:search", (req, res) => {
     const search = req.params.search;
@@ -151,7 +154,7 @@ app.get("/s/:search", (req, res) => {
             }
         }
     })
-})
+});
 
 app.get("/carikan-saya-hobi", (req, res) => {
     Hobby.findOne((err, foundHobby) => {
@@ -163,63 +166,66 @@ app.get("/carikan-saya-hobi", (req, res) => {
             res.redirect(`/d/${hobbyCategory}/${recommendedHobby}`);
         }
     }).sort({visited_count: -1});
-})
+});
 
-app.get("/auth/login", (req, res) => {
-    if (req.isAuthenticated()) {
-        res.redirect("/admin/dashboard");
-    } else {
-        User.findOne((err, foundUser) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (foundUser === null) { // jika belum ada user yang terdaftar
-                  User.register({username: "adhywiranto44"}, "MinaIsMine!44", (err, user) => {
-                    if (err) {
-                        console.log(err);
-                        res.redirect('/');
-                    }
-                  })
-                }
-                res.render("login", {currentDate: new Date().getFullYear()});
-            }
-        })
-    }
-})
 
-app.post("/auth/login", (req, res) => {
-    const user = new User({
-        username: req.body.username,
-        password: req.body.password
-    })
+app.route("/auth/login")
 
-    User.findOne({username: user.username}, (err, foundUser) => {
-        if (err) {
-            console.log(err);
-            res.redirect("/auth/login");
+    .get((req, res) => {
+        if (req.isAuthenticated()) {
+            res.redirect("/admin/dashboard");
         } else {
-            if (foundUser !== null) {
-                req.login(user, (err) => {
-                    if (err) {
-                        console.log(err);
-                        res.redirect("/auth/login");
-                    } else {
-                        passport.authenticate('local')(req, res, function() {
-                            res.redirect('/admin/dashboard');
-                        });
+            User.findOne((err, foundUser) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (foundUser === null) { // jika belum ada user yang terdaftar
+                    User.register({username: "adhywiranto44"}, "MinaIsMine!44", (err, user) => {
+                        if (err) {
+                            console.log(err);
+                            res.redirect('/');
+                        }
+                    })
                     }
-                })
-            } else {
-                res.redirect("/auth/login");
-            }
+                    res.render("login", {currentDate: new Date().getFullYear()});
+                }
+            })
         }
     })
-})
+
+    .post((req, res) => {
+        const user = new User({
+            username: req.body.username,
+            password: req.body.password
+        })
+
+        User.findOne({username: user.username}, (err, foundUser) => {
+            if (err) {
+                console.log(err);
+                res.redirect("/auth/login");
+            } else {
+                if (foundUser !== null) {
+                    req.login(user, (err) => {
+                        if (err) {
+                            console.log(err);
+                            res.redirect("/auth/login");
+                        } else {
+                            passport.authenticate('local')(req, res, function() {
+                                res.redirect('/admin/dashboard');
+                            });
+                        }
+                    })
+                } else {
+                    res.redirect("/auth/login");
+                }
+            }
+        })
+    });
 
 app.get("/auth/logout", (req, res) => {
     req.logout();
     res.redirect("/auth/login");
-})
+});
 
 app.get("/admin/dashboard", (req, res) => {
     if (req.isAuthenticated()) {
@@ -231,67 +237,73 @@ app.get("/admin/dashboard", (req, res) => {
     } else {
         res.redirect("/auth/login");
     }
-})
+});
 
-app.get("/admin/tampil-semua-hobi", (req, res) => {
-    if (req.isAuthenticated()) {
-        Hobby.find((err, foundHobbies) => {
-            res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
-        }).sort({created_at: -1});
-    } else {
-        res.redirect("/auth/login");
-    }
-})
 
-app.post("/admin/tampil-semua-hobi", (req, res) => {
-    const search = req.body.search;
+app.route("/admin/tampil-semua-hobi")
 
-    if (search !== "") {
-        Hobby.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundHobbies) => {
-            res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
-        })
-    } else {
-        res.redirect("/admin/tampil-semua-hobi");
-    }
-})
-
-app.get("/admin/tambah-hobi-baru", (req, res) => {
-    if (req.isAuthenticated()) {
-        Category.find((err, foundCategory) => {
-            res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", hobby: "", categories: foundCategory});
-        }).sort({name: 1});
-    } else {
-        res.redirect("/auth/login");
-    }
-})
-
-app.post("/admin/tambah-hobi-baru", (req, res) => {
-    const hobiBaru = req.body;
-
-    Category.findOne({_id: hobiBaru.category}, (err, foundCategory) => {
-        if (err) {
-            res.redirect("/admin/tambah-hobi-baru");
+    .get((req, res) => {
+        if (req.isAuthenticated()) {
+            Hobby.find((err, foundHobbies) => {
+                res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
+            }).sort({created_at: -1});
         } else {
-            if (foundCategory !== null) {
-                const newHobby = new Hobby({
-                    name: hobiBaru.name,
-                    slug: hobiBaru.name.replace(/\s+/g, '-').toLowerCase(),
-                    description: hobiBaru.description,
-                    category: [foundCategory],
-                    img: "",
-                    visited_count: 0,
-                    created_at: Date(),
-                    updated_at: Date()
-                });
-
-                newHobby.save();
-                res.redirect("/admin/tampil-semua-hobi");
-            } else {
-                res.redirect("/admin/tambah-hobi-baru");
-            }
+            res.redirect("/auth/login");
         }
     })
-})
+
+    .post((req, res) => {
+        const search = req.body.search;
+
+        if (search !== "") {
+            Hobby.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundHobbies) => {
+                res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
+            })
+        } else {
+            res.redirect("/admin/tampil-semua-hobi");
+        }
+    });
+
+
+app.route("/admin/tambah-hobi-baru")
+
+    .get((req, res) => {
+        if (req.isAuthenticated()) {
+            Category.find((err, foundCategory) => {
+                res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", hobby: "", categories: foundCategory});
+            }).sort({name: 1});
+        } else {
+            res.redirect("/auth/login");
+        }
+    })
+
+    .post((req, res) => {
+        const hobiBaru = req.body;
+
+        Category.findOne({_id: hobiBaru.category}, (err, foundCategory) => {
+            if (err) {
+                res.redirect("/admin/tambah-hobi-baru");
+            } else {
+                if (foundCategory !== null) {
+                    const newHobby = new Hobby({
+                        name: hobiBaru.name,
+                        slug: hobiBaru.name.replace(/\s+/g, '-').toLowerCase(),
+                        description: hobiBaru.description,
+                        category: [foundCategory],
+                        img: "",
+                        visited_count: 0,
+                        created_at: Date(),
+                        updated_at: Date()
+                    });
+
+                    newHobby.save();
+                    res.redirect("/admin/tampil-semua-hobi");
+                } else {
+                    res.redirect("/admin/tambah-hobi-baru");
+                }
+            }
+        })
+    });
 
 app.post("/admin/menghapus-hobi", (req, res) => {
     const hapusHobi = req.body.hapusHobi;
@@ -303,7 +315,7 @@ app.post("/admin/menghapus-hobi", (req, res) => {
             res.redirect("/admin/tampil-semua-hobi");
         }
     })
-})
+});
 
 app.get("/admin/mengubah-hobi/:slug", (req, res) => {
     if (req.isAuthenticated()) {
@@ -320,7 +332,7 @@ app.get("/admin/mengubah-hobi/:slug", (req, res) => {
     } else {
         res.redirect("/auth/login");
     }
-})
+});
 
 app.post("/admin/mengubah-hobi", (req, res) => {
     const hobi = req.body;
@@ -346,68 +358,74 @@ app.post("/admin/mengubah-hobi", (req, res) => {
             }
         }
     })
-    
-})
+});
 
-app.get("/admin/tambah-kategori", (req, res) => {
-    if (req.isAuthenticated()) {
-        res.render("tambah-kategori", {title: "Tambah Kategori", alert: "", category: ""});
-    } else {
-        res.redirect("/auth/login");
-    }
-})
 
-app.post("/admin/tambah-kategori", (req, res) => {
-    const kategoriBaru = req.body;
+app.route("/admin/tambah-kategori")
 
-    Category.findOne({name: kategoriBaru.name}, (err, foundCategory) => {
-        if (err) {
-            res.redirect("/admin/tambah-kategori");
+    .get((req, res) => {
+        if (req.isAuthenticated()) {
+            res.render("tambah-kategori", {title: "Tambah Kategori", alert: "", category: ""});
         } else {
-            if (foundCategory === null) {
-                const newCategory = new Category({
-                    name: kategoriBaru.name,
-                    slug: kategoriBaru.name.replace(/\s+/g, '-').toLowerCase()
-                });
-
-                newCategory.save();
-                res.redirect("/admin/tampil-kategori");
-            } else {
-                res.redirect("/admin/tambah-kategori");
-            }
+            res.redirect("/auth/login");
         }
     })
-})
 
-app.get("/admin/tampil-kategori", (req, res) => {
-    if (req.isAuthenticated()) {
-        Category.find((err, foundCategories) => {
+    .post((req, res) => {
+        const kategoriBaru = req.body;
+
+        Category.findOne({name: kategoriBaru.name}, (err, foundCategory) => {
             if (err) {
-                res.redirect("/admin/dashboard");
+                res.redirect("/admin/tambah-kategori");
             } else {
-                if (foundCategories !== null) {
-                    res.render("tampil-kategori", {title: "Tampil Kategori", alert: "", categories: foundCategories});
+                if (foundCategory === null) {
+                    const newCategory = new Category({
+                        name: kategoriBaru.name,
+                        slug: kategoriBaru.name.replace(/\s+/g, '-').toLowerCase()
+                    });
+
+                    newCategory.save();
+                    res.redirect("/admin/tampil-kategori");
                 } else {
-                    res.redirect("/admin/dashboard");
+                    res.redirect("/admin/tambah-kategori");
                 }
             }
-        }).sort({name: 1});
-    } else {
-        res.redirect("/auth/login");
-    }
-})
-
-app.post("/admin/tampil-kategori", (req, res) => {
-    const search = req.body.search;
-
-    if (search !== "") {
-        Category.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundCategories) => {
-            res.render("tampil-kategori", {title: "Tampil Kategori", categories: foundCategories});
         })
-    } else {
-        res.redirect("/admin/tampil-kategori");
-    }
-})
+    });
+    
+
+app.route("/admin/tampil-kategori")
+
+    .get((req, res) => {
+        if (req.isAuthenticated()) {
+            Category.find((err, foundCategories) => {
+                if (err) {
+                    res.redirect("/admin/dashboard");
+                } else {
+                    if (foundCategories !== null) {
+                        res.render("tampil-kategori", {title: "Tampil Kategori", alert: "", categories: foundCategories});
+                    } else {
+                        res.redirect("/admin/dashboard");
+                    }
+                }
+            }).sort({name: 1});
+        } else {
+            res.redirect("/auth/login");
+        }
+    })
+
+    .post((req, res) => {
+        const search = req.body.search;
+
+        if (search !== "") {
+            Category.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundCategories) => {
+                res.render("tampil-kategori", {title: "Tampil Kategori", categories: foundCategories});
+            })
+        } else {
+            res.redirect("/admin/tampil-kategori");
+        }
+    });
+
 
 app.post("/admin/menghapus-kategori", (req, res) => {
     const hapusKategori = req.body.hapusKategori;
@@ -419,7 +437,7 @@ app.post("/admin/menghapus-kategori", (req, res) => {
             res.redirect("/admin/tampil-kategori");
         }
     })
-})
+});
 
 app.get("/admin/mengubah-kategori/:slug", (req, res) => {
     if (req.isAuthenticated()) {
@@ -434,7 +452,7 @@ app.get("/admin/mengubah-kategori/:slug", (req, res) => {
     } else {
         res.redirect("/auth/login");
     }
-})
+});
 
 app.post("/admin/mengubah-kategori", (req, res) => {
     const kategori = req.body;
@@ -442,7 +460,7 @@ app.post("/admin/mengubah-kategori", (req, res) => {
     Category.findByIdAndUpdate(kategori.id_kategori, {name: kategori.name}, (err) => {
         res.redirect("/admin/tampil-kategori");
     })
-})
+});
 
 app.get("/admin/tampil-saran-hobi", (req, res) => {
     if (req.isAuthenticated()) {
@@ -452,7 +470,7 @@ app.get("/admin/tampil-saran-hobi", (req, res) => {
     } else {
         res.redirect("/auth/login");
     }
-})
+});
 
 app.post("/admin/menerima-saran-hobi", (req, res) => {
     const tambahSaran = req.body.tambahSaran;
@@ -496,7 +514,7 @@ app.post("/admin/menerima-saran-hobi", (req, res) => {
             })
         }
     })
-})
+});
 
 app.post("/admin/menolak-saran-hobi", (req, res) => {
     const tolakSaran = req.body.tolakSaran;
@@ -508,58 +526,61 @@ app.post("/admin/menolak-saran-hobi", (req, res) => {
             res.redirect("/admin/tampil-saran-hobi");
         }
     })
-})
+});
 
-app.get("/saran-hobi", (req, res) => {
-    Category.find((err, foundCategories) => {
-        res.render("saran-hobi", {title: "Form Saran Hobi", alert: "", categories: foundCategories});
-    }).sort({name: 1});
-})
 
-app.post("/tambah-saran-hobi", (req, res) => {
-    const saranHobi = req.body;
+app.route("/saran-hobi")
 
-    Suggestion.findOne({name: saranHobi.name}, (err, foundSuggestion) => {
-        if (err) {
-            Category.find((err, foundCategories) => {
-                res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories});
-            })
-        } else {
-            if (foundSuggestion === null) {
-                Category.findOne({_id: saranHobi.category}, (err, foundCategory) => {
-                    if (err) {
-                        Category.find((err, foundCategories) => {
-                            res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories});
-                        })
-                    } else {
-                        if (foundCategory !== null) {
-                            const newSuggestion = new Suggestion({
-                                name: saranHobi.name,
-                                slug: saranHobi.name.replace(/\s+/g, '-').toLowerCase(),
-                                description: saranHobi.description,
-                                category: [foundCategory],
-                                img: "",
-                                visited_count: 0,
-                                suggester_email: saranHobi.email,
-                                created_at: Date(),
-                                updated_at: Date()
-                            });
-            
-                            newSuggestion.save();
-                            Category.find((err, foundCategories) => {
-                                res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-success", "Saran hobi berhasil kami terima."), categories: foundCategories});
-                            })
-                        }
-                    }
+    .get((req, res) => {
+        Category.find((err, foundCategories) => {
+            res.render("saran-hobi", {title: "Form Saran Hobi", alert: "", categories: foundCategories});
+        }).sort({name: 1});
+    })
+
+    .post((req, res) => {
+        const saranHobi = req.body;
+
+        Suggestion.findOne({name: saranHobi.name}, (err, foundSuggestion) => {
+            if (err) {
+                Category.find((err, foundCategories) => {
+                    res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories});
                 })
             } else {
-                Category.find((err, foundCategories) => {
-                    res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Sudah pernah ada yang menambahkan saran hobi tersebut! Silakan sarankan hobi yang lain."), categories: foundCategories});
-                })
+                if (foundSuggestion === null) {
+                    Category.findOne({_id: saranHobi.category}, (err, foundCategory) => {
+                        if (err) {
+                            Category.find((err, foundCategories) => {
+                                res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories});
+                            })
+                        } else {
+                            if (foundCategory !== null) {
+                                const newSuggestion = new Suggestion({
+                                    name: saranHobi.name,
+                                    slug: saranHobi.name.replace(/\s+/g, '-').toLowerCase(),
+                                    description: saranHobi.description,
+                                    category: [foundCategory],
+                                    img: "",
+                                    visited_count: 0,
+                                    suggester_email: saranHobi.email,
+                                    created_at: Date(),
+                                    updated_at: Date()
+                                });
+                
+                                newSuggestion.save();
+                                Category.find((err, foundCategories) => {
+                                    res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-success", "Saran hobi berhasil kami terima."), categories: foundCategories});
+                                })
+                            }
+                        }
+                    })
+                } else {
+                    Category.find((err, foundCategories) => {
+                        res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Sudah pernah ada yang menambahkan saran hobi tersebut! Silakan sarankan hobi yang lain."), categories: foundCategories});
+                    })
+                }
             }
-        }
-    })
-})
+        })
+    });
 
 app.listen(process.env.PORT || PORT, () => {
     "http://localhost:" + PORT
