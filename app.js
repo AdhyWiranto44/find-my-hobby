@@ -5,7 +5,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
-const passportLocalMongoose = require("passport-local-mongoose");
+const {Category} = require("./models/Category.js");
+const Hobby = require("./models/Hobby.js");
+const Suggestion = require("./models/Suggestion.js");
+const User = require("./models/User.js");
 const PORT = 3000;
 
 // Express
@@ -26,53 +29,11 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // MongoDB
-mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 // mongodb://127.0.0.1:27017/${process.env.DB_NAME}
 // mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority
-
-const userSchema = mongoose.Schema({
-    username: String,
-    password: String,
-    created_at: Date,
-    updated_at: Date
-})
-userSchema.plugin(passportLocalMongoose);
-
-const categorySchema = mongoose.Schema({
-    name: String,
-    slug: String
-})
-
-const hobbySchema = mongoose.Schema({
-    name: String,
-    slug: String,
-    description: String,
-    category: [categorySchema],
-    img: String,
-    visited_count: Number,
-    suggester_email: String,
-    created_at: Date,
-    updated_at: Date
-})
-
-const suggestionSchema = mongoose.Schema({
-    name: String,
-    slug: String,
-    description: String,
-    category: [categorySchema],
-    img: String,
-    visited_count: Number,
-    suggester_email: String,
-    created_at: Date,
-    updated_at: Date
-})
-
-const User = mongoose.model("User", userSchema);
-const Category = mongoose.model("Category", categorySchema);
-const Hobby = mongoose.model("Hobby", hobbySchema);
-const Suggestion = mongoose.model("Suggestion", suggestionSchema);
 
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
