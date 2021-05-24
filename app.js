@@ -30,7 +30,7 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // MongoDB
-mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 // mongodb://127.0.0.1:27017/${process.env.DB_NAME}
@@ -68,7 +68,7 @@ app.route("/")
     })
 
     .post((req, res) => {
-        res.redirect("/s/"+req.body.search);
+        res.redirect("/s/" + req.body.search);
     });
 
 
@@ -179,55 +179,42 @@ app.get("/carikan-saya-hobi", (req, res, next) => {
 
 app.route("/auth/login")
 
-    .get((req, res) => {
+    .get((req, res, next) => {
         if (req.isAuthenticated()) {
             res.redirect("/admin/dashboard");
         } else {
-            User.findOne((err, foundUser) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    if (foundUser === null) { // jika belum ada user yang terdaftar
-                    User.register({username: "adhywiranto44"}, "MinaIsMine!44", (err, user) => {
-                        if (err) {
-                            console.log(err);
-                            res.redirect('/');
-                        }
-                    })
-                    }
-                    res.render("login", {currentDate: new Date().getFullYear()});
+            User.findOne().exec()
+
+            .then((foundUser) => {
+                if (foundUser === null) {
+                    User.register({username: "adhywiranto44"}, "MinaIsMine!44");
                 }
+                res.render("login", {currentDate: new Date().getFullYear()});
             })
+
+            .then(null, next);
         }
     })
 
-    .post((req, res) => {
+    .post((req, res, next) => {
         const user = new User({
             username: req.body.username,
             password: req.body.password
         })
 
-        User.findOne({username: user.username}, (err, foundUser) => {
-            if (err) {
-                console.log(err);
-                res.redirect("/auth/login");
-            } else {
-                if (foundUser !== null) {
-                    req.login(user, (err) => {
-                        if (err) {
-                            console.log(err);
-                            res.redirect("/auth/login");
-                        } else {
-                            passport.authenticate('local')(req, res, function() {
-                                res.redirect('/admin/dashboard');
-                            });
-                        }
-                    })
-                } else {
-                    res.redirect("/auth/login");
-                }
+        User.findOne({username: user.username}).exec()
+
+        .then((foundUser) => {
+            if (foundUser !== null) {
+                req.login(user, (err) => {
+                    passport.authenticate('local')(req, res, function() {
+                        res.redirect('/admin/dashboard');
+                    });
+                })
             }
         })
+
+        .then(null, next);
     });
 
 app.get("/auth/logout", (req, res) => {
@@ -235,13 +222,25 @@ app.get("/auth/logout", (req, res) => {
     res.redirect("/auth/login");
 });
 
-app.get("/admin/dashboard", (req, res) => {
+app.get("/admin/dashboard", (req, res, next) => {
     if (req.isAuthenticated()) {
-        Hobby.find((err, foundHobbies) => {
-            Suggestion.find((err, foundSuggestions) => {
-                res.render("dashboard", {title: "Dashboard", hobbies_length: foundHobbies.length, suggestions_length: foundSuggestions.length});
-            })
+        let hobbies = null;
+        let suggestions = null;
+
+        Hobby.find().exec()
+
+        .then(foundHobbies => {
+            hobbies = foundHobbies;
+            return Suggestion.find().exec();
         })
+
+        .then(foundSuggestions => {
+            suggestions = foundSuggestions;
+            res.render("dashboard", {title: "Dashboard", hobbies_length: hobbies.length, suggestions_length: suggestions.length});
+        })
+
+        .then(null, next);
+        
     } else {
         res.redirect("/auth/login");
     }
@@ -250,23 +249,31 @@ app.get("/admin/dashboard", (req, res) => {
 
 app.route("/admin/tampil-semua-hobi")
 
-    .get((req, res) => {
+    .get((req, res, next) => {
         if (req.isAuthenticated()) {
-            Hobby.find((err, foundHobbies) => {
+            Hobby.find().sort({created_at: -1}).exec()
+
+            .then(foundHobbies => {
                 res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
-            }).sort({created_at: -1});
+            })
+
+            .then(null, next);
         } else {
             res.redirect("/auth/login");
         }
     })
 
-    .post((req, res) => {
+    .post((req, res, next) => {
         const search = req.body.search;
 
         if (search !== "") {
-            Hobby.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundHobbies) => {
+            Hobby.find({name: {$regex: ".*"+search+".*", $options: 'i'}}).exec()
+
+            .then(foundHobbies => {
                 res.render("tampil-semua-hobi", {title: "Tampil Semua Hobi", hobbies: foundHobbies});
             })
+
+            .then(null, next);
         } else {
             res.redirect("/admin/tampil-semua-hobi");
         }
@@ -275,42 +282,46 @@ app.route("/admin/tampil-semua-hobi")
 
 app.route("/admin/tambah-hobi-baru")
 
-    .get((req, res) => {
+    .get((req, res, next) => {
         if (req.isAuthenticated()) {
-            Category.find((err, foundCategory) => {
-                res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", hobby: "", categories: foundCategory});
-            }).sort({name: 1});
+            Category.find().sort({name: 1}).exec()
+
+            .then(foundCategories => {
+                res.render("tambah-hobi-baru", {title: "Tambah Hobi Baru", alert: "", hobby: "", categories: foundCategories});
+            })
+
+            .then(null, next);
         } else {
             res.redirect("/auth/login");
         }
     })
 
-    .post((req, res) => {
+    .post((req, res, next) => {
         const hobiBaru = req.body;
 
-        Category.findOne({_id: hobiBaru.category}, (err, foundCategory) => {
-            if (err) {
-                res.redirect("/admin/tambah-hobi-baru");
-            } else {
-                if (foundCategory !== null) {
-                    const newHobby = new Hobby({
-                        name: hobiBaru.name,
-                        slug: hobiBaru.name.replace(/\s+/g, '-').toLowerCase(),
-                        description: hobiBaru.description,
-                        category: [foundCategory],
-                        img: "",
-                        visited_count: 0,
-                        created_at: Date(),
-                        updated_at: Date()
-                    });
+        Category.findOne({_id: hobiBaru.category}).exec()
 
-                    newHobby.save();
-                    res.redirect("/admin/tampil-semua-hobi");
-                } else {
-                    res.redirect("/admin/tambah-hobi-baru");
-                }
+        .then(foundCategory => {
+            if (foundCategory !== null) {
+                const newHobby = new Hobby({
+                    name: hobiBaru.name,
+                    slug: hobiBaru.name.replace(/\s+/g, '-').toLowerCase(),
+                    description: hobiBaru.description,
+                    category: [foundCategory],
+                    img: "",
+                    visited_count: 0,
+                    created_at: Date(),
+                    updated_at: Date()
+                });
+
+                newHobby.save();
+                res.redirect("/admin/tampil-semua-hobi");
+            } else {
+                res.redirect("/admin/tambah-hobi-baru");
             }
         })
+
+        .then(null, next);
     });
 
 app.post("/admin/menghapus-hobi", (req, res) => {
@@ -328,6 +339,7 @@ app.post("/admin/menghapus-hobi", (req, res) => {
 app.get("/admin/mengubah-hobi/:slug", (req, res) => {
     if (req.isAuthenticated()) {
         const slugHobi = req.params.slug;
+
         Hobby.findOne({slug: slugHobi}, (err, foundHobby) => {
             if (foundHobby !== null) {
                 Category.find((err, foundCategory) => {
@@ -342,30 +354,30 @@ app.get("/admin/mengubah-hobi/:slug", (req, res) => {
     }
 });
 
-app.post("/admin/mengubah-hobi", (req, res) => {
+app.post("/admin/mengubah-hobi", (req, res, next) => {
     const hobi = req.body;
 
-    Category.findOne({_id: hobi.category}, (err, foundCategory) => {
-        if (err) {
-            res.redirect("/admin/tampil-semua-hobi");
-        } else {
-            if (foundCategory !== null) {
-                const hobiTerubah = {
-                    name: hobi.name,
-                    description: hobi.description,
-                    category: [foundCategory],
-                    img: "",
-                    updated_at: Date()
-                };
+    Category.findOne({_id: hobi.category}).exec()
 
-                Hobby.findByIdAndUpdate(hobi.id_hobi, hobiTerubah, (err) => {
-                    res.redirect("/admin/tampil-semua-hobi");
-                })
-            } else {
-                res.redirect("/admin/tampil-semua-hobi");
-            }
+    .then(foundCategory => {
+        if (foundCategory !== null) {
+            const hobiTerubah = {
+                name: hobi.name,
+                description: hobi.description,
+                category: [foundCategory],
+                img: "",
+                updated_at: Date()
+            };
+
+            return Hobby.findByIdAndUpdate(hobi.id_hobi, hobiTerubah).exec();
         }
     })
+
+    .then(() => {
+        res.redirect("/admin/tampil-semua-hobi");
+    })
+
+    .then(null, next);
 });
 
 
@@ -545,7 +557,7 @@ app.route("/saran-hobi")
         }).sort({name: 1});
     })
 
-    .post((req, res) => {
+    .post((req, res) => { // Fungsional paling tidak readable 🤣
         const saranHobi = req.body;
 
         Suggestion.findOne({name: saranHobi.name}, (err, foundSuggestion) => {
