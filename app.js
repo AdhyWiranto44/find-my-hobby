@@ -30,7 +30,7 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // MongoDB
-mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 // mongodb://127.0.0.1:27017/${process.env.DB_NAME}
@@ -43,20 +43,28 @@ passport.deserializeUser(User.deserializeUser());
 
 app.route("/")
 
-    .get((req, res) => {
-        Hobby.find((err, foundHobbies) => {
-            if (err) {
-                res.redirect("/");
-            } else {
-                if (foundHobbies !== null) {
-                    Category.find((err, foundCategory) => {
-                        res.render("index", {currentDate: new Date().getFullYear(), hobbies: foundHobbies, categories: foundCategory});
-                    })
-                } else {
-                    res.redirect("/");
-                }
+    .get((req, res, next) => {
+        let hobbies = null;
+        let categories = null;
+
+        Hobby.find()
+        .limit(5)
+        .sort({visited_count: -1})
+        .exec()
+
+        .then((foundHobbies) => {
+            if (foundHobbies !== null) {
+                hobbies = foundHobbies;
+                return Category.find().exec();
             }
-        }).limit(5).sort({visited_count: -1});
+        })
+
+        .then((foundCategories) => {
+            categories = foundCategories;
+            res.render("index", {currentDate: new Date().getFullYear(), hobbies, categories});
+        })
+
+        .then(null, next);
     })
 
     .post((req, res) => {
@@ -64,30 +72,32 @@ app.route("/")
     });
 
 
-app.get("/a/:kategori", (req, res) => {
-    const kategori = req.params.kategori;
+app.get("/a/:categorySlug", (req, res, next) => {
+    const categorySlug = req.params.categorySlug;
+    let category = null;
+    let hobbies = null;
 
-    Category.findOne({slug: kategori}, (err, foundCategory) => {
-        if (err) {
-            res.redirect("/");
+    Category.findOne({slug: categorySlug}).exec()
+
+    .then((foundCategory) => {
+        if (foundCategory !== null) {
+            category = foundCategory;
+            return Hobby.find({"category._id": category._id}).exec()
         } else {
-            if (foundCategory !== null) {
-                Hobby.find({"category._id": foundCategory._id}, (err, foundHobbies) => {
-                    if (err) {
-                        res.redirect("/");
-                    } else {
-                        if (foundHobbies !== null && foundHobbies.length > 0) {
-                            res.render("cari-hobi", {currentDate: new Date().getFullYear(), kind: "kategori", hobbies: foundHobbies});
-                        } else {
-                            res.redirect("/");
-                        }
-                    }
-                })
-            } else {
-                res.redirect("/");
-            }
+            res.redirect("/");
         }
     })
+
+    .then((foundHobbies) => {
+        if (foundHobbies !== null && foundHobbies.length > 0) {
+            hobbies = foundHobbies;
+            res.render("cari-hobi", {currentDate: new Date().getFullYear(), kind: "kategori", hobbies});
+        } else {
+            res.redirect("/");
+        }
+    })
+
+    .then(null, next);
 });
 
 app.get("/d/:kategori/:hobi", (req, res) => {
