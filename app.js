@@ -603,5 +603,5 @@ app.route("/saran-hobi")
     });
 
 app.listen(process.env.PORT || PORT, () => {
-    "http://localhost:" + PORT
+    console.log("http://localhost:" + PORT)
 });
