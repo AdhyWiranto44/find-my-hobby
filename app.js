@@ -165,11 +165,11 @@ app.get("/s/:search", (req, res, next) => {
 });
 
 app.get("/carikan-saya-hobi", (req, res, next) => {
-    Hobby.findOne().sort({visited_count: -1}).exec()
+    Hobby.aggregate([{$sample: {size: 1}}]).exec()
 
     .then(foundHobby => {
-        const recommendedHobby = foundHobby.slug;
-        const hobbyCategory = foundHobby.category[0].slug;
+        const recommendedHobby = foundHobby[0].slug;
+        const hobbyCategory = foundHobby[0].category[0].slug;
         res.redirect(`/d/${hobbyCategory}/${recommendedHobby}`);
     })
 
