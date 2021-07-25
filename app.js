@@ -29,12 +29,13 @@ app.use(passport.session());
 // Set Modules
 app.set("view engine", "ejs");
 
-// MongoDB
+// Cloud MongoDB
 mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.set("useCreateIndex", true);
 
-// mongodb://127.0.0.1:27017/${process.env.DB_NAME}
-// mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority
+// Local MongoDB
+// mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
+
+mongoose.set("useCreateIndex", true);
 
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
