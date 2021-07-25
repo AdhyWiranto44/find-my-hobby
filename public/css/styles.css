@@ -44,8 +44,8 @@ body {
 }
 
 .navbar {
-    padding-top: 25px;
-    padding-bottom: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     transition: .2s;
 }
 
@@ -105,7 +105,7 @@ body {
         margin-top: 4px;
     }
     
-    a.nav-link::after {
+    /* a.nav-link::after {
         content: "";
         display: block;
         border-bottom: 4px solid #F4F4FA;
@@ -117,5 +117,5 @@ body {
 
     a.nav-link:hover::after {
         opacity: 1;
-    }
+    } */
 }
