@@ -85,7 +85,7 @@
             <% if (hobbies.length > 0) { %>
                 <% hobbies.forEach(hobby => { %>
                     <div class="col-12 col-md-4 col-lg-3">
-                        <a href="/d/<%= hobby.category[0].slug %>/<%= hobby.slug %> ">
+                        <a href="/hobby/<%= hobby.category[0].slug %>/<%= hobby.slug %> ">
                             <div class="card bg-dark text-white border-0 shadow overflow-hidden mb-4">
                                 <img src="/img/hobi.webp" class="card-img w-100" alt="<%= hobby.name %>" />
                                 <div class="card-img-overlay d-flex">
