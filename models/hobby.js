@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const {categorySchema} = require("./Category.js");
+const mongoose = require("mongoose")
+const {categorySchema} = require("./category.js")
 
 const hobbySchema = mongoose.Schema({
     name: String,
@@ -13,6 +13,6 @@ const hobbySchema = mongoose.Schema({
     updated_at: Date
 });
 
-const Hobby = mongoose.model("Hobby", hobbySchema);
+const Hobby = mongoose.model("Hobby", hobbySchema)
 
-module.exports = Hobby;
+module.exports = Hobby

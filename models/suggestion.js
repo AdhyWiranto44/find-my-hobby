@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const {categorySchema} = require("./Category.js");
+const mongoose = require("mongoose")
+const {categorySchema} = require("./category.js")
 
 const suggestionSchema = mongoose.Schema({
     name: String,
@@ -11,8 +11,8 @@ const suggestionSchema = mongoose.Schema({
     suggester_email: String,
     created_at: Date,
     updated_at: Date
-});
+})
 
-const Suggestion = mongoose.model("Suggestion", suggestionSchema);
+const Suggestion = mongoose.model("Suggestion", suggestionSchema)
 
-module.exports = Suggestion;
+module.exports = Suggestion
