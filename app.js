@@ -1,37 +1,28 @@
 require('dotenv').config();
 const express = require("express");
-const mongoose = require("mongoose");
+const Connection = require("./src/database/Connection");
 const session = require("express-session");
 const passport = require("passport");
+const User = require("./src/models/User.js");
+const router = require('./src/routes/Api');
 
-const User = require("./models/User.js");
-const PORT = 3000;
 
-// Express
-const app = express();
-
-// Use
+PORT = 3000;
+app = express();
 app.use(express.static("public"));
 app.use(express.urlencoded({extended: true}));
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
-  }));
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use("/", require('./router/api'))
-
-// Set Modules
+app.use(router);
 app.set("view engine", "ejs");
 
-// Cloud MongoDB
-mongoose.connect(`mongodb+srv://find-my-hobby-admin:${process.env.DB_PASSWORD}@cluster0.k9fdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
-
-// Local MongoDB
-// mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
-
-mongoose.set("useCreateIndex", true);
+myConnection = new Connection();
+myConnection.connectToMongoDBLocal();
 
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
