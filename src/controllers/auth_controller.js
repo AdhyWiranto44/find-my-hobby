@@ -1,5 +1,5 @@
 const passport = require("passport");
-const User = require("../models/User.js");
+const User = require("../models/user.js");
 
 
 exports.index = (req, res) => {

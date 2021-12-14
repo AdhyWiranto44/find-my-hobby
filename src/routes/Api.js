@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const HomeRouter = require("./HomeRouter");
-const CategoryRouter = require("./CategoryRouter");
-const SuggestionRouter = require("./SuggestionRouter");
-const DashboardRouter = require("./DashboardRouter");
-const AuthRouter = require("./AuthRouter");
+const homeRouter = require("./home_router");
+const categoryRouter = require("./category_router");
+const suggestionRouter = require("./suggestion_router");
+const dashboardRouter = require("./dashboard_router");
+const authRouter = require("./auth_router");
 
 
-router.use(HomeRouter);
-router.use(CategoryRouter);
-router.use(SuggestionRouter);
-router.use(DashboardRouter);
-router.use(AuthRouter);
+router.use(homeRouter);
+router.use(categoryRouter);
+router.use(suggestionRouter);
+router.use(dashboardRouter);
+router.use(authRouter);
 
 
 module.exports = router;
