@@ -3,21 +3,31 @@ const {Category} = require("../models/category");
 
 
 exports.index = (req, res) => {
-    if (req.isAuthenticated()) {
-        Category.find((err, foundCategories) => {
-            if (err) {
-                res.redirect("/admin/dashboard")
-            } else {
-                if (foundCategories !== null) {
-                    res.render("tampil-kategori", {title: "Tampil Kategori", alert: "", categories: foundCategories})
-                } else {
-                    res.redirect("/admin/dashboard")
-                }
-            }
-        }).sort({name: 1})
-    } else {
-        res.redirect("/auth/login")
+    let categories = [];
+
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");   
     }
+
+    Category.find().sort({name: 1}).exec()
+    .then(foundCategories => {
+        if (foundCategories.length > 0) {
+            categories = [...foundCategories];
+        } else {
+            res.redirect("/admin/dashboard");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.redirect("/admin/dashboard");
+    });
+
+    const data = {
+        title: "Tampil Kategori", 
+        alert: "", 
+        categories: categories
+    }
+    res.render("tampil-kategori", data);
 }
 
 exports.show = (req, res) => {

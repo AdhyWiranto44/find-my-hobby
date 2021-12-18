@@ -23,7 +23,7 @@
                     <p class="card-text"><%= hobby.description.substring(0, 30) + "..." %></p>
                     <a href="/admin/mengubah-hobi/<%= hobby.slug %>" class="btn btn-warning mr-2"><span class="ti-pencil-alt"></span> Ubah</a>
                     <form action="/admin/menghapus-hobi" method="POST" class="d-inline">
-                        <button type="submit" class="btn btn-danger mr-2" onClick="return confirm('Yakin ingin menghapus hobi ini? <%= hobby.name %>')" name="hapusHobi" value="<%= hobby._id %>"><span class="ti-trash"></span> Hapus</button>
+                        <button type="submit" class="btn btn-danger mr-2" onClick="return confirm('Yakin ingin menghapus hobi ini? <%= hobby.name %>')" name="hobbyId" value="<%= hobby._id %>"><span class="ti-trash"></span> Hapus</button>
                     </form>
                     </div>
                 </div>

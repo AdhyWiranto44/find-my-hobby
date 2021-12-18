@@ -24,10 +24,10 @@ app.set("view engine", "ejs");
 myConnection = new Connection();
 myConnection.connectToMongoDBLocal();
 
-passport.use(User.createStrategy())
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.listen(process.env.PORT || PORT, () => {
-    console.log("http://localhost:" + PORT)
+    console.log("http://localhost:" + PORT);
 });

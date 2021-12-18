@@ -1,72 +1,60 @@
 const Hobby = require("../models/hobby");
 const {Category} = require("../models/category");
+const [default_categories, default_hobbies, default_suggestions] = require("../helpers/dummy_data");
+const Suggestion = require("../models/suggestion");
 
 
-exports.index = (req, res) => {
-    let hobbies = null
-    let categories = null
+exports.index = async (req, res) => {
+    let hobbies = [];
+    let categories = [];
 
-    Hobby.find()
-    .limit(5)
-    .sort({visited_count: -1})
-    .exec()
-
+    await Hobby.find().limit(5).sort({visited_count: -1}).exec()
     .then((foundHobbies) => {
-        if (foundHobbies !== null) {
-            hobbies = foundHobbies
-            return Category.find().exec()
+        if (foundHobbies.length < 1) {
+            insertDefaultCategories();
+            insertDefaultHobbies();
+            insertDefaultSuggestions();
+            return res.redirect("/");
         }
+        hobbies = [...foundHobbies];
+        return Category.find().exec();
     })
-
     .then((foundCategories) => {
-        categories = foundCategories
-        res.render("index", {currentDate: new Date().getFullYear(), hobbies, categories})
+        categories = [...foundCategories];
     })
-
-    .catch(err => {
-        console.error(err)
-    })
+    .catch(err => { console.error(err) });
+    
+    const data = {
+        currentDate: new Date().getFullYear(), 
+        hobbies: hobbies,
+        categories: categories
+    }
+    res.render("index", data);
 }
 
-exports.find = (req, res) => {
-    res.redirect("/search/" + req.body.search)
-}
+exports.find = async (req, res) => {
+    const search = req.query.title || "";
+    let hobbies = [];
 
-exports.findPage = (req, res) => {
-    let hobbies = null
+    if (search == "") return res.redirect("/");
 
-    Hobby.find().exec()
-
+    await Hobby.find({name: {$regex: ".*"+search+".*", $options: 'i'}}).exec()
     .then(foundHobbies => {
-        if (foundHobbies !== null) {
-            hobbies = foundHobbies
-            res.render("cari-hobi", {currentDate: new Date().getFullYear(), kind: "", hobbies})
-        } else {
-            res.redirect("/")
+        if (foundHobbies.length > 0) {
+            hobbies = [...foundHobbies];
         }
     })
+    .catch(() => {
+        return res.redirect("/");
+    });
 
-    .catch(err => {
-        console.error(err)
-    })
-}
-
-exports.findPageWithSearchTerm = (req, res) => {
-    const search = req.params.searchTerm
-
-    Hobby.find({name: {$regex: ".*"+search+".*", $options: 'i'}}).exec()
-
-    .then(foundHobbies => {
-        if (foundHobbies !== null) {
-            res.render("cari-hobi", {currentDate: new Date().getFullYear(), kind: "mencari", hobbies: foundHobbies, search})
-        } else {
-            res.redirect("/")
-        }
-    })
-
-    .catch(err => {
-        console.error(err)
-    })
+    const data = {
+        currentDate: new Date().getFullYear(), 
+        kind: "mencari", 
+        hobbies: hobbies, 
+        search: search
+    }
+    res.render("cari-hobi", data);
 }
 
 exports.findRandomHobby = (req, res) => {
@@ -81,4 +69,14 @@ exports.findRandomHobby = (req, res) => {
     .catch(err => {
         console.error(err)
     })
+}
+
+function insertDefaultCategories() {
+    Category.insertMany(default_categories, (err) => {});
+}
+function insertDefaultHobbies() {
+    Hobby.insertMany(default_hobbies, (err) => {});
+}
+function insertDefaultSuggestions() {
+    Suggestion.insertMany(default_suggestions, (err) => {});
 }
