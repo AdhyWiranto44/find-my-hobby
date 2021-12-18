@@ -17,7 +17,7 @@
                         <h4 class="card-title mb-3"><%= category.name %></h4>
                         <a href="/admin/mengubah-kategori/<%= category.slug %>" class="btn btn-sm btn-warning mr-2"><span class="ti-pencil-alt"></span> Ubah</a>
                         <form action="/admin/menghapus-kategori" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger mr-2" onClick="return confirm('Yakin ingin menghapus kategori ini? <%= category.name %>')" name="hapusKategori" value="<%= category._id %>"><span class="ti-trash"></span> Hapus</button>
+                            <button type="submit" class="btn btn-sm btn-danger mr-2" onClick="return confirm('Yakin ingin menghapus kategori ini? <%= category.name %>')" name="categoryId" value="<%= category._id %>"><span class="ti-trash"></span> Hapus</button>
                         </form>
                     </div>
                 </div>

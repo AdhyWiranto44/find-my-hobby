@@ -2,14 +2,14 @@ const Hobby = require("../models/hobby");
 const {Category} = require("../models/category");
 
 
-exports.index = (req, res) => {
-    let categories = [];
-
+exports.index = async (req, res) => {
     if (!req.isAuthenticated()) {
         return res.redirect("/auth/login");   
     }
 
-    Category.find().sort({name: 1}).exec()
+    let categories = [];
+
+    await Category.find().sort({name: 1}).exec()
     .then(foundCategories => {
         if (foundCategories.length > 0) {
             categories = [...foundCategories];
@@ -30,110 +30,173 @@ exports.index = (req, res) => {
     res.render("tampil-kategori", data);
 }
 
-exports.show = (req, res) => {
-    const categorySlug = req.params.categorySlug
-    let category = null
-    let hobbies = null
+exports.show = async (req, res) => {
+    const categorySlug = req.params.categorySlug;
+    let category = null;
+    let hobbies = [];
 
-    Category.findOne({slug: categorySlug}).exec()
-
+    await Category.findOne({slug: categorySlug}).exec()
     .then((foundCategory) => {
         if (foundCategory !== null) {
-            category = foundCategory
-            return Hobby.find({"category._id": category._id}).exec()
+            category = foundCategory;
         } else {
-            res.redirect("/")
+            return res.redirect("/");
         }
     })
-
-    .then((foundHobbies) => {
-        if (foundHobbies !== null && foundHobbies.length > 0) {
-            hobbies = foundHobbies
-            res.render("cari-hobi", {currentDate: new Date().getFullYear(), kind: "kategori", hobbies})
-        } else {
-            res.redirect("/")
-        }
-    })
-
     .catch(err => {
-        console.error(err)
+        console.error(err);
+        return res.redirect("/");
     })
+
+    await Hobby.find({"category.slug": category.slug}).exec()
+    .then((foundHobbies) => {
+        if (foundHobbies.length > 0) {
+            hobbies = [...foundHobbies];
+        } else {
+            return res.redirect("/");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        return res.redirect("/");
+    });
+
+    const data = {
+        currentDate: new Date().getFullYear(), 
+        kind: "kategori",
+        category: category,
+        hobbies: hobbies
+    }
+    res.render("cari-hobi", data);
 }
 
 exports.create = (req, res) => {
-    if (req.isAuthenticated()) {
-        res.render("tambah-kategori", {title: "Tambah Kategori", alert: "", category: ""})
-    } else {
-        res.redirect("/auth/login")
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
     }
+
+    const data = {
+        title: "Tambah Kategori", 
+        alert: "", 
+        category: ""
+    }
+    res.render("tambah-kategori", data);
 }
 
 exports.store = (req, res) => {
-    const kategoriBaru = req.body
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
+    }
 
-    Category.findOne({name: kategoriBaru.name}, (err, foundCategory) => {
-        if (err) {
-            res.redirect("/admin/tambah-kategori")
-        } else {
-            if (foundCategory === null) {
-                const newCategory = new Category({
-                    name: kategoriBaru.name,
-                    slug: kategoriBaru.name.replace(/\s+/g, '-').toLowerCase()
-                })
+    const kategoriBaru = req.body;
 
-                newCategory.save()
-                res.redirect("/admin/tampil-kategori")
-            } else {
-                res.redirect("/admin/tambah-kategori")
-            }
+    Category.findOne({name: kategoriBaru.name}).exec()
+    .then(foundCategory => {
+        if (foundCategory === null) {
+            const newCategory = new Category({
+                name: kategoriBaru.name,
+                slug: kategoriBaru.name.replace(/\s+/g, '-').toLowerCase()
+            });
+            newCategory.save();   
         }
     })
+    .catch(err => {
+        console.log(err);
+    });
+
+    res.redirect("/admin/tampil-kategori");
 }
 
-exports.find = (req, res) => {
-    const search = req.body.search
-
-    if (search !== "") {
-        Category.find({name: {$regex: ".*"+search+".*", $options: 'i'}}, (err, foundCategories) => {
-            res.render("tampil-kategori", {title: "Tampil Kategori", categories: foundCategories})
-        })
-    } else {
-        res.redirect("/admin/tampil-kategori")
+exports.find = async (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
     }
+
+    const search = req.body.search || "";
+
+    if (search === "") {
+        return res.redirect("/admin/tampil-kategori");
+    }
+
+    let categories = [];
+
+    await Category.find({name: {$regex: ".*"+search+".*", $options: 'i'}}).exec()
+    .then(foundCategories => {
+        if (foundCategories.length > 0) {
+            categories = [...foundCategories];
+        } else {
+            return res.redirect("/admin/tampil-kategori");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        return res.redirect("/admin/tampil-kategori");
+    });
+
+    const data = {
+        title: "Tampil Kategori", 
+        categories: categories
+    }
+    res.render("tampil-kategori", data);
 }
 
 exports.destroy = (req, res) => {
-    const hapusKategori = req.body.hapusKategori
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
+    }
 
-    Category.findByIdAndRemove({_id: hapusKategori}, (err) => {
+    const categoryId = req.body.categoryId;
+
+    Category.findByIdAndRemove({_id: categoryId}, (err) => {
         if (err) {
-            console.log(err)
+            console.log(err);
         } else {
-            res.redirect("/admin/tampil-kategori")
+            res.redirect("/admin/tampil-kategori");
         }
     })
 }
 
 
-exports.edit = (req, res) => {
-    if (req.isAuthenticated()) {
-        const slugKategori = req.params.slug
-        Category.findOne({slug: slugKategori}, (err, foundCategory) => {
-            if (foundCategory !== null) {
-                res.render("tambah-kategori", {title: "Mengubah Kategori", category: foundCategory, alert: ""})
-            } else {
-                res.redirect("/admin/tampil-kategori")
-            }
-        })
-    } else {
-        res.redirect("/auth/login")
+exports.edit = async (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
     }
+
+    const categorySlug = req.params.slug;
+    let category = null;
+
+    await Category.findOne({slug: categorySlug}).exec()
+    .then(foundCategory => {
+        if (foundCategory !== null) {
+            category = foundCategory;
+        } else {
+            return res.redirect("/admin/tampil-kategori");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        return res.redirect("/admin/tampil-kategori");
+    });
+
+    const data = {
+        title: "Mengubah Kategori", 
+        category: category, 
+        alert: ""
+    }
+    res.render("tambah-kategori", data);
 }
 
 exports.update = (req, res) => {
-    const kategori = req.body
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
+    }
+
+    const kategori = req.body;
     
-    Category.findByIdAndUpdate(kategori.id_kategori, {name: kategori.name}, (err) => {
-        res.redirect("/admin/tampil-kategori")
-    })
+    Category.findByIdAndUpdate(kategori.id_kategori, {name: kategori.name}).exec()
+    .catch(err => {
+        console.log(err);
+    });
+
+    res.redirect("/admin/tampil-kategori");
 }
