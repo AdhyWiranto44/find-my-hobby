@@ -4,125 +4,180 @@ const Hobby = require("../models/hobby.js");
 const Suggestion = require("../models/suggestion.js");
 
 
-exports.index = (req, res) => {
-    if (req.isAuthenticated()) {
-        Suggestion.find((err, foundSuggestions) => {
-            res.render("tampil-saran-hobi", {title: "Tampil Saran Hobi", suggestions: foundSuggestions})
-        }).sort({name: 1})
-    } else {
-        res.redirect("/auth/login")
+exports.index = async (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
     }
+
+    let suggestions = [];
+
+    await Suggestion.find().sort({name: 1}).exec()
+    .then(foundSuggestions => {
+        suggestions = [...foundSuggestions];
+    })
+    .catch(err => {
+        console.error(err);
+    });
+
+    const data = {
+        title: "Tampil Saran Hobi", 
+        suggestions: suggestions
+    }
+    res.render("tampil-saran-hobi", data);
 }
 
-exports.acceptSuggestion = (req, res) => {
-    const tambahSaran = req.body.tambahSaran
+exports.acceptSuggestion = async (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
+    }
 
-    Suggestion.findOne({_id: tambahSaran}, (err, foundSuggestion) => {
-        if (err) {
-            res.redirect("/admin/tampil-saran-hobi")
-        } else {
-            Hobby.findOne({slug: foundSuggestion.slug}, (err, foundHobby) => {
-                if (err) {
-                    res.redirect("/admin/tampil-saran-hobi")
-                } else {
-                    if (foundHobby === null) {
-                        const saranHobi = new Hobby({
-                            name: foundSuggestion.name,
-                            slug: foundSuggestion.slug,
-                            description: foundSuggestion.description,
-                            category: [{
-                                _id: foundSuggestion.category[0]._id,
-                                name: foundSuggestion.category[0].name,
-                                slug: foundSuggestion.category[0].slug
-                            }],
-                            img: foundSuggestion.img,
-                            visited_count: 0,
-                            suggester_email: foundSuggestion.suggester_email,
-                            created_at: Date(),
-                            updated_at: Date()
-                        })
-                        saranHobi.save()
-                        Suggestion.findByIdAndRemove(foundSuggestion._id, (err) => {
-                            if (err) {
-                                res.redirect("/admin/tampil-saran-hobi")
-                            } else {
-                                res.redirect("/admin/tampil-semua-hobi")
-                            }
-                        })
-                    } else {
-                        res.redirect("/admin/tampil-saran-hobi")
-                    }
-                }
-            })
+    const tambahSaran = req.body.tambahSaran;
+    let suggestion = null;
+
+    await Suggestion.findOne({_id: tambahSaran}).exec()
+    .then(foundSuggestion => {
+        if (foundSuggestion !== null) {
+            suggestion = foundSuggestion;
         }
     })
+    .catch(err => {
+        console.error(err);
+    });
+
+    await Hobby.findOne({slug: suggestion.slug}).exec()
+    .then(foundHobby => {
+        if (foundHobby === null) {
+            const saranHobi = new Hobby({
+                name: suggestion.name,
+                slug: suggestion.slug,
+                description: suggestion.description,
+                category: [{
+                    _id: suggestion.category[0]._id,
+                    name: suggestion.category[0].name,
+                    slug: suggestion.category[0].slug
+                }],
+                img: suggestion.img,
+                visited_count: 0,
+                suggester_email: suggestion.suggester_email,
+                created_at: Date(),
+                updated_at: Date()
+            });
+            saranHobi.save();
+            Suggestion.findByIdAndRemove(suggestion._id).exec();
+        }
+    })
+    .catch(err => {
+        console.error(err);
+    });
+
+    res.redirect("/admin/tampil-saran-hobi");
 }
 
 exports.denySuggestion = (req, res) => {
-    const tolakSaran = req.body.tolakSaran
+    if (!req.isAuthenticated()) {
+        return res.redirect("/auth/login");
+    }
 
-    Suggestion.findByIdAndRemove(tolakSaran, (err) => {
-        if (err) {
-            res.redirect("/admin/tampil-saran-hobi")
-        } else {
-            res.redirect("/admin/tampil-saran-hobi")
-        }
-    })
-}
+    const tolakSaran = req.body.tolakSaran;
 
-exports.create = (req, res) => {
-    Category.find().sort({name: 1}).exec()
-
-    .then(foundCategories => {
-        res.render("saran-hobi", {title: "Form Saran Hobi", alert: "", categories: foundCategories})
-    })
-
+    Suggestion.findByIdAndRemove(tolakSaran).exec()
     .catch(err => {
-        console.error(err)
-    })
+        console.log(err);
+    });
+    res.redirect("/admin/tampil-saran-hobi");
 }
 
-exports.store = (req, res) => { // Fungsional paling tidak readable 🤣
-    const saranHobi = req.body
+exports.create = async(req, res) => {
+    let categories = [];
 
-    Suggestion.findOne({name: saranHobi.name}, (err, foundSuggestion) => {
-        if (err) {
-            Category.find((err, foundCategories) => {
-                res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories})
-            })
-        } else {
-            if (foundSuggestion === null) {
-                Category.findOne({_id: saranHobi.category}, (err, foundCategory) => {
-                    if (err) {
-                        Category.find((err, foundCategories) => {
-                            res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), categories: foundCategories})
-                        })
-                    } else {
-                        if (foundCategory !== null) {
-                            const newSuggestion = new Suggestion({
-                                name: saranHobi.name,
-                                slug: saranHobi.name.replace(/\s+/g, '-').toLowerCase(),
-                                description: saranHobi.description,
-                                category: [foundCategory],
-                                img: "",
-                                visited_count: 0,
-                                suggester_email: saranHobi.email,
-                                created_at: Date(),
-                                updated_at: Date()
-                            })
-            
-                            newSuggestion.save()
-                            Category.find((err, foundCategories) => {
-                                res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-success", "Saran hobi berhasil kami terima."), categories: foundCategories})
-                            })
-                        }
-                    }
-                })
-            } else {
-                Category.find((err, foundCategories) => {
-                    res.render("saran-hobi", {title: "Form Saran Hobi", alert: showAlert("alert-danger", "Sudah pernah ada yang menambahkan saran hobi tersebut! Silakan sarankan hobi yang lain."), categories: foundCategories})
-                })
-            }
+    await Category.find().sort({name: 1}).exec()
+    .then(foundCategories => {
+        categories = [...foundCategories];
+    })
+    .catch(err => {
+        console.error(err);
+    });
+
+    const data = {
+        title: "Form Saran Hobi", 
+        alert: "", 
+        categories: categories
+    }
+    res.render("saran-hobi", data);
+}
+
+exports.store = async (req, res) => {
+    const saranHobi = req.body;
+    let suggestion = null;
+    let categories = [];
+
+    // Mengecek apakah ada saran hobi yang sama
+    await Suggestion.findOne({name: {$regex: saranHobi.name, $options: 'i'}}).exec()
+    .then(foundSuggestion => {
+        if (foundSuggestion !== null) {
+            suggestion = foundSuggestion;
         }
     })
+    .catch(err => {
+        console.error(err);
+    });
+
+    await Category.find().exec()
+    .then(foundCategories => {
+        categories = [...foundCategories];
+    })
+    .catch(err => {
+        console.error(err);
+        const data = {
+            title: "Form Saran Hobi", 
+            alert: showAlert("alert-danger", "Terjadi kegagalan sistem, silakan coba beberapa saat lagi."), 
+            categories: categories
+        }
+        res.render("saran-hobi", data);
+    });
+
+    // Jika ada saran hobi yang sama, maka kembali ke halaman tambah saran hobi
+    if (suggestion !== null) {
+        const data = {
+            title: "Form Saran Hobi", 
+            alert: showAlert("alert-danger", "Sudah pernah ada yang menambahkan saran hobi tersebut! Silakan sarankan hobi yang lain."), 
+            categories: categories
+        }
+        return res.render("saran-hobi", data);
+    }
+    
+    // Jika saran hobi tidak sama, maka lanjut tambahkan saran hobi tersebut
+    await Category.findOne({_id: saranHobi.category}).exec()
+    .then(foundCategory => {
+        if (foundCategory !== null) {
+            const newSuggestion = new Suggestion({
+                name: saranHobi.name,
+                slug: saranHobi.name.replace(/\s+/g, '-').toLowerCase(),
+                description: saranHobi.description,
+                category: [foundCategory],
+                img: "",
+                visited_count: 0,
+                suggester_email: saranHobi.email,
+                created_at: Date(),
+                updated_at: Date()
+            });
+            newSuggestion.save();
+
+            const data = {
+                title: "Form Saran Hobi", 
+                alert: showAlert("alert-success", "Saran hobi berhasil kami terima."), 
+                categories: categories
+            }
+            res.render("saran-hobi", data);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        const data = {
+            title: "Form Saran Hobi", 
+            alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."), 
+            categories: categories
+        }
+        res.render("saran-hobi", data);
+    });
 }

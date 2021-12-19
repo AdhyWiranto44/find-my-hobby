@@ -59,16 +59,14 @@ exports.find = async (req, res) => {
 
 exports.findRandomHobby = (req, res) => {
     Hobby.aggregate([{$sample: {size: 1}}]).exec()
-
     .then(foundHobby => {
-        const recommendedHobby = foundHobby[0].slug
-        const hobbyCategory = foundHobby[0].category[0].slug
-        res.redirect(`/hobby/${hobbyCategory}/${recommendedHobby}`)
+        const recommendedHobby = foundHobby[0].slug;
+        const hobbyCategory = foundHobby[0].category[0].slug;
+        res.redirect(`/hobby/${hobbyCategory}/${recommendedHobby}`);
     })
-
     .catch(err => {
-        console.error(err)
-    })
+        console.error(err);
+    });
 }
 
 function insertDefaultCategories() {
