@@ -1,6 +1,6 @@
-const {Category} = require("../models/category");
-const Hobby = require("../models/hobby");
-const Suggestion = require("../models/suggestion");
+const {Category} = require("../models/Category");
+const Hobby = require("../models/Hobby");
+const Suggestion = require("../models/Suggestion");
 
 
 const category1 = new Category({

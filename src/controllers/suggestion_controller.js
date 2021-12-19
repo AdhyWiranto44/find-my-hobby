@@ -1,7 +1,7 @@
 const showAlert = require("../helpers/show_alert.js");
-const {Category} = require("../models/category.js");
-const Hobby = require("../models/hobby.js");
-const Suggestion = require("../models/suggestion.js");
+const {Category} = require("../models/Category.js");
+const Hobby = require("../models/Hobby.js");
+const Suggestion = require("../models/Suggestion.js");
 
 
 exports.index = async (req, res) => {

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const {categorySchema} = require("./category.js")
+const {categorySchema} = require("./Category.js")
 
 const hobbySchema = mongoose.Schema({
     name: String,

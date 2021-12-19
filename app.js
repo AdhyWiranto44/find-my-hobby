@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require("express");
-const Connection = require("./src/database/Connection");
 const session = require("express-session");
 const passport = require("passport");
-const User = require("./src/models/user");
+const Connection = require("./src/database/Connection");
+const User = require("./src/models/User");
 const router = require('./src/routes/api');
 
 
