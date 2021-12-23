@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const categoryController = require("../controllers/category_controller");
+const categoryController = require("../controllers/category_controller.js");
 
 
 router.get("/admin/tampil-kategori", categoryController.index);

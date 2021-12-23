@@ -1,7 +1,7 @@
-const Hobby = require("../models/Hobby");
-const {Category} = require("../models/Category");
-const [default_categories, default_hobbies, default_suggestions] = require("../helpers/dummy_data");
-const Suggestion = require("../models/Suggestion");
+const Hobby = require("../models/Hobby.js");
+const {Category} = require("../models/Category.js");
+const [default_categories, default_hobbies, default_suggestions] = require("../helpers/dummy_data.js");
+const Suggestion = require("../models/Suggestion.js");
 
 
 exports.index = async (req, res) => {

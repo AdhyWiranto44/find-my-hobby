@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const hobbyController = require("../controllers/hobby_controller");
+const hobbyController = require("../controllers/hobby_controller.js");
 
 
 router.get("/admin/tampil-semua-hobi", hobbyController.index);

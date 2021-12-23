@@ -1,5 +1,5 @@
-const Hobby = require("../models/Hobby");
-const {Category} = require("../models/Category");
+const Hobby = require("../models/Hobby.js");
+const {Category} = require("../models/Category.js");
 
 
 exports.index = async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const suggestionController = require("../controllers/suggestion_controller");
+const suggestionController = require("../controllers/suggestion_controller.js");
 
 
 router.get("/admin/tampil-saran-hobi", suggestionController.index);

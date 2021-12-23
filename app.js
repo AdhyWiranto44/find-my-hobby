@@ -2,9 +2,9 @@ require('dotenv').config();
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
-const Connection = require("./src/database/Connection");
-const User = require("./src/models/User");
-const api = require('./src/routes/api');
+const Connection = require("./src/database/Connection.js");
+const User = require("./src/models/User.js");
+const api = require('./src/routes/api.js');
 
 
 PORT = 3000;
