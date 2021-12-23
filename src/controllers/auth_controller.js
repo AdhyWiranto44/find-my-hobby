@@ -33,14 +33,17 @@ exports.login = (req, res) => {
         if (foundUser !== null) {
             req.login(user, (err) => {
                 passport.authenticate('local')(req, res, function() {
-                    return res.redirect('/admin/dashboard');
-                })
+                    console.log("logged in!");
+                });
             });
+            res.redirect('/admin/dashboard');
         }
     })
     .catch(err => {
         console.error(err);
+        res.redirect('/auth/login');
     });
+    
 }
 
 exports.logout = (req, res) => {
