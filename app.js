@@ -4,7 +4,7 @@ const session = require("express-session");
 const passport = require("passport");
 const Connection = require("./src/database/Connection.js");
 const User = require("./src/models/User.js");
-const api = require('/src/routes/api.js');
+const api = require('./src/routes/api.js');
 
 
 PORT = 3000;
@@ -18,7 +18,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(api);
+app.use("/", api);
 app.set("view engine", "ejs");
 
 myConnection = new Connection();
