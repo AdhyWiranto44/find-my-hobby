@@ -37,6 +37,8 @@ exports.login = (req, res) => {
                 });
             });
             res.redirect('/admin/dashboard');
+        } else {
+            res.redirect('/auth/login');
         }
     })
     .catch(err => {
