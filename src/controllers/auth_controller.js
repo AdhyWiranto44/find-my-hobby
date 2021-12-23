@@ -32,7 +32,9 @@ exports.login = (req, res) => {
     .then((foundUser) => {
         if (foundUser !== null) {
             req.login(user, (err) => {
-                return res.redirect('/admin/dashboard');
+                passport.authenticate('local')(req, res, function() {
+                    return res.redirect('/admin/dashboard');
+                })
             });
         }
     })
