@@ -14,7 +14,7 @@
             <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card px-3 shadow-sm border-0">
                     <div class="card-body px-0">
-                    <a class="text-dark text-underline-dark" href="/d/<% hobby.category[0].slug %>/<%= hobby.slug %>"><h4 class="card-title mb-2"><%= hobby.name %></h4></a>
+                    <a class="text-dark text-underline-dark" href="/hobby/<%= hobby.category[0].slug %>/<%= hobby.slug %>"><h4 class="card-title mb-2"><%= hobby.name %></h4></a>
                     <span class="badge bg-light text-dark mb-3"><%= hobby.category[0].name %></span>
                     <h6 class="mb-3 small">Views: <%= hobby.visited_count %></h6>
                     <% if (hobby.suggester_email || hobby.suggester_email === "") { %>
