@@ -1,7 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@font-face {
+    font-family: "Montserrat";
+    src: url(../font/montserrat-regular.woff);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url(../font/montserrat-bold.woff);
+    font-weight: bold;
+    font-style: normal;
+}
 
 * {
-    font-family: "Open Sans";
+    font-family: "Montserrat";
     margin: 0;
     padding: 0;
     text-decoration: none;

@@ -1,5 +1,16 @@
-/* Font faces */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@font-face {
+    font-family: "Montserrat";
+    src: url(../font/montserrat-regular.woff);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url(../font/montserrat-bold.woff);
+    font-weight: bold;
+    font-style: normal;
+}
 
 :root {
     --background: #F4F4FA;

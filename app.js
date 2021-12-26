@@ -22,6 +22,7 @@ app.set("view engine", "ejs");
 
 myConnection = new Connection();
 myConnection.connectToMongoDBAtlas();
+// myConnection.connectToMongoDBLocal();
 
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
