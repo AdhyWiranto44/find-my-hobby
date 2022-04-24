@@ -1,0 +1,42 @@
+<%- include("backend-templates/backend-header") %>
+
+<div class="row">
+    <div class="col-md-8">
+        <%- alert %>
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <% if (title === "Mengubah Hobi") { %>
+                    <form action="/admin/mengubah-hobi" method="POST">
+                <% } else { %>
+                    <form action="/admin/tambah-hobi-baru" method="POST">
+                <% } %>
+                <input type="hidden" class="form-control bg-light p-2" id="id_hobi" name="id_hobi" value="<%= hobby !== "" ? hobby._id : "" %>">
+                <div class="form-group mb-3 bg-white" style="border-radius: 15px;">
+                    <label class="text-muted" for="name"><small>Nama Hobi</small></label>
+                    <input type="text" class="form-control bg-light p-2" id="name" name="name" value="<%= hobby !== "" ? hobby.name : "" %>" required autofocus>
+                </div>
+                <div class="form-group mb-3 bg-white" style="border-radius: 15px;">
+                    <label class="text-muted" for="description"><small>Deskripsi</small></label>
+                    <textarea class="form-control bg-light" id="description" name="description" rows="15" required><%= hobby !== "" ? hobby.description : "" %></textarea>
+                </div>
+                <div class="form-group mb-3 bg-white" style="border-radius: 15px;">
+                    <label class="text-muted" for="category"><small>Category</small></label>
+                    <select class="form-select d-block w-100 p-2 border-secondary bg-light" name="category" style="border-radius: 15px;">
+                        <% categories.forEach(category => { %>
+                            <% if ((hobby !== "") && (category.slug === hobby.category[0].slug)) { %>
+                                <option selected value="<%= category._id %>"><%= category.name %></option>
+                            <% } else { %>
+                                <option value="<%= category._id %>"><%= category.name %></option>
+                            <% } %>
+                        <% }) %>
+                    </select>
+                </div>
+                <a href="/admin/tampil-semua-hobi" class="btn btn-outline-secondary mr-2"><span class="ti-arrow-left"></span> Batal</a>
+                <button type="submit" class="btn btn-primary font-weight-bold"><span class="ti-plus"></span> Tambah</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("backend-templates/backend-footer") %>

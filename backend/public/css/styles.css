@@ -1,0 +1,132 @@
+@font-face {
+    font-family: "Montserrat";
+    src: url(../font/montserrat-regular.woff);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url(../font/montserrat-bold.woff);
+    font-weight: bold;
+    font-style: normal;
+}
+
+:root {
+    --background: #F4F4FA;
+    --primary: #FFCE25;
+    --secondary: #FB3640;
+    --secondary-shadow: rgba(251, 54, 64, .7);
+}
+
+* {
+    font-family: Montserrat;
+}
+
+body {
+    background-color: var(--background);
+}
+
+#welcome {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../img/banner.webp');
+    background-size: cover;
+    background-attachment: fixed;
+    padding-top: 300px;
+    padding-bottom: 150px;
+    margin-top: -100px;
+}
+
+.btn {
+    padding: 8px 20px;
+}
+
+.btn-danger {
+    background-color: var(--secondary);
+    box-shadow: 0 5px 10px var(--secondary-shadow);
+}
+
+.btn-danger:hover {
+    background-color: var(--secondary);
+    box-shadow: 0 5px 15px var(--secondary-shadow);
+}
+
+.card {
+    border-radius: 20px;
+}
+
+.navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    transition: .2s;
+}
+
+#rekomendasi .card-img {
+    filter: brightness(75%);
+}
+
+.navbar-toggler:focus {
+    outline: none !important;
+}
+
+.nav-menu {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.bar1, .bar2, .bar3 {
+    height: 3px;
+    border-radius: 10px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.bar1 {
+    width: 35px;
+}
+.bar2 {
+    width: 20px;
+    margin-left: 15px;
+}
+.bar3 {
+    width: 25px;
+    margin-left: 10px;
+}
+
+/* Rotate first bar */
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-1px, 13px) ;
+    transform: rotate(-45deg) translate(-1px, 13px) ;
+}
+
+/* Fade out the second bar */
+.change .bar2 {
+    opacity: 0;
+}
+
+/* Rotate last bar */
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-6px, -6px) ;
+    transform: rotate(45deg) translate(-6px, -6px) ;
+    width: 35px;
+}
+
+@media(min-width: 992px) {
+    a.nav-link {
+        margin-top: 4px;
+    }
+    
+    /* a.nav-link::after {
+        content: "";
+        display: block;
+        border-bottom: 4px solid #F4F4FA;
+        transition: opacity .3s ease;
+        margin-top: 36px;
+        margin-bottom: -36px;
+        opacity: 0;
+    }
+
+    a.nav-link:hover::after {
+        opacity: 1;
+    } */
+}
