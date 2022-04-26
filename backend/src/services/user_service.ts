@@ -25,9 +25,7 @@ export default class UserService {
   async create(req: any) {
     const newUser = {
       username: req.body.username,
-      password: hashSync(req.body.password, ROUNDS),
-      created_at: Date(),
-      updated_at: Date()
+      password: hashSync(req.body.password, ROUNDS)
     }
 
     const user = await new UserRepository().insertOne(newUser);

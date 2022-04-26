@@ -41,9 +41,7 @@ export default class HobbyService {
       description: req.body.description,
       category: "",
       img: "",
-      visited_count: 0,
-      created_at: Date(),
-      updated_at: Date()
+      visited_count: 0
     }
 
     const category = await new CategoryRepository().getOne(req.body.category);

@@ -12,10 +12,8 @@ const hobbySchema = new Schema({
     category: [categorySchema],
     img: String,
     visited_count: Number,
-    suggester_email: String,
-    created_at: Date,
-    updated_at: Date
-});
+    suggester_email: String
+}, { timestamps: true });
 
 const Hobby = mongoose.model("Hobby", hobbySchema)
 

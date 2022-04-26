@@ -42,9 +42,7 @@ export default class SuggestionService {
       category: "",
       img: "",
       visited_count: 0,
-      suggester_email: req.body.suggester_email,
-      created_at: Date(),
-      updated_at: Date()
+      suggester_email: req.body.suggester_email
     }
 
     const category = await new CategoryRepository().getOne(req.body.category);

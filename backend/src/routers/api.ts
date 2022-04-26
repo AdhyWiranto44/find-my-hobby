@@ -14,9 +14,9 @@ router.use(categoryRouter);
 router.use(suggestionRouter);
 router.use(authRouter);
 router.use(userRouter);
-// router.post("/insertDefaultData", (req, res) => {
-//   User.insertMany(default_users);
-// });
+router.post("/insertDefaultData", (req, res) => {
+  User.insertMany(default_users);
+});
 
 
 export default router;

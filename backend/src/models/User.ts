@@ -6,10 +6,8 @@ const userSchema = new Schema({
       unique: true,
       immutable: true
     },
-    password: String,
-    created_at: Date,
-    updated_at: Date
-})
+    password: String
+}, { timestamps: true })
 
 const User = mongoose.model("User", userSchema)
 
