@@ -41,7 +41,19 @@ class HobbyController {
   }
 
   async getByCategory(req: any, res: any) {
-    // Do something
+    try {
+      const hobbies = await new HobbyService().getByCategory(req.params.slug);
+
+      return new ApiService(
+        res, 200, true, 
+        "Hobbies found.", 
+        { 
+          "hobbies": hobbies
+        }
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
   }
 
   async create(req: any, res: any) {
