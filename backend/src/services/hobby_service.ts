@@ -9,11 +9,15 @@ export default class HobbyService {
   async getAll() {
     const hobbies = await new HobbyRepository().getAll();
 
+    if (hobbies.length < 1) throw new Error("Hobbies empty.");
+
     return hobbies;
   }
 
   async getOne(slug: string = "") {
     const hobby = await new HobbyRepository().getOne(slug);
+
+    if (hobby == null) throw new Error("Hobby not found.");
 
     return hobby;
   }
@@ -41,11 +45,15 @@ export default class HobbyService {
   async update(req: any, slug: string) {
     const hobby = await new HobbyRepository().update(slug, req.body);
 
+    if (hobby == null) throw new Error("Hobby not found.");
+
     return hobby;
   }
 
   async delete(slug: string) {
     const hobby = await new HobbyRepository().remove(slug);
+
+    if (hobby == null) throw new Error("Hobby not found.");
 
     return hobby;
   }
