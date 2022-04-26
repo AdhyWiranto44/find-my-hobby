@@ -1,4 +1,4 @@
-import { Suggestion } from "../models/Suggestion";
+import Suggestion from "../models/Suggestion";
 
 
 export default class SuggestionRepository {

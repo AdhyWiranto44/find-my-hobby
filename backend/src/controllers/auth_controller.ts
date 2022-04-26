@@ -12,13 +12,7 @@ class AuthController {
 
     try {
       const authService = new AuthService();
-      const [token, err] = await authService.createJWT(loginData);
-  
-      if (err) {
-        return new ApiService(
-          res, 404, false, err
-        ).sendResponse();
-      }
+      const token = await authService.createJWT(loginData);
   
       return new ApiService(
         res, 200, true, "JWT Created.", { "token": token }

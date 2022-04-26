@@ -19,10 +19,10 @@ class AuthService {
   
     // 1. Find User
     const user = await this.getUser(loginData.username);
-    if (user == null) return ["", "User not found"];
+    if (user == null) throw new Error("User not found.");
 
     const isPasswordCorrect = compareSync(loginData.password, user.password);
-    if (!isPasswordCorrect) return ["", "password incorrect"];
+    if (!isPasswordCorrect) throw new Error("Password incorrect.");
     
     // 2. Create JWT
     const payload = {
@@ -31,7 +31,7 @@ class AuthService {
     }
     const encoded: any = sign(payload, process.env.SECRET as string, { expiresIn: process.env.TOKEN_EXPIRES_IN as string });
 
-    return [encoded, ""];
+    return encoded;
   }
 
   checkJWT(token: string = "") {

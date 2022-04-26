@@ -37,7 +37,7 @@ class CategoryController {
     let category: any = null;
     let hobbies: any[] = [];
 
-    await Category.getOne({ slug: categorySlug }).exec()
+    await Category.findOne({ slug: categorySlug }).exec()
       .then((foundCategory) => {
         if (foundCategory !== null) {
           category = foundCategory;
@@ -92,7 +92,7 @@ store(req: any, res: any) {
 
     const kategoriBaru = req.body;
 
-    Category.getOne({ name: kategoriBaru.name }).exec()
+    Category.findOne({ name: kategoriBaru.name }).exec()
       .then(foundCategory => {
         if (foundCategory === null) {
           const newCategory = new Category({
@@ -167,7 +167,7 @@ store(req: any, res: any) {
     const categorySlug = req.params.slug;
     let category = null;
 
-    await Category.getOne({ slug: categorySlug }).exec()
+    await Category.findOne({ slug: categorySlug }).exec()
       .then(foundCategory => {
         if (foundCategory !== null) {
           category = foundCategory;
