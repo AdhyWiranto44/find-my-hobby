@@ -12,12 +12,6 @@ class HobbyController {
     try {
       const hobbies = await new HobbyService().getAll();
 
-      if (!hobbies) {
-        return new ApiService(
-          res, 404, false, "Hobbies empty."
-        ).sendResponse();
-      }
-
       return new ApiService(
         res, 200, true, 
         "Hobbies found.", 
@@ -33,12 +27,6 @@ class HobbyController {
   async getOne(req: any, res: any) {
     try {
       const hobby = await new HobbyService().getOne(req.params.slug);
-  
-      if (!hobby) {
-        return new ApiService(
-          res, 404, false, "Hobby not found."
-        ).sendResponse();
-      }
 
       return new ApiService(
         res, 200, true, 
@@ -88,12 +76,6 @@ class HobbyController {
     try {
       const hobby = await new HobbyService().update(req, req.params.slug);
 
-      if (!hobby) {
-        return new ApiService(
-          res, 404, false, "Hobby not found."
-        ).sendResponse();
-      }
-
       return new ApiService(
         res, 200, true, 
         "Hobby successfully updated.", 
@@ -115,12 +97,6 @@ class HobbyController {
 
     try {
       const hobby = await new HobbyService().delete(req.params.slug);
-
-      if (!hobby) {
-        return new ApiService(
-          res, 404, false, "Hobby not found."
-        ).sendResponse();
-      }
 
       return new ApiService(
         res, 200, true, 
