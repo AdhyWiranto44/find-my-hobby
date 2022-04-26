@@ -10,7 +10,7 @@ class AuthService {
 
   async getUser(username: string = "") {
     const userRepository = new UserRepository();
-    const user: any = await userRepository.getUser(username);
+    const user: any = await userRepository.getOne(username);
 
     return user;
   }

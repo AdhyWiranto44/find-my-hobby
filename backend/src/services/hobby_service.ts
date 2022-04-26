@@ -30,7 +30,7 @@ export default class HobbyService {
       updated_at: Date()
     }
 
-    const category = await new CategoryRepository().findOne(req.body.category);
+    const category = await new CategoryRepository().getOne(req.body.category);
     newHobby.category = category;
 
     const hobby = await new HobbyRepository().insertOne(newHobby);
