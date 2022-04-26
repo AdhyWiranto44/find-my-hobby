@@ -1,9 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
 export const categorySchema = new Schema({
-    name: String,
+    name: {
+      type: String,
+      required: true
+    },
     slug: {
       type: String,
+      required: true,
       unique: true,
       immutable: true
     }

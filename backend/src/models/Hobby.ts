@@ -1,15 +1,24 @@
 import mongoose, { Schema } from "mongoose";
-import { categorySchema } from "./Category";
 
 const hobbySchema = new Schema({
-    name: String,
+    name: {
+      type: String,
+      required: true
+    },
     slug: {
       type: String,
+      required: true,
       unique: true,
       immutable: true
     },
-    description: String,
-    category: [categorySchema],
+    description: {
+      type: String,
+      required: true
+    },
+    category: {
+      type: String,
+      required: true
+    },
     img: String,
     visited_count: Number,
     suggester_email: String

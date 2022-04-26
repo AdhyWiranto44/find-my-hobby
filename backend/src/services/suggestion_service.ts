@@ -14,11 +14,11 @@ export default class SuggestionService {
     return suggestions;
   }
 
-  async getByCategory(slug: string) {
+  async getByCategory(category: string) {
     let suggestions = await new SuggestionRepository().getAll();
     
     suggestions = suggestions.filter(suggestion => {
-      return suggestion.category[0].slug == slug;
+      return suggestion.category == category;
     });
 
     if (suggestions.length < 1) throw new Error("Suggestions not found.");
@@ -39,14 +39,14 @@ export default class SuggestionService {
       name: req.body.name,
       slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
       description: req.body.description,
-      category: "",
+      category: req.body.category,
       img: "",
       visited_count: 0,
       suggester_email: req.body.suggester_email
     }
 
-    const category = await new CategoryRepository().getOne(req.body.category);
-    newSuggestion.category = category;
+    const category = await new CategoryRepository().getOne(newSuggestion.category);
+    if (category == null) throw new Error("Category not found.");
 
     const suggestion = await new SuggestionRepository().insertOne(newSuggestion);
 
@@ -54,12 +54,9 @@ export default class SuggestionService {
   }
 
   async update(req: any, slug: string) {
-    let category: any = req.body.category;
-    if (category) {
-      const foundCategory: any = await new CategoryRepository().getOne(category);
-      if (!foundCategory) throw new Error("Category not found.");
-      req.body.category = [foundCategory];
-    }
+    const category = await new CategoryRepository().getOne(req.body.category);
+    if (category == null) throw new Error("Category not found.");
+
     const suggestion = await new SuggestionRepository().update(slug, req.body);
 
     if (suggestion == null) throw new Error("Suggestion not found.");

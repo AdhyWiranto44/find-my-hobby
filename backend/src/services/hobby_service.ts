@@ -14,11 +14,11 @@ export default class HobbyService {
     return hobbies;
   }
 
-  async getByCategory(slug: string) {
+  async getByCategory(category: string) {
     let hobbies = await new HobbyRepository().getAll();
     
     hobbies = hobbies.filter(hobby => {
-      return hobby.category[0].slug == slug;
+      return hobby.category == category;
     });
 
     if (hobbies.length < 1) throw new Error("Hobbies not found.");
@@ -39,13 +39,13 @@ export default class HobbyService {
       name: req.body.name,
       slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
       description: req.body.description,
-      category: "",
+      category: req.body.category,
       img: "",
       visited_count: 0
     }
 
-    const category = await new CategoryRepository().getOne(req.body.category);
-    newHobby.category = category;
+    const category = await new CategoryRepository().getOne(newHobby.category);
+    if (category == null) throw new Error("Category not found.");
 
     const hobby = await new HobbyRepository().insertOne(newHobby);
 
@@ -53,12 +53,9 @@ export default class HobbyService {
   }
 
   async update(req: any, slug: string) {
-    let category: any = req.body.category;
-    if (category) {
-      const foundCategory: any = await new CategoryRepository().getOne(category);
-      if (!foundCategory) throw new Error("Category not found.");
-      req.body.category = [foundCategory];
-    }
+    const category = await new CategoryRepository().getOne(req.body.category);
+    if (category == null) throw new Error("Category not found.");
+
     const hobby = await new HobbyRepository().update(slug, req.body);
 
     if (hobby == null) throw new Error("Hobby not found.");
