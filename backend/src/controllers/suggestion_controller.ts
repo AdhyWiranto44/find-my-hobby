@@ -2,186 +2,121 @@ import showAlert from "../helpers/show_alert";
 import { Category } from "../models/Category";
 import Hobby from "../models/Hobby";
 import Suggestion from "../models/Suggestion";
+import ApiService from "../services/api_service";
+import AuthService from "../services/auth_service";
+import SuggestionService from "../services/suggestion_service";
 
 
 class SuggestionController {
 
-  async index(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
+  async getAll(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
     }
 
-    let suggestions: any[] = [];
+    try {
+      const suggestions = await new SuggestionService().getAll();
 
-    await Suggestion.find().sort({ name: 1 }).exec()
-      .then(foundSuggestions => {
-        suggestions = [...foundSuggestions];
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
-    const data = {
-      title: "Tampil Saran Hobi",
-      suggestions: suggestions
+      return new ApiService(
+        res, 200, true, 
+        "Suggestions found.", 
+        { 
+          "suggestions": suggestions 
+        }
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
     }
-    res.render("tampil-saran-hobi", data);
   }
 
-  async acceptSuggestion(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
+  async getOne(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
     }
 
-    const tambahSaran = req.body.tambahSaran;
-    let suggestion: any = null;
+    try {
+      const suggestion = await new SuggestionService().getOne(req.params.slug);
 
-    await Suggestion.findOne({ _id: tambahSaran }).exec()
-      .then(foundSuggestion => {
-        if (foundSuggestion !== null) {
-          suggestion = foundSuggestion;
+      return new ApiService(
+        res, 200, true, 
+        "Suggestion found.", 
+        { 
+          "suggestion": suggestion 
         }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
-    await Hobby.findOne({ slug: suggestion.slug }).exec()
-      .then(foundHobby => {
-        if (foundHobby === null) {
-          const saranHobi = new Hobby({
-            name: suggestion.name,
-            slug: suggestion.slug,
-            description: suggestion.description,
-            category: [{
-              _id: suggestion.category[0]._id,
-              name: suggestion.category[0].name,
-              slug: suggestion.category[0].slug
-            }],
-            img: suggestion.img,
-            visited_count: 0,
-            suggester_email: suggestion.suggester_email,
-            created_at: Date(),
-            updated_at: Date()
-          });
-          saranHobi.save();
-          Suggestion.findByIdAndRemove(suggestion._id).exec();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
-    res.redirect("/admin/tampil-saran-hobi");
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
   }
 
-denySuggestion = (req: any, res: any) => {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
+  async create(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
     }
 
-    const tolakSaran = req.body.tolakSaran;
+    try {
+      const suggestion = await new SuggestionService().create(req);
 
-    Suggestion.findByIdAndRemove(tolakSaran).exec()
-      .catch(err => {
-        console.log(err);
-      });
-    res.redirect("/admin/tampil-saran-hobi");
+      return new ApiService(
+        res, 200, true, 
+        "New suggestion successfully created.", 
+        { 
+          "suggestion": suggestion 
+        }
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
   }
 
-create = async (req: any, res: any) => {
-    let categories: any[] = [];
-
-    await Category.find().sort({ name: 1 }).exec()
-      .then(foundCategories => {
-        categories = [...foundCategories];
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
-    const data = {
-      title: "Form Saran Hobi",
-      alert: "",
-      categories: categories
+  async update(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
     }
-    res.render("saran-hobi", data);
+
+    try {
+      const suggestion = await new SuggestionService().update(req, req.params.slug);
+
+      return new ApiService(
+        res, 200, true, 
+        "Suggestion successfully updated.", 
+        { 
+          "suggestion": suggestion 
+        }
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
   }
 
-store = async (req: any, res: any) => {
-    const saranHobi = req.body;
-    let suggestion = null;
-    let categories: any[] = [];
-
-    // Mengecek apakah ada saran hobi yang sama
-    await Suggestion.findOne({ name: { $regex: saranHobi.name, $options: 'i' } }).exec()
-      .then(foundSuggestion => {
-        if (foundSuggestion !== null) {
-          suggestion = foundSuggestion;
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
-    await Category.find().exec()
-      .then(foundCategories => {
-        categories = [...foundCategories];
-      })
-      .catch(err => {
-        console.error(err);
-        const data = {
-          title: "Form Saran Hobi",
-          alert: showAlert("alert-danger", "Terjadi kegagalan sistem, silakan coba beberapa saat lagi."),
-          categories: categories
-        }
-        res.render("saran-hobi", data);
-      });
-
-    // Jika ada saran hobi yang sama, maka kembali ke halaman tambah saran hobi
-    if (suggestion !== null) {
-      const data = {
-        title: "Form Saran Hobi",
-        alert: showAlert("alert-danger", "Sudah pernah ada yang menambahkan saran hobi tersebut! Silakan sarankan hobi yang lain."),
-        categories: categories
-      }
-      return res.render("saran-hobi", data);
+  async delete(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
     }
 
-    // Jika saran hobi tidak sama, maka lanjut tambahkan saran hobi tersebut
-    await Category.findOne({ _id: saranHobi.category }).exec()
-      .then(foundCategory => {
-        if (foundCategory !== null) {
-          const newSuggestion = new Suggestion({
-            name: saranHobi.name,
-            slug: saranHobi.name.replace(/\s+/g, '-').toLowerCase(),
-            description: saranHobi.description,
-            category: [foundCategory],
-            img: "",
-            visited_count: 0,
-            suggester_email: saranHobi.email,
-            created_at: Date(),
-            updated_at: Date()
-          });
-          newSuggestion.save();
+    try {
+      const suggestion = await new SuggestionService().delete(req.params.slug);
 
-          const data = {
-            title: "Form Saran Hobi",
-            alert: showAlert("alert-success", "Saran hobi berhasil kami terima."),
-            categories: categories
-          }
-          res.render("saran-hobi", data);
+      return new ApiService(
+        res, 200, true, 
+        "Suggestion successfully removed.", 
+        { 
+          "suggestion": suggestion 
         }
-      })
-      .catch(err => {
-        console.error(err);
-        const data = {
-          title: "Form Saran Hobi",
-          alert: showAlert("alert-danger", "Saran hobi gagal dikirim, silakan coba beberapa saat lagi."),
-          categories: categories
-        }
-        res.render("saran-hobi", data);
-      });
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
   }
 
 }

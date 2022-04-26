@@ -3,7 +3,11 @@ import { categorySchema } from "./Category"
 
 const suggestionSchema = new Schema({
     name: String,
-    slug: String,
+    slug: {
+      type: String,
+      unique: true,
+      immutable: true
+    },
     description: String,
     category: [categorySchema],
     img: String,

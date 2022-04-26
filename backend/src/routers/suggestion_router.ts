@@ -3,11 +3,11 @@ import SuggestionController from "../controllers/suggestion_controller";
 
 
 const router = express.Router();
-router.get("/admin/tampil-saran-hobi", new SuggestionController().index);
-router.post("/admin/menerima-saran-hobi", new SuggestionController().acceptSuggestion);
-router.post("/admin/menolak-saran-hobi", new SuggestionController().denySuggestion);
-router.get("/saran-hobi", new SuggestionController().create);
-router.post("/saran-hobi", new SuggestionController().store);
+router.get("/suggestions", new SuggestionController().getAll);
+router.get("/suggestions/:slug", new SuggestionController().getOne);
+router.post("/suggestions", new SuggestionController().create);
+router.patch("/suggestions/:slug", new SuggestionController().update);
+router.delete("/suggestions/:slug", new SuggestionController().delete);
 
 
 export default router;

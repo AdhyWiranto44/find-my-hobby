@@ -55,6 +55,12 @@ export default class HobbyService {
   }
 
   async update(req: any, slug: string) {
+    let category: any = req.body.category;
+    if (category) {
+      const foundCategory: any = await new CategoryRepository().getOne(category);
+      if (!foundCategory) throw new Error("Category not found.");
+      req.body.category = [foundCategory];
+    }
     const hobby = await new HobbyRepository().update(slug, req.body);
 
     if (hobby == null) throw new Error("Hobby not found.");
