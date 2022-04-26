@@ -1,6 +1,6 @@
 import { compareSync } from "bcrypt";
 import { randomBytes } from "crypto";
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import UserRepository from "../repositories/user_repository";
 
 
@@ -32,6 +32,12 @@ class AuthService {
     const encoded: any = sign(payload, process.env.SECRET as string, { expiresIn: process.env.TOKEN_EXPIRES_IN as string });
 
     return [encoded, ""];
+  }
+
+  checkJWT(token: string = "") {
+    const decoded = verify(token, process.env.SECRET as string);
+
+    return decoded;
   }
 
 }

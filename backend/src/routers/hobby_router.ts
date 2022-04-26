@@ -3,14 +3,11 @@ import HobbyController from "../controllers/hobby_controller";
 
 
 const router = express.Router();
-router.get("/admin/tampil-semua-hobi", new HobbyController().index);
-router.get("/hobby/:categorySlug/:hobbySlug", new HobbyController().show);
-router.get("/admin/tambah-hobi-baru", new HobbyController().create)
-router.get("/admin/mengubah-hobi/:slug", new HobbyController().edit);
-router.post("/admin/tampil-semua-hobi", new HobbyController().find);
-router.post("/admin/tambah-hobi-baru", new HobbyController().store);
-router.post("/admin/menghapus-hobi", new HobbyController().destroy);
-router.post("/admin/mengubah-hobi", new HobbyController().update);
+router.get("/hobbies", new HobbyController().getAll);
+router.get("/hobbies/:slug", new HobbyController().getOne);
+router.post("/hobbies", new HobbyController().create);
+router.patch("/hobbies/:slug", new HobbyController().update);
+router.delete("/hobbies/:slug", new HobbyController().delete);
 
 
 export default router;
