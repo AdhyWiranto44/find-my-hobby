@@ -1,7 +1,11 @@
 import mongoose, { Schema } from "mongoose"
 
 const userSchema = new Schema({
-    username: String,
+    username: {
+      type: String,
+      unique: true,
+      immutable: true
+    },
     password: String,
     created_at: Date,
     updated_at: Date
