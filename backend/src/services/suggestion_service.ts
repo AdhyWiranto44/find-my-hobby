@@ -14,6 +14,18 @@ export default class SuggestionService {
     return suggestions;
   }
 
+  async getByCategory(slug: string) {
+    let suggestions = await new SuggestionRepository().getAll();
+    
+    suggestions = suggestions.filter(suggestion => {
+      return suggestion.category[0].slug == slug;
+    });
+
+    if (suggestions.length < 1) throw new Error("Suggestions not found.");
+
+    return suggestions;
+  }
+
   async getOne(slug: string = "") {
     const suggestion = await new SuggestionRepository().getOne(slug);
 

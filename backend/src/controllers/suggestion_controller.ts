@@ -31,6 +31,28 @@ class SuggestionController {
     }
   }
 
+  async getByCategory(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
+    }
+
+    try {
+      const suggestions = await new SuggestionService().getByCategory(req.params.slug);
+
+      return new ApiService(
+        res, 200, true, 
+        "Suggestions found.", 
+        { 
+          "suggestions": suggestions
+        }
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
+  }
+
   async getOne(req: any, res: any) {
     try {
       new AuthService().checkJWT(req.query.token);
