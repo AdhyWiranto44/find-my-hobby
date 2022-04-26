@@ -1,206 +1,106 @@
-import Hobby from "../models/Hobby";
-import { Category } from "../models/Category";
+import CategoryService from "../services/category_service";
+import ApiService from "../services/api_service";
+import AuthService from "../services/auth_service";
 
 
 class CategoryController {
  
-  async index(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
-    }
+  async getAll(req: any, res: any) {
+    try {
+      const categories = await new CategoryService().getAll();
 
-    let categories: any[] = [];
-
-    await Category.find().sort({ name: 1 }).exec()
-      .then(foundCategories => {
-        if (foundCategories.length > 0) {
-          categories = [...foundCategories];
-        } else {
-          res.redirect("/admin/dashboard");
+      return new ApiService(
+        res, 200, true,
+        "Categories found.",
+        {
+          "categories": categories
         }
-      })
-      .catch(err => {
-        console.log(err);
-        res.redirect("/admin/dashboard");
-      });
-
-    const data = {
-      title: "Tampil Kategori",
-      alert: "",
-      categories: categories
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
     }
-    res.render("tampil-kategori", data);
   }
 
-  async show(req: any, res: any) {
-    const categorySlug = req.params.categorySlug;
-    let category: any = null;
-    let hobbies: any[] = [];
+  async getOne(req: any, res: any) {
+    try {
+      const category = await new CategoryService().getOne(req.params.slug);
 
-    await Category.findOne({ slug: categorySlug }).exec()
-      .then((foundCategory) => {
-        if (foundCategory !== null) {
-          category = foundCategory;
-        } else {
-          return res.redirect("/");
+      return new ApiService(
+        res, 200, true,
+        "Category found.",
+        {
+          "category": category
         }
-      })
-      .catch(err => {
-        console.error(err);
-        return res.redirect("/");
-      })
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
+  }
 
-    await Hobby.find({ "category.slug": category.slug }).exec()
-      .then((foundHobbies) => {
-        if (foundHobbies.length > 0) {
-          hobbies = [...foundHobbies];
-        } else {
-          return res.redirect("/");
+  async create(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
+    }
+
+    try {
+      const category = await new CategoryService().create(req);
+
+      return new ApiService(
+        res, 200, true,
+        "New category successfully created.",
+        {
+          "category": category
         }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.redirect("/");
-      });
-
-    const data = {
-      currentDate: new Date().getFullYear(),
-      kind: "kategori",
-      category: category,
-      hobbies: hobbies
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
     }
-    res.render("cari-hobi", data);
   }
 
-create(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
+  async update(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
     }
 
-    const data = {
-      title: "Tambah Kategori",
-      alert: "",
-      category: ""
-    }
-    res.render("tambah-kategori", data);
-  }
+    try {
+      const category = await new CategoryService().update(req, req.params.slug);
 
-store(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
-    }
-
-    const kategoriBaru = req.body;
-
-    Category.findOne({ name: kategoriBaru.name }).exec()
-      .then(foundCategory => {
-        if (foundCategory === null) {
-          const newCategory = new Category({
-            name: kategoriBaru.name,
-            slug: kategoriBaru.name.replace(/\s+/g, '-').toLowerCase()
-          });
-          newCategory.save();
+      return new ApiService(
+        res, 200, true,
+        "Category successfully updated.",
+        {
+          "category": category
         }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    res.redirect("/admin/tampil-kategori");
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
+    }
   }
 
-  async find(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
+  async delete(req: any, res: any) {
+    try {
+      new AuthService().checkJWT(req.query.token);
+    } catch(err: any) {
+      return new ApiService(res, 404, false, err.message).sendResponse();
     }
 
-    const search = req.body.search || "";
+    try {
+      const category = await new CategoryService().delete(req.params.slug);
 
-    if (search === "") {
-      return res.redirect("/admin/tampil-kategori");
-    }
-
-    let categories: any[] = [];
-
-    await Category.find({ name: { $regex: ".*" + search + ".*", $options: 'i' } }).exec()
-      .then(foundCategories => {
-        if (foundCategories.length > 0) {
-          categories = [...foundCategories];
-        } else {
-          return res.redirect("/admin/tampil-kategori");
+      return new ApiService(
+        res, 200, true,
+        "Category successfully deleted.",
+        {
+          "category": category
         }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.redirect("/admin/tampil-kategori");
-      });
-
-    const data = {
-      title: "Tampil Kategori",
-      categories: categories
+      ).sendResponse();
+    } catch (err: any) {
+      return new ApiService(res).sendErrorResponse(err);
     }
-    res.render("tampil-kategori", data);
-  }
-
-  destroy(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
-    }
-
-    const categoryId = req.body.categoryId;
-
-    Category.findByIdAndRemove({ _id: categoryId }, (err: any) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.redirect("/admin/tampil-kategori");
-      }
-    })
-  }
-
-
-  async edit(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
-    }
-
-    const categorySlug = req.params.slug;
-    let category = null;
-
-    await Category.findOne({ slug: categorySlug }).exec()
-      .then(foundCategory => {
-        if (foundCategory !== null) {
-          category = foundCategory;
-        } else {
-          return res.redirect("/admin/tampil-kategori");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.redirect("/admin/tampil-kategori");
-      });
-
-    const data = {
-      title: "Mengubah Kategori",
-      category: category,
-      alert: ""
-    }
-    res.render("tambah-kategori", data);
-  }
-
-  update(req: any, res: any) {
-    if (!req.isAuthenticated()) {
-      return res.redirect("/auth/login");
-    }
-
-    const kategori = req.body;
-
-    Category.findByIdAndUpdate(kategori.id_kategori, { name: kategori.name }).exec()
-      .catch(err => {
-        console.log(err);
-      });
-
-    res.redirect("/admin/tampil-kategori");
   }
 
 }

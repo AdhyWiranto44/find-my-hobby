@@ -3,14 +3,11 @@ import CategoryController from "../controllers/category_controller";
 
 
 const router = express.Router();
-router.get("/admin/tampil-kategori", new CategoryController().index);
-router.get("/category/:categorySlug", new CategoryController().show);
-router.get("/admin/tambah-kategori", new CategoryController().create);
-router.get("/admin/mengubah-kategori/:slug", new CategoryController().edit);
-router.post("/admin/tambah-kategori", new CategoryController().store);
-router.post("/admin/tampil-kategori", new CategoryController().find);
-router.post("/admin/menghapus-kategori", new CategoryController().destroy);
-router.post("/admin/mengubah-kategori", new CategoryController().update);
+router.get("/categories", new CategoryController().getAll);
+router.get("/categories/:slug", new CategoryController().getOne);
+router.post("/categories", new CategoryController().create);
+router.patch("/categories/:slug", new CategoryController().update);
+router.delete("/categories/:slug", new CategoryController().delete);
 
 
 export default router;

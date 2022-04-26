@@ -8,11 +8,15 @@ export default class CategoryService {
   async getAll() {
     const categories = await new CategoryRepository().getAll();
 
+    if (categories.length < 1) throw new Error("Categories empty.");
+
     return categories;
   }
 
   async getOne(slug: string = "") {
     const category = await new CategoryRepository().getOne(slug);
+
+    if (category == null) throw new Error("Category not found.");
 
     return category;
   }
