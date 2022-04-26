@@ -9,11 +9,15 @@ export default class UserService {
   async getAll() {
     const users = await new UserRepository().getAll();
 
+    if (users.length < 1) throw new Error("Users empty.");
+
     return users;
   }
 
   async getOne(username: string = "") {
     const user = await new UserRepository().getOne(username);
+
+    if (user == null) throw new Error("User not found.");
 
     return user;
   }
@@ -32,13 +36,20 @@ export default class UserService {
   }
 
   async update(req: any, username: string) {
+    let password = req.body.password;
+    if (password) { password = hashSync(password, ROUNDS) }
+    
     const user = await new UserRepository().update(username, req.body);
+
+    if (user == null) throw new Error("User not found.");
 
     return user;
   }
 
   async delete(username: string) {
     const user = await new UserRepository().remove(username);
+
+    if (user == null) throw new Error("User not found.");
 
     return user;
   }
