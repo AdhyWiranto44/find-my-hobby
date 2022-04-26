@@ -17,14 +17,12 @@ class AuthService {
 
   async createJWT(loginData: any) {
   
-    // 1. Find User
     const user = await this.getUser(loginData.username);
     if (user == null) throw new Error("User not found.");
 
     const isPasswordCorrect = compareSync(loginData.password, user.password);
     if (!isPasswordCorrect) throw new Error("Password incorrect.");
     
-    // 2. Create JWT
     const payload = {
       "uid": randomBytes(16).toString('hex'),
       "username": user.username,
