@@ -52,6 +52,10 @@ class HobbyController {
     }
   }
 
+  async getByCategory(req: any, res: any) {
+    // Do something
+  }
+
   async create(req: any, res: any) {
     try {
       new AuthService().checkJWT(req.query.token);
