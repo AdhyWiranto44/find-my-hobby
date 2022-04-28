@@ -32,32 +32,32 @@ export default function HobbyPage() {
     <>
       <Navbar />
 
-      <div id="welcome" class="bg-warning">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
-              <h1 class="fw-bold text-light">{hobby.name}</h1>
-              <p class="text-light">Kategori: {hobby.category}</p>
+      <div id="welcome" className="bg-warning">
+        <div className="container">
+          <div className="row">
+            <div className="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
+              <h1 className="fw-bold text-light">{hobby.name}</h1>
+              <p className="text-light">Kategori: {hobby.category}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="container">
-        <div class="row my-3">
-          <div class="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
+      <div className="container">
+        <div className="row my-3">
+          <div className="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
                 <Link href="/">
-                  <a class="text-decoration-none">Home</a>
+                  <a className="text-decoration-none">Home</a>
                 </Link>
               </li>
-              <li class="breadcrumb-item active fw-bold" aria-current="page">{hobby.name}</li>
+              <li className="breadcrumb-item active fw-bold" aria-current="page">{hobby.name}</li>
             </ol>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-8 offset-md-1">
+        <div className="row">
+          <div className="col-md-8 offset-md-1">
             {hobby.description}
           </div>
         </div>

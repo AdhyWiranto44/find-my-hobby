@@ -7,6 +7,8 @@ import styles from '../styles/Home.module.css'
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Link from 'next/link';
+import HobbyItem from '../components/hobbyItem';
+import CategoryItem from '../components/categoryItem';
 
 export default function Home() {
   const [hobbies, setHobbies] = useState([]);
@@ -40,76 +42,60 @@ export default function Home() {
     <>
       <Navbar />
 
-      <div id="welcome" class="container-fluid bg-warning">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-6 pb-5">
-              <h1 class="fw-bold text-light">Find My Hobby</h1>
-              <p class="text-light">Cari kegemaranmu sekarang!</p>
-              <form action="/search" method="GET" class="d-flex bg-white p-3 shadow mt-4">
-                <input type="text" class="form-control border-0" id="title" name="title" placeholder="contoh: Menulis" autofocus />
-                <button type="submit" class="btn btn-danger border-0">Cari</button>
-              </form>
+      <div id="welcome" className="container-fluid bg-warning">
+        <div className="container">
+          <div className="row">
+            <div className="col-12 col-sm-10 col-md-8 col-lg-6 pb-5">
+              <h1 className="fw-bold text-light">Find My Hobby</h1>
+              <p className="text-light">Cari kegemaranmu sekarang!</p>
+              <div className="d-flex bg-white p-2 shadow mt-4" style={{borderRadius: "15px"}}>
+                <input type="text" className="form-control border-0" id="title" name="title" placeholder="contoh: Menulis" autoFocus={true} />
+                <button type="submit" className="btn btn-danger border-0" style={{borderRadius: "10px"}}>Cari</button>
+              </div>
             </div>
-            <div class="col-lg-4 mx-auto">
-              <h3 class="fw-bold text-light">Ingin berkontribusi?</h3>
-              <p class="text-light">Silakan menambahkan saran hobi untuk kami</p>
-              <a class="btn btn-lg btn-warning fw-bold" href="/saran-hobi">Beri saran sekarang</a>
+            <div className="col-lg-4 mx-auto">
+              <h3 className="fw-bold text-light">Ingin berkontribusi?</h3>
+              <p className="text-light">Silakan menambahkan saran hobi untuk kami</p>
+              <a className="btn btn-lg btn-warning fw-bold" href="/saran-hobi" style={{borderRadius: "15px"}}>Beri saran sekarang</a>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="rekomendasi" class="container">
-        <div class="row mt-5 mb-3">
-          <div class="col-md">
-            <h4 class="fw-bold">Rekomendasi Hobi</h4>
+      <div id="rekomendasi" className="container">
+        <div className="row mt-5 mb-3">
+          <div className="col-md">
+            <h4 className="fw-bold">Rekomendasi Hobi</h4>
           </div>
         </div>
-        <div class="row">
+        <div className="row">
           {
-            hobbies.map(hobby => {
+            hobbies.map((hobby, idx) => {
               return (
-                <div class="col-12 col-md-4 col-lg-3">
-                  <Link href={`/hobby/${hobby.slug}`}>
-                    <a>
-                      <div class="card bg-dark text-white border-0 shadow overflow-hidden mb-4">
-                        <img src="/img/hobi.webp" class="card-img w-100" alt="rekomendasi hobi" />
-                        <div class="card-img-overlay d-flex">
-                          <div class="mt-auto">
-                            <h5 class="card-title fw-bold">{hobby.name}</h5>
-                            <p class="card-text text-justify">{hobby.description.substring(0, 30)}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </Link>
-                </div>
+                <HobbyItem
+                  key={idx}
+                  hobby={hobby}
+                />
               );
             })
           }
         </div>
       </div>
 
-      <div id="kategori" class="container">
-        <div class="row mt-5 mb-3">
-          <div class="col-md">
-            <h4 class="fw-bold">Daftar Kategori</h4>
+      <div id="kategori" className="container">
+        <div className="row mt-5 mb-3">
+          <div className="col-md">
+            <h4 className="fw-bold">Daftar Kategori</h4>
           </div>
         </div>
-        <div class="row mb-5">
+        <div className="row mb-5">
           {
-            categories.map(category => {
+            categories.map((category, idx) => {
               return (
-                <div class="col-12 col-md-4 col-lg-3">
-                  <a class=" text-decoration-none text-dark" href={`/category/${category.slug}`}>
-                    <div class="card bg-light shadow border-0 mb-4">
-                      <div class="card-body text-center pb-2">
-                          <h6 class="card-title">{category.name}</h6>
-                      </div>
-                    </div>
-                  </a>
-                </div>
+                <CategoryItem
+                  key={idx}
+                  category={category}
+                />
               );
             })
           }
