@@ -18,7 +18,6 @@ export default function Hobbies() {
   }
 
   const handleFilterHobby = async (name) => {
-    router.query.delete("search");
     const data = await getHobbiesByName(name);
     const foundHobbies = [...data.data.data.hobbies];
     setHobbies(foundHobbies);
@@ -46,12 +45,24 @@ export default function Hobbies() {
                 id="title" 
                 name="title" 
                 placeholder="cari berdasarkan nama" 
-                onChange={ (e) => { handleFilterHobby(e.target.value) }} 
+                onChange={ (e) => {
+                  if (e.target.value !== "") {
+                    handleFilterHobby(e.target.value);
+                  } else {
+                    handleGetHobbies(router.query.category);
+                  }
+                }} 
                 />
               <button 
                 type="button" 
                 className="btn btn-danger border-0" 
-                onClick={(e) => handleFilterHobby(e.target.value)}
+                onClick={(e) => {
+                  if (e.target.value !== "") {
+                    handleFilterHobby(e.target.value);
+                  } else {
+                    handleGetHobbies(router.query.category);
+                  }
+                }}
                 style={{ borderRadius: "10px" }}>Cari</button>
             </div>
           </div>

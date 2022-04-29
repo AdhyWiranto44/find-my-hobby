@@ -2,14 +2,13 @@ import Navbar from '../../../components/navbar';
 import Footer from '../../../components/footer';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getHobbiesByCategory } from '../../../api/hobby';
+import { getHobbiesByCategory, getHobbiesByName } from '../../../api/hobby';
 import HobbyItem from '../../../components/hobbyItem';
 import NavbarHobby from '../../../components/navbarHobby';
 
 
 export default function Hobbies() {
   const [hobbies, setHobbies] = useState([]);
-  const [filterTerm, setFilterTerm] = useState("");
   const router = useRouter();
   const category = router.query.category;
 
@@ -21,10 +20,10 @@ export default function Hobbies() {
     });
   }
 
-  const handleFilterHobby = (e, term) => {
-    e.preventDefault();
-    // filter hobby
-    // set hobby by filter
+  const handleFilterHobby = async (name) => {
+    const data = await getHobbiesByName(name);
+    const foundHobbies = [...data.data.data.hobbies];
+    setHobbies(foundHobbies);
   }
 
   useEffect(() => {
@@ -39,11 +38,23 @@ export default function Hobbies() {
         <div className="row mb-3">
           <div className="col-md-6 offset-md-3">
             <div className="d-flex bg-white border shadow p-2" style={{ borderRadius: "15px" }}>
-              <input type="text" className="form-control border-0" id="title" name="title" placeholder="cari berdasarkan nama" value={filterTerm} onChange={(e) => setFilterTerm(e.target.value)} />
+              <input type="text" className="form-control border-0" id="title" name="title" placeholder="cari berdasarkan nama" onChange={(e) => {
+                if (e.target.value !== "") {
+                  handleFilterHobby(e.target.value);
+                } else {
+                  handleGetHobbies(router.query.category);
+                }
+              }} />
               <button 
                 type="button" 
                 className="btn btn-danger border-0" 
-                onClick={(e) => handleFilterHobby(e, filterTerm)}
+                onClick={(e) => {
+                  if (e.target.value !== "") {
+                    handleFilterHobby(e.target.value);
+                  } else {
+                    handleGetHobbies(router.query.category);
+                  }
+                }}
                 style={{ borderRadius: "10px" }}>Cari</button>
             </div>
           </div>
