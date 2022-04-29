@@ -7,9 +7,10 @@ import HobbyItem from '../components/hobbyItem';
 import CategoryItem from '../components/categoryItem';
 import { useRouter } from 'next/router';
 import { Roller } from 'react-awesome-spinners';
+import { default_hobby } from '../helpers/constants';
 
 export default function Home() {
-  const [hobbies, setHobbies] = useState([]);
+  const [hobbies, setHobbies] = useState([default_hobby]);
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);

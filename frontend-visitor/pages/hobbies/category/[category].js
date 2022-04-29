@@ -6,10 +6,11 @@ import { getHobbiesByCategory, getHobbiesByName } from '../../../api/hobby';
 import HobbyItem from '../../../components/hobbyItem';
 import NavbarHobby from '../../../components/navbarHobby';
 import { Roller } from 'react-awesome-spinners';
+import { default_hobby } from '../../../helpers/constants';
 
 
 export default function Hobbies() {
-  const [hobbies, setHobbies] = useState([]);
+  const [hobbies, setHobbies] = useState([default_hobby]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const category = router.query.category;
