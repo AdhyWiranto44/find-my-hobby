@@ -9,8 +9,18 @@ class HobbyController {
   constructor() {}
 
   async getAll(req: any, res: any) {
+    const queries = req.query;
+    const filter: any = {}
+    for (const property in queries) {
+      filter[property] = queries[property];
+    }
+
+    if (queries.name) {
+      filter["name"] = { $regex: queries.name + ".*", $options: 'i' };
+    }
+
     try {
-      const hobbies = await new HobbyService().getAll();
+      const hobbies = await new HobbyService().getAll(filter);
 
       return new ApiService(
         res, 200, true, 

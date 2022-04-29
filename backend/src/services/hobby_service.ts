@@ -6,8 +6,8 @@ export default class HobbyService {
 
   constructor() {}
 
-  async getAll() {
-    const hobbies = await new HobbyRepository().getAll();
+  async getAll(filter: any = {}) {
+    const hobbies = await new HobbyRepository().getAll(filter);
 
     if (hobbies.length < 1) throw new Error("Hobbies empty.");
 
