@@ -45,7 +45,14 @@ export default function Home() {
       );
     } else {
       return (
-        hobbies.map((hobby, idx) => {
+        hobbies.sort((a, b) => {
+          if (a.visited_count > b.visited_count) {
+            return -1;
+          } else {
+              return 1;
+          }
+          return 0;
+        }).map((hobby, idx) => {
           return (
             <HobbyItem
               key={idx}
