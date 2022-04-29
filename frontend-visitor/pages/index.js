@@ -9,6 +9,7 @@ import SearchBar from '../components/searchBar';
 import { useRouter } from 'next/router';
 import { Roller } from 'react-awesome-spinners';
 import { default_hobby } from '../helpers/constants';
+import Link from 'next/link';
 
 export default function Home() {
   const [hobbies, setHobbies] = useState([default_hobby]);
@@ -106,17 +107,18 @@ export default function Home() {
           <div className="row text-center">
             <div className="col-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
               <h1 className="fw-bold text-light">Find My Hobby</h1>
-              <p className="text-light">Cari kegemaranmu sekarang!</p>
+              <p className="text-light mb-4">Cari kegemaranmu sekarang!</p>
               <SearchBar 
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onClick={(e) => handleFilterHobby(e, searchTerm)}
               />
             </div>
-            {/* <div className="col-lg-4 mx-auto">
-              <h3 className="fw-bold text-light">Ingin berkontribusi?</h3>
-              <p className="text-light">Silakan menambahkan saran hobi untuk kami</p>
-              <a className="btn btn-lg btn-warning fw-bold" href="/saran-hobi" style={{borderRadius: "15px"}}>Beri saran sekarang</a>
-            </div> */}
+            <div className="col-lg-4 offset-lg-4 mt-3">
+              <h6 className="text-light">Ingin berkontribusi? <Link href={"/saran-hobi"}>
+                  <a className="btn-sm btn-warning text-decoration-none rounded-pill">kirim ke sini</a>
+                </Link>
+              </h6>
+            </div>
           </div>
         </div>
       </div>
