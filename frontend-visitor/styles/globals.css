@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
 html,
 body {
   padding: 0;
@@ -17,20 +19,6 @@ a {
 
 ////////////////////////////
 
-@font-face {
-  font-family: "Montserrat";
-  src: url(../public/font/montserrat-regular.woff);
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Montserrat";
-  src: url(../public/font/montserrat-bold.woff);
-  font-weight: bold;
-  font-style: normal;
-}
-
 :root {
   --background: #F4F4FA;
   --primary: #FFCE25;
@@ -39,7 +27,7 @@ a {
 }
 
 * {
-  font-family: Montserrat;
+  font-family: 'Open Sans', sans-serif;
 }
 
 body {

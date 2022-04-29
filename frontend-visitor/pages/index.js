@@ -103,8 +103,8 @@ export default function Home() {
 
       <div id="welcome" className="container-fluid bg-warning">
         <div className="container">
-          <div className="row">
-            <div className="col-12 col-sm-10 col-md-8 col-lg-6 pb-5">
+          <div className="row text-center">
+            <div className="col-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
               <h1 className="fw-bold text-light">Find My Hobby</h1>
               <p className="text-light">Cari kegemaranmu sekarang!</p>
               <SearchBar 
@@ -112,11 +112,11 @@ export default function Home() {
                 onClick={(e) => handleFilterHobby(e, searchTerm)}
               />
             </div>
-            <div className="col-lg-4 mx-auto">
+            {/* <div className="col-lg-4 mx-auto">
               <h3 className="fw-bold text-light">Ingin berkontribusi?</h3>
               <p className="text-light">Silakan menambahkan saran hobi untuk kami</p>
               <a className="btn btn-lg btn-warning fw-bold" href="/saran-hobi" style={{borderRadius: "15px"}}>Beri saran sekarang</a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
