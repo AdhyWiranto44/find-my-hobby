@@ -5,6 +5,7 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import HobbyItem from '../components/hobbyItem';
 import CategoryItem from '../components/categoryItem';
+import SearchBar from '../components/searchBar';
 import { useRouter } from 'next/router';
 import { Roller } from 'react-awesome-spinners';
 import { default_hobby } from '../helpers/constants';
@@ -99,14 +100,10 @@ export default function Home() {
             <div className="col-12 col-sm-10 col-md-8 col-lg-6 pb-5">
               <h1 className="fw-bold text-light">Find My Hobby</h1>
               <p className="text-light">Cari kegemaranmu sekarang!</p>
-              <div className="d-flex bg-white p-2 shadow mt-4" style={{borderRadius: "15px"}}>
-                <input type="text" className="form-control border-0" id="title" name="title" placeholder="contoh: Menulis" autoFocus={true} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                <button 
-                  type="button" 
-                  className="btn btn-danger border-0" 
-                  onClick={(e) => handleFilterHobby(e, searchTerm)}
-                  style={{borderRadius: "10px"}}>Cari</button>
-              </div>
+              <SearchBar 
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onClick={(e) => handleFilterHobby(e, searchTerm)}
+              />
             </div>
             <div className="col-lg-4 mx-auto">
               <h3 className="fw-bold text-light">Ingin berkontribusi?</h3>
