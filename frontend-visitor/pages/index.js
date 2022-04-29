@@ -6,11 +6,13 @@ import Footer from '../components/footer';
 import HobbyItem from '../components/hobbyItem';
 import CategoryItem from '../components/categoryItem';
 import { useRouter } from 'next/router';
+import { Roller } from 'react-awesome-spinners';
 
 export default function Home() {
   const [hobbies, setHobbies] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const handleGetHobbies = async () => {
@@ -34,6 +36,44 @@ export default function Home() {
     router.push(`/hobbies?search=${term}`);
   }
 
+  const renderHobbies = () => {
+    if (loading === true) {
+      return (
+        <Roller color="black" />
+      );
+    } else {
+      return (
+        hobbies.map((hobby, idx) => {
+          return (
+            <HobbyItem
+              key={idx}
+              hobby={hobby}
+            />
+          );
+        })
+      )
+    }
+  }
+
+  const renderCategories = () => {
+    if (loading === true) {
+      return (
+        <Roller color="black" />
+      )
+    } else {
+      return (
+        categories.map((category, idx) => {
+          return (
+            <CategoryItem
+              key={idx}
+              category={category}
+            />
+          );
+        })
+      )
+    }
+  }
+
   useEffect(() => {
     handleGetHobbies();
   }, []);
@@ -41,6 +81,12 @@ export default function Home() {
   useEffect(() => {
     handleGetCategories();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  });
 
   return (
     <>
@@ -77,16 +123,7 @@ export default function Home() {
           </div>
         </div>
         <div className="row">
-          {
-            hobbies.map((hobby, idx) => {
-              return (
-                <HobbyItem
-                  key={idx}
-                  hobby={hobby}
-                />
-              );
-            })
-          }
+          {renderHobbies()}
         </div>
       </div>
 
@@ -97,16 +134,7 @@ export default function Home() {
           </div>
         </div>
         <div className="row mb-5">
-          {
-            categories.map((category, idx) => {
-              return (
-                <CategoryItem
-                  key={idx}
-                  category={category}
-                />
-              );
-            })
-          }
+          {renderCategories()}
         </div>
       </div>
 

@@ -5,10 +5,12 @@ import { useRouter } from 'next/router';
 import { getHobbiesByCategory, getHobbiesByName } from '../../../api/hobby';
 import HobbyItem from '../../../components/hobbyItem';
 import NavbarHobby from '../../../components/navbarHobby';
+import { Roller } from 'react-awesome-spinners';
 
 
 export default function Hobbies() {
   const [hobbies, setHobbies] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const category = router.query.category;
 
@@ -26,9 +28,34 @@ export default function Hobbies() {
     setHobbies(foundHobbies);
   }
 
+  const renderHobbies = () => {
+    if (loading === true) {
+      return (
+        <Roller color="black" />
+      )
+    } else {
+      return (
+        hobbies.map((hobby, idx) => {
+          return (
+            <HobbyItem
+              key={idx}
+              hobby={hobby}
+            />
+          );
+        })
+      )
+    }
+  }
+
   useEffect(() => {
     handleGetHobbies(category);
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  });
 
   return (
     <>
@@ -66,16 +93,7 @@ export default function Hobbies() {
           </div>
         </div>
         <div className="row">
-          {
-            hobbies.map((hobby, idx) => {
-              return (
-                <HobbyItem
-                  key={idx}
-                  hobby={hobby}
-                />
-              );
-            })
-          }
+          {renderHobbies()}
         </div>
       </div>
 
