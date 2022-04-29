@@ -1,17 +1,17 @@
-const navbar = document.querySelector('.navbar');
+// const navbar = document.querySelector('.navbar');
 
-window.onscroll = windowScroll;
+// window.onscroll = windowScroll;
 
-function windowScroll(e) {
-    let offset = window.pageYOffset;
-    let defaultNavbar = "navbar navbar-expand-lg navbar-dark fixed-top";
+// function windowScroll(e) {
+//     let offset = window.pageYOffset;
+//     let defaultNavbar = "navbar navbar-expand-lg navbar-dark fixed-top";
     
-    if (offset > 149) {
-        navbar.className = defaultNavbar + " bg-dark shadow";
-    } else {
-        navbar.className = defaultNavbar;
-    }
-}
+//     if (offset > 149) {
+//         navbar.className = defaultNavbar + " bg-dark shadow";
+//     } else {
+//         navbar.className = defaultNavbar;
+//     }
+// }
 
 function openNavMenu(x) {
     x.classList.toggle("change");

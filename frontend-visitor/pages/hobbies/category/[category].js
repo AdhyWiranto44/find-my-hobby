@@ -1,19 +1,20 @@
-import Navbar from '../../components/navbar';
-import Footer from '../../components/footer';
+import Navbar from '../../../components/navbar';
+import Footer from '../../../components/footer';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getHobbies } from '../../api/hobby';
-import HobbyItem from '../../components/hobbyItem';
-import NavbarHobby from '../../components/navbarHobby';
+import { getHobbiesByCategory } from '../../../api/hobby';
+import HobbyItem from '../../../components/hobbyItem';
+import NavbarHobby from '../../../components/navbarHobby';
 
 
 export default function Hobbies() {
   const [hobbies, setHobbies] = useState([]);
   const [filterTerm, setFilterTerm] = useState("");
   const router = useRouter();
+  const category = router.query.category;
 
-  const handleGetHobbies = async () => {
-    await getHobbies().then(data => {
+  const handleGetHobbies = async (category) => {
+    await getHobbiesByCategory(category).then(data => {
       setHobbies(data.data.data.hobbies);
     }).catch(err => {
       console.log(err);
@@ -27,7 +28,7 @@ export default function Hobbies() {
   }
 
   useEffect(() => {
-    handleGetHobbies();
+    handleGetHobbies(category);
   }, []);
 
   return (
@@ -50,6 +51,7 @@ export default function Hobbies() {
         <div className="row my-3">
           <div className="col-md">
             <h4 className="fw-bold">Daftar Hobi</h4>
+            <h6>Kategori: {category}</h6>
           </div>
         </div>
         <div className="row">

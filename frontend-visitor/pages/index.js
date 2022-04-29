@@ -1,18 +1,17 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { getHobbies } from '../api/hobby';
 import { getCategories } from '../api/category';
-import styles from '../styles/Home.module.css'
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
-import Link from 'next/link';
 import HobbyItem from '../components/hobbyItem';
 import CategoryItem from '../components/categoryItem';
+import { useRouter } from 'next/router';
 
 export default function Home() {
   const [hobbies, setHobbies] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   const handleGetHobbies = async () => {
     await getHobbies().then(data => {
@@ -28,6 +27,11 @@ export default function Home() {
     }).catch(err => {
       console.log(err);
     });
+  }
+
+  const handleFilterHobby = (e, term = "") => {
+    e.preventDefault();
+    router.push(`/hobbies?search=${term}`);
   }
 
   useEffect(() => {
@@ -49,8 +53,12 @@ export default function Home() {
               <h1 className="fw-bold text-light">Find My Hobby</h1>
               <p className="text-light">Cari kegemaranmu sekarang!</p>
               <div className="d-flex bg-white p-2 shadow mt-4" style={{borderRadius: "15px"}}>
-                <input type="text" className="form-control border-0" id="title" name="title" placeholder="contoh: Menulis" autoFocus={true} />
-                <button type="submit" className="btn btn-danger border-0" style={{borderRadius: "10px"}}>Cari</button>
+                <input type="text" className="form-control border-0" id="title" name="title" placeholder="contoh: Menulis" autoFocus={true} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                <button 
+                  type="button" 
+                  className="btn btn-danger border-0" 
+                  onClick={(e) => handleFilterHobby(e, searchTerm)}
+                  style={{borderRadius: "10px"}}>Cari</button>
               </div>
             </div>
             <div className="col-lg-4 mx-auto">
