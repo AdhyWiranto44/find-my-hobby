@@ -14,7 +14,7 @@
 // }
 
 function openNavMenu(x) {
-    x.classList.toggle("change");
+  x.classList.toggle("change");
 }
 
 // const navLink = document.querySelector(".nav-link");

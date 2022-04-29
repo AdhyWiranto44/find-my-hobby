@@ -95,7 +95,7 @@ body {
 .bar1, .bar2, .bar3 {
   height: 3px;
   border-radius: 10px;
-  background-color: white;
+  background-color: black;
   margin: 6px 0;
   transition: 0.4s;
 }
