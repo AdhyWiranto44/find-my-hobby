@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getHobby } from "../../api/hobby";
+import { getHobby } from "../api/hobby";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navbar";
 

@@ -2,7 +2,7 @@ import Navbar from '../../../components/navbar';
 import Footer from '../../../components/footer';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getHobbiesByCategory, getHobbiesByName } from '../../../api/hobby';
+import { getHobbiesByCategory, getHobbiesByName } from '../../api/hobby';
 import HobbyItem from '../../../components/hobbyItem';
 import NavbarHobby from '../../../components/navbarHobby';
 import { Roller } from 'react-awesome-spinners';

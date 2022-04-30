@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { getHobbies } from '../api/hobby';
+import { getHobbies } from './api/hobby';
 
 
 export default function CariAcak() {

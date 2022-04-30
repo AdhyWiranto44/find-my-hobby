@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { getHobbies } from '../api/hobby';
-import { getCategories } from '../api/category';
+import { getHobbies } from './api/hobby';
+import { getCategories } from './api/category';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import HobbyItem from '../components/hobbyItem';

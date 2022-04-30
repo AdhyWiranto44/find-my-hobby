@@ -5,7 +5,7 @@ import v1 from './src/routers/api';
 import cors from 'cors';
 
 const corsOptions = {
-  origin: process.env.ORIGIN,
+  origin: "*",
   optionsSuccessStatus: 200 // For legacy browser support
 }
 const PORT = 8080;
