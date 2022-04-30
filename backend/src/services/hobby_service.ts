@@ -27,9 +27,12 @@ export default class HobbyService {
   }
 
   async getOne(slug: string = "") {
-    const hobby = await new HobbyRepository().getOne(slug);
+    let hobby = await new HobbyRepository().getOne(slug);
 
     if (hobby == null) throw new Error("Hobby not found.");
+
+    const update = { visited_count: hobby.visited_count + 1 };
+    hobby = await new HobbyRepository().update(hobby.slug, update);
 
     return hobby;
   }
