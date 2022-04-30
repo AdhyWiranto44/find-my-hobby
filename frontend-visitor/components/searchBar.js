@@ -3,7 +3,7 @@ export default function SearchBar(props) {
     <div className="d-flex bg-white border shadow p-2" style={{ borderRadius: "15px" }}>
       <input
         type="text"
-        className="form-control border-0"
+        className="search-bar form-control border-0"
         id="title"
         name="title"
         placeholder="cari berdasarkan nama"

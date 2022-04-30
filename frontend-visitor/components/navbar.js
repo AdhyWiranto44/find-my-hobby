@@ -2,7 +2,10 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom fixed-top">
+    <nav className="navbar navbar-expand-lg navbar-light border-bottom fixed-top" style={{
+      backgroundColor: "rgba(255,255,255,0.9)",
+      backdropFilter: "blur(10px)"
+      }}>
       <div className="container">
         <Link href="/"><a className="navbar-brand"><img src="/img/logo.webp" width="35" alt="Find My Hobby" /></a></Link>
         <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">

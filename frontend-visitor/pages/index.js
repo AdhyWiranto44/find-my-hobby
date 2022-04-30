@@ -42,7 +42,9 @@ export default function Home() {
   const renderHobbies = () => {
     if (loading === true) {
       return (
-        <Roller color="black" />
+        <div className="text-center">
+          <Roller color="black" />
+        </div>
       );
     } else {
       return (
@@ -50,16 +52,18 @@ export default function Home() {
           if (a.visited_count > b.visited_count) {
             return -1;
           } else {
-              return 1;
+            return 1;
           }
           return 0;
         }).map((hobby, idx) => {
-          return (
-            <HobbyItem
-              key={idx}
-              hobby={hobby}
-            />
-          );
+          if (idx < 4) {
+            return (
+              <HobbyItem
+                key={idx}
+                hobby={hobby}
+              />
+            );
+          }
         })
       )
     }
@@ -68,7 +72,9 @@ export default function Home() {
   const renderCategories = () => {
     if (loading === true) {
       return (
-        <Roller color="black" />
+        <div className="text-center">
+          <Roller color="black" />
+        </div>
       )
     } else {
       return (
@@ -126,18 +132,27 @@ export default function Home() {
       <div id="rekomendasi" className="container">
         <div className="row mt-5 mb-3">
           <div className="col-md">
-            <h4 className="fw-bold">Rekomendasi Hobi</h4>
+            <small className="fw-bold text-secondary d-block mb-2">Temukan hal baru</small>
+            <h4 className="fw-bold"><u style={{textDecorationColor: "#FFC107"}}>Rekomendasi Hobi</u></h4>
           </div>
         </div>
         <div className="row">
           {renderHobbies()}
+        </div>
+        <div className="row mt-3">
+          <div className="col-md text-center">
+            <Link href="/hobbies">
+              <a className="btn btn-outline-danger" style={{ borderRadius: "15px" }}>Lebih banyak</a>
+            </Link>
+          </div>
         </div>
       </div>
 
       <div id="kategori" className="container">
         <div className="row mt-5 mb-3">
           <div className="col-md">
-            <h4 className="fw-bold">Daftar Kategori</h4>
+            <small className="fw-bold text-secondary d-block mb-2">Temukan <i>circle</i>-mu</small>
+            <h4 className="fw-bold"><u style={{textDecorationColor: "#FFC107"}}>Daftar Kategori</u></h4>
           </div>
         </div>
         <div className="row mb-5">

@@ -67,7 +67,7 @@ body {
   transition: .2s;
 }
 
-#rekomendasi .card-img {
+#rekomendasi .card-img, #hobbyItem .card-img {
   filter: brightness(75%);
 }
 

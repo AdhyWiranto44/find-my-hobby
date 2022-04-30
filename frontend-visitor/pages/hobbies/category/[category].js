@@ -33,7 +33,9 @@ export default function Hobbies() {
   const renderHobbies = () => {
     if (loading === true) {
       return (
-        <Roller color="black" />
+        <div className="text-center">
+          <Roller color="black" />
+        </div>
       )
     } else {
       return (
