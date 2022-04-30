@@ -1,4 +1,3 @@
-import Navbar from '../../../components/navbar';
 import Footer from '../../../components/footer';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -13,8 +12,9 @@ import SearchBar from '../../../components/searchBar';
 export default function Hobbies() {
   const [hobbies, setHobbies] = useState([default_hobby]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState("");
   const router = useRouter();
-  const category = router.query.category;
+  let search = router.query.search;
 
   const handleGetHobbies = async (category) => {
     await getHobbiesByCategory(category).then(data => {
@@ -52,13 +52,22 @@ export default function Hobbies() {
   }
 
   useEffect(() => {
-    handleGetHobbies(category);
+    if (search && search !== "") {
+      handleFilterHobby(search);
+    } else {
+      handleGetHobbies(category);
+    }
   }, []);
 
   useEffect(() => {
     if (hobbies[0].name !== "name") {
       setLoading(false);
     }
+  });
+
+  useEffect(() => {
+    setCategory(router.query.category);
+    handleGetHobbies(category);
   });
 
   return (

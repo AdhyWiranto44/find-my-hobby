@@ -7,7 +7,9 @@ import HobbyItem from '../../components/hobbyItem';
 import NavbarHobby from '../../components/navbarHobby';
 import SearchBar from '../../components/searchBar';
 import { Roller } from 'react-awesome-spinners';
-import { default_hobby } from '../../helpers/constants';
+import { default_categories, default_hobby } from '../../helpers/constants';
+import { getCategories } from '../api/category';
+import Link from 'next/link';
 
 
 export default function Hobbies() {
