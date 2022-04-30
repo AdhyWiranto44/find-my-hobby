@@ -7,3 +7,8 @@ export const default_hobby = {
   "img": "",
   "visited_count": 0
 };
+
+export const default_categories = {
+  "name": "Category",
+  "slug": "category"
+}

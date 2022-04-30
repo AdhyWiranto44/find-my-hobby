@@ -8,12 +8,12 @@ import CategoryItem from '../components/categoryItem';
 import SearchBar from '../components/searchBar';
 import { useRouter } from 'next/router';
 import { Roller } from 'react-awesome-spinners';
-import { default_hobby } from '../helpers/constants';
+import { default_categories, default_hobby } from '../helpers/constants';
 import Link from 'next/link';
 
 export default function Home() {
   const [hobbies, setHobbies] = useState([default_hobby]);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([default_categories]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
