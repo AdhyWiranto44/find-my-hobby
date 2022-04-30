@@ -106,7 +106,7 @@ export default function Home() {
         <div className="container">
           <div className="row text-center">
             <div className="col-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
-              <h1 className="fw-bold text-light">Find My Hobby</h1>
+              <h1 className="fw-bold text-light"><span className="text-warning">Find</span> My <u style={{textDecorationColor: "#FFC107"}}>Hobby</u></h1>
               <p className="text-light mb-4">Cari kegemaranmu sekarang!</p>
               <SearchBar 
                 onChange={(e) => setSearchTerm(e.target.value)}
