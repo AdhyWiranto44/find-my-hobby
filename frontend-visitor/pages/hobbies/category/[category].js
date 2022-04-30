@@ -56,9 +56,9 @@ export default function Hobbies() {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (hobbies[0].name !== "name") {
       setLoading(false);
-    }, 500);
+    }
   });
 
   return (

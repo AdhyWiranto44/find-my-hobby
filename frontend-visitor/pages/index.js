@@ -90,6 +90,20 @@ export default function Home() {
     }
   }
 
+  const renderMoreButton = () => {
+    if (loading !== true) {
+      return (
+        <div className="row mt-3">
+          <div className="col-md text-center">
+            <Link href="/hobbies">
+              <a className="btn btn-outline-danger" style={{ borderRadius: "15px" }}>Lebih banyak</a>
+            </Link>
+          </div>
+        </div>
+      );
+    }
+  }
+
   useEffect(() => {
     handleGetHobbies();
   }, []);
@@ -99,9 +113,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (hobbies[0].name !== "name" && categories[0].name) {
       setLoading(false);
-    }, 500);
+    }
   });
 
   return (
@@ -139,13 +153,7 @@ export default function Home() {
         <div className="row">
           {renderHobbies()}
         </div>
-        <div className="row mt-3">
-          <div className="col-md text-center">
-            <Link href="/hobbies">
-              <a className="btn btn-outline-danger" style={{ borderRadius: "15px" }}>Lebih banyak</a>
-            </Link>
-          </div>
-        </div>
+        {renderMoreButton()}
       </div>
 
       <div id="kategori" className="container">
