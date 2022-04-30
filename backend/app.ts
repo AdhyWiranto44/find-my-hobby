@@ -5,7 +5,7 @@ import v1 from './src/routers/api';
 import cors from 'cors';
 
 const corsOptions = {
-  origin: "*",
+  origin: "https://find-my-hobby.vercel.app",
   optionsSuccessStatus: 200 // For legacy browser support
 }
 const PORT = 8080;
