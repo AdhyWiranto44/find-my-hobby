@@ -35,7 +35,7 @@ body {
 }
 
 #welcome {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../public/img/banner.webp');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1602108987428-4768d7c7ecbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');
   background-size: cover;
   background-attachment: fixed;
   padding-top: 300px;
