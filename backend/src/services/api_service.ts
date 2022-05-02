@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { StatusCodes } from 'http-status-codes';
 
 
 class ApiService {
@@ -40,7 +41,7 @@ class ApiService {
 
   sendErrorResponse(err: any) {
     return new ApiService(
-      this.response, err.statusCode || 500, false, err.message
+      this.response, err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR, false, err.message
     ).sendResponse();
   }
 

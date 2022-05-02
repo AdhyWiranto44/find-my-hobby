@@ -39,33 +39,6 @@ for (let i = 0; i < 50; i++) {
   default_hobbies.push(hobby);
 }
 
-// export const default_hobbies = [
-//   {
-//     name: "Menyanyi",
-//     slug: "menyanyi",
-//     description: "Menyanyi merupakan salah satu hobi yang populer di dunia.",
-//     category: "audio-visual",
-//     img: "",
-//     visited_count: 0
-//   },
-//   {
-//     name: "Menari",
-//     slug: "menari",
-//     description: "Menari merupakan salah satu hobi yang populer di dunia.",
-//     category: "audio-visual",
-//     img: "",
-//     visited_count: 0
-//   },
-//   {
-//     name: "Coding",
-//     slug: "coding",
-//     description: "Coding adalah memuat program seperti website.",
-//     category: "teknologi",
-//     img: "",
-//     visited_count: 0
-//   }
-// ];
-
 export const default_suggestions = [
   {
     name: "Mendayung perahu",

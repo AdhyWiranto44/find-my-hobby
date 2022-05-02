@@ -1,5 +1,5 @@
 import request from "supertest";
-import { StatusCodes} from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import app from '../../app';
 
 const API_PREFIX = "/api/v1";
@@ -14,11 +14,11 @@ beforeAll(() => {
     });
 });
 
-describe("GET /api/v1/hobbies", () => {
+describe("GET /api/v1/suggestions", () => {
   
-  it("get all hobbies data from local database", (done) => {
+  it("get all suggestions data from local database", (done) => {
     request(app)
-      .get(`${API_PREFIX}/hobbies`)
+      .get(`${API_PREFIX}/suggestions?token=${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -26,20 +26,10 @@ describe("GET /api/v1/hobbies", () => {
       });
   });
 
-  it("get all hobbies with filter and data found", (done) => {
+  it("get all suggestions data from local database and token not provided", (done) => {
     request(app)
-      .get(`${API_PREFIX}/hobbies?name=Central`)
-      .expect(StatusCodes.OK)
-      .end((err, res) => {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it("get all hobbies with filter and data not found", (done) => {
-    request(app)
-      .get(`${API_PREFIX}/hobbies?name=asd`)
-      .expect(StatusCodes.NOT_FOUND)
+      .get(`${API_PREFIX}/suggestions`)
+      .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);
         return done();
@@ -48,11 +38,11 @@ describe("GET /api/v1/hobbies", () => {
 
 });
 
-describe("GET /api/v1/hobbies/:slug", () => {
+describe("GET /api/v1/suggestions/:slug", () => {
 
-  it ("get specific hobby by slug", (done) => {
+  it ("get specific suggestion by slug", (done) => {
     request(app)
-      .get(`${API_PREFIX}/hobbies/regional-optimization-liaison`)
+      .get(`${API_PREFIX}/suggestions/mendayung-perahu?token=${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -60,10 +50,20 @@ describe("GET /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it("get specific hobby by slug and data not found", (done) => {
+  it("get specific suggestion by slug and data not found", (done) => {
     request(app)
-      .get(`${API_PREFIX}/hobbies/lkasdlkn`)
+      .get(`${API_PREFIX}/suggestions/lkasdlkn?token=${JWT}`)
       .expect(StatusCodes.NOT_FOUND)
+      .end((err, res) => {
+        if (err) return done(err);
+        return done();
+      });
+  });
+
+  it ("get specific suggestion by slug and token not provided", (done) => {
+    request(app)
+      .get(`${API_PREFIX}/suggestions/berlayar`)
+      .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);
         return done();
@@ -72,11 +72,11 @@ describe("GET /api/v1/hobbies/:slug", () => {
 
 });
 
-describe("GET /api/v1/hobbies/categories/:slug", () => {
+describe("GET /api/v1/suggestions/categories/:slug", () => {
 
-  it ("get hobbies by category", (done) => {
+  it ("get suggestions by category", (done) => {
     request(app)
-      .get(`${API_PREFIX}/hobbies/categories/teknologi`)
+      .get(`${API_PREFIX}/suggestions/categories/teknologi?token=${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -84,10 +84,20 @@ describe("GET /api/v1/hobbies/categories/:slug", () => {
       });
   });
 
-  it("get hobbies by category and data not found", (done) => {
+  it("get suggestions by category and data not found", (done) => {
     request(app)
-      .get(`${API_PREFIX}/hobbies/categories/asndlkans`)
+      .get(`${API_PREFIX}/suggestions/categories/asndlkans?token=${JWT}`)
       .expect(StatusCodes.NOT_FOUND)
+      .end((err, res) => {
+        if (err) return done(err);
+        return done();
+      });
+  });
+
+  it ("get suggestions by category and token not provided", (done) => {
+    request(app)
+      .get(`${API_PREFIX}/suggestions/categories/teknologi`)
+      .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);
         return done();
@@ -97,11 +107,11 @@ describe("GET /api/v1/hobbies/categories/:slug", () => {
 });
 
 
-describe("POST /api/v1/hobbies", () => {
+describe("POST /api/v1/suggestions", () => {
 
-  it ("create new hobby", (done) => {
+  it ("create new suggestion", (done) => {
     request(app)
-      .post(`${API_PREFIX}/hobbies?token=${JWT}`)
+      .post(`${API_PREFIX}/suggestions?token=${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -116,9 +126,9 @@ describe("POST /api/v1/hobbies", () => {
       });
   });
 
-  it ("create new hobby and category not found", (done) => {
+  it ("create new suggestion and category not found", (done) => {
     request(app)
-      .post(`${API_PREFIX}/hobbies?token=${JWT}`)
+      .post(`${API_PREFIX}/suggestions?token=${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -133,9 +143,9 @@ describe("POST /api/v1/hobbies", () => {
       });
   });
 
-  it ("create empty hobby", (done) => {
+  it ("create empty suggestion", (done) => {
     request(app)
-      .post(`${API_PREFIX}/hobbies?token=${JWT}`)
+      .post(`${API_PREFIX}/suggestions?token=${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -144,9 +154,9 @@ describe("POST /api/v1/hobbies", () => {
       });
   });
 
-  it ("create new hobby and token not provided", (done) => {
+  it ("create new suggestion and token not provided", (done) => {
     request(app)
-      .post(`${API_PREFIX}/hobbies`)
+      .post(`${API_PREFIX}/suggestions`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -163,11 +173,11 @@ describe("POST /api/v1/hobbies", () => {
 
 });
 
-describe("PATCH /api/v1/hobbies/:slug", () => {
+describe("PATCH /api/v1/suggestions/:slug", () => {
 
-  it ("update specific hobby by slug", (done) => {
+  it ("update specific suggestion by slug", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/hobbies/mengodonf?token=${JWT}`)
+      .patch(`${API_PREFIX}/suggestions/mengodonf?token=${JWT}`)
       .send({
         "name": "Membuat Program Komputer",
         "category": "teknologi"
@@ -179,9 +189,9 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("update specific hobby by slug and data not found", (done) => {
+  it ("update specific suggestion by slug and data not found", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/suggestions/kasndlknasioiwe?token=${JWT}`)
       .send({
         "name": "Membuat Program Komputer",
         "category": "teknologi"
@@ -193,9 +203,9 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("update specific hobby by slug with empty update data", (done) => {
+  it ("update specific suggestion by slug with empty update data", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/suggestions/kasndlknasioiwe?token=${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -204,9 +214,9 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("update specific hobby by slug and token not provided", (done) => {
+  it ("update specific suggestion by slug and token not provided", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/hobbies/mengodonf`)
+      .patch(`${API_PREFIX}/suggestions/mengodonf`)
       .send({
         "name": "Membuat Program Komputer",
         "category": "teknologi"
@@ -220,11 +230,11 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
 
 });
 
-describe("DELETE /api/v1/hobbies/:slug", () => {
+describe("DELETE /api/v1/suggestions/:slug", () => {
 
-  it ("delete specific hobby by slug", (done) => {
+  it ("delete specific suggestion by slug", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/hobbies/mengodonf?token=${JWT}`)
+      .delete(`${API_PREFIX}/suggestions/mengodonf?token=${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -232,9 +242,9 @@ describe("DELETE /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("delete specific hobby by slug and hobby not found", (done) => {
+  it ("delete specific suggestion by slug and suggestion not found", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/hobbies/mengodonf?token=${JWT}`)
+      .delete(`${API_PREFIX}/suggestions/mengodonf?token=${JWT}`)
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
         if (err) return done(err);
@@ -242,9 +252,9 @@ describe("DELETE /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("delete specific hobby by slug and token not provided", (done) => {
+  it ("delete specific suggestion by slug and token not provided", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/hobbies/mengodonf`)
+      .delete(`${API_PREFIX}/suggestions/mengodonf`)
       .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);

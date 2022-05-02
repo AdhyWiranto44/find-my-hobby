@@ -1,6 +1,7 @@
 import HobbyService from "../services/hobby_service";
 import ApiService from "../services/api_service";
 import AuthService from "../services/auth_service";
+import { StatusCodes } from "http-status-codes";
 
 
 class HobbyController {
@@ -23,7 +24,7 @@ class HobbyController {
       const hobbies = await new HobbyService().getAll(filter);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Hobbies found.", 
         { 
           "hobbies": hobbies 
@@ -39,7 +40,7 @@ class HobbyController {
       const hobby = await new HobbyService().getOne(req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Hobby found.", 
         { 
           "hobby": hobby 
@@ -55,7 +56,7 @@ class HobbyController {
       const hobbies = await new HobbyService().getByCategory(req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Hobbies found.", 
         { 
           "hobbies": hobbies
@@ -70,14 +71,14 @@ class HobbyController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const hobby = await new HobbyService().create(req);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "New hobby successfully created.", 
         { 
           "hobby": hobby 
@@ -92,14 +93,14 @@ class HobbyController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const hobby = await new HobbyService().update(req, req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Hobby successfully updated.", 
         { 
           "hobby": hobby 
@@ -114,14 +115,14 @@ class HobbyController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const hobby = await new HobbyService().delete(req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Hobby successfully removed.", 
         { 
           "hobby": hobby 

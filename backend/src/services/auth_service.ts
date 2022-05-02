@@ -20,7 +20,7 @@ class AuthService {
   async createJWT(loginData: any) {
   
     const user = await this.getUser(loginData.username);
-    if (user == null) throw createError(StatusCodes.NOT_FOUND, "User not found.");
+    if (user == null) throw createError(StatusCodes.BAD_REQUEST, "User not found.");
 
     const isPasswordCorrect = compareSync(loginData.password, user.password);
     if (!isPasswordCorrect) throw createError(StatusCodes.BAD_REQUEST, "Password incorrect.");

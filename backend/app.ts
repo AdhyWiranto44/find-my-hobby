@@ -20,7 +20,7 @@ app.set("view engine", "ejs");
 const myConnection = new Connection();
 myConnection.connect();
 
-app.listen(process.env.PORT || PORT, () => {
+const appServer = app.listen(process.env.PORT || PORT, () => {
     console.log("http://localhost:" + PORT);
 });
 

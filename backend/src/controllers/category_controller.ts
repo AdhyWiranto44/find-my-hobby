@@ -1,6 +1,7 @@
 import CategoryService from "../services/category_service";
 import ApiService from "../services/api_service";
 import AuthService from "../services/auth_service";
+import { StatusCodes } from "http-status-codes";
 
 
 class CategoryController {
@@ -10,7 +11,7 @@ class CategoryController {
       const categories = await new CategoryService().getAll();
 
       return new ApiService(
-        res, 200, true,
+        res, StatusCodes.OK, true,
         "Categories found.",
         {
           "categories": categories
@@ -26,7 +27,7 @@ class CategoryController {
       const category = await new CategoryService().getOne(req.params.slug);
 
       return new ApiService(
-        res, 200, true,
+        res, StatusCodes.OK, true,
         "Category found.",
         {
           "category": category
@@ -41,14 +42,14 @@ class CategoryController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const category = await new CategoryService().create(req);
 
       return new ApiService(
-        res, 200, true,
+        res, StatusCodes.OK, true,
         "New category successfully created.",
         {
           "category": category
@@ -63,14 +64,14 @@ class CategoryController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const category = await new CategoryService().update(req, req.params.slug);
 
       return new ApiService(
-        res, 200, true,
+        res, StatusCodes.OK, true,
         "Category successfully updated.",
         {
           "category": category
@@ -85,14 +86,14 @@ class CategoryController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const category = await new CategoryService().delete(req.params.slug);
 
       return new ApiService(
-        res, 200, true,
+        res, StatusCodes.OK, true,
         "Category successfully deleted.",
         {
           "category": category

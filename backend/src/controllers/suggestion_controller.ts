@@ -1,3 +1,4 @@
+import { StatusCodes } from "http-status-codes";
 import showAlert from "../helpers/show_alert";
 import { Category } from "../models/Category";
 import Hobby from "../models/Hobby";
@@ -13,14 +14,14 @@ class SuggestionController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const suggestions = await new SuggestionService().getAll();
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Suggestions found.", 
         { 
           "suggestions": suggestions 
@@ -35,14 +36,14 @@ class SuggestionController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const suggestions = await new SuggestionService().getByCategory(req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Suggestions found.", 
         { 
           "suggestions": suggestions
@@ -57,14 +58,14 @@ class SuggestionController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const suggestion = await new SuggestionService().getOne(req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Suggestion found.", 
         { 
           "suggestion": suggestion 
@@ -79,14 +80,14 @@ class SuggestionController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const suggestion = await new SuggestionService().create(req);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "New suggestion successfully created.", 
         { 
           "suggestion": suggestion 
@@ -101,14 +102,14 @@ class SuggestionController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const suggestion = await new SuggestionService().update(req, req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Suggestion successfully updated.", 
         { 
           "suggestion": suggestion 
@@ -123,14 +124,14 @@ class SuggestionController {
     try {
       new AuthService().checkJWT(req.query.token);
     } catch(err: any) {
-      return new ApiService(res, 404, false, err.message).sendResponse();
+      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
     }
 
     try {
       const suggestion = await new SuggestionService().delete(req.params.slug);
 
       return new ApiService(
-        res, 200, true, 
+        res, StatusCodes.OK, true, 
         "Suggestion successfully removed.", 
         { 
           "suggestion": suggestion 

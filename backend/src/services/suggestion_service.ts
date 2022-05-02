@@ -37,6 +37,12 @@ export default class SuggestionService {
   }
 
   async create(req: any) {
+    if (
+      !req.body.name ||
+      !req.body.description ||
+      !req.body.category
+    ) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+    
     const newSuggestion = {
       name: req.body.name,
       slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
@@ -48,7 +54,7 @@ export default class SuggestionService {
     }
 
     const category = await new CategoryRepository().getOne(newSuggestion.category);
-    if (category == null) throw createError(StatusCodes.NOT_FOUND, "Category not found.");
+    if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
 
     const suggestion = await new SuggestionRepository().insertOne(newSuggestion);
 
@@ -57,11 +63,11 @@ export default class SuggestionService {
 
   async update(req: any, slug: string) {
     const category = await new CategoryRepository().getOne(req.body.category);
-    if (category == null) throw createError(StatusCodes.NOT_FOUND, "Category not found.");
+    if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
 
     const suggestion = await new SuggestionRepository().update(slug, req.body);
 
-    if (suggestion == null) throw createError(StatusCodes.NOT_FOUND, "Suggestion not found.");
+    if (suggestion == null) throw createError(StatusCodes.BAD_REQUEST, "Suggestion not found.");
 
     return suggestion;
   }
@@ -69,7 +75,7 @@ export default class SuggestionService {
   async delete(slug: string) {
     const suggestion = await new SuggestionRepository().remove(slug);
 
-    if (suggestion == null) throw createError(StatusCodes.NOT_FOUND, "Suggestion not found.");
+    if (suggestion == null) throw createError(StatusCodes.BAD_REQUEST, "Suggestion not found.");
 
     return suggestion;
   }

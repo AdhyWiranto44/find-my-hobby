@@ -86,7 +86,7 @@ describe("POST /api/v1/categories", () => {
       .send({
         "name": "Kategori Baru",
       })
-      .expect(StatusCodes.NOT_FOUND)
+      .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);
         return done();
@@ -134,13 +134,13 @@ describe("PATCH /api/v1/categories/:slug", () => {
       });
   });
 
-  it ("update specific category by slug and jwt not provided", (done) => {
+  it ("update specific category by slug and token not provided", (done) => {
     request(app)
       .patch(`${API_PREFIX}/categories/kategori-baru`)
       .send({
         "name": "Kategori Anyar"
       })
-      .expect(StatusCodes.NOT_FOUND)
+      .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);
         return done();
@@ -161,10 +161,10 @@ describe("DELETE /api/v1/categories/:slug", () => {
       });
   });
 
-  it ("delete specific hobby by slug and jwt not provided", (done) => {
+  it ("delete specific hobby by slug and token not provided", (done) => {
     request(app)
       .delete(`${API_PREFIX}/categories/kategori-baru`)
-      .expect(StatusCodes.NOT_FOUND)
+      .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);
         return done();
