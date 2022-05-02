@@ -1,5 +1,7 @@
 import CategoryRepository from "../repositories/category_repository";
 import SuggestionRepository from "../repositories/suggestion_repository";
+import { StatusCodes} from 'http-status-codes';
+import createError from 'http-errors';
 
 
 export default class SuggestionService {
@@ -9,7 +11,7 @@ export default class SuggestionService {
   async getAll() {
     const suggestions = await new SuggestionRepository().getAll();
 
-    if (suggestions.length < 1) throw new Error("Suggestions empty.");
+    if (suggestions.length < 1) throw createError(StatusCodes.NOT_FOUND, "Suggestions empty.");
 
     return suggestions;
   }
@@ -21,7 +23,7 @@ export default class SuggestionService {
       return suggestion.category == category;
     });
 
-    if (suggestions.length < 1) throw new Error("Suggestions not found.");
+    if (suggestions.length < 1) throw createError(StatusCodes.NOT_FOUND, "Suggestions not found.");
 
     return suggestions;
   }
@@ -29,7 +31,7 @@ export default class SuggestionService {
   async getOne(slug: string = "") {
     const suggestion = await new SuggestionRepository().getOne(slug);
 
-    if (suggestion == null) throw new Error("Suggestion not found.");
+    if (suggestion == null) throw createError(StatusCodes.NOT_FOUND, "Suggestion not found.");
 
     return suggestion;
   }
@@ -46,7 +48,7 @@ export default class SuggestionService {
     }
 
     const category = await new CategoryRepository().getOne(newSuggestion.category);
-    if (category == null) throw new Error("Category not found.");
+    if (category == null) throw createError(StatusCodes.NOT_FOUND, "Category not found.");
 
     const suggestion = await new SuggestionRepository().insertOne(newSuggestion);
 
@@ -55,11 +57,11 @@ export default class SuggestionService {
 
   async update(req: any, slug: string) {
     const category = await new CategoryRepository().getOne(req.body.category);
-    if (category == null) throw new Error("Category not found.");
+    if (category == null) throw createError(StatusCodes.NOT_FOUND, "Category not found.");
 
     const suggestion = await new SuggestionRepository().update(slug, req.body);
 
-    if (suggestion == null) throw new Error("Suggestion not found.");
+    if (suggestion == null) throw createError(StatusCodes.NOT_FOUND, "Suggestion not found.");
 
     return suggestion;
   }
@@ -67,7 +69,7 @@ export default class SuggestionService {
   async delete(slug: string) {
     const suggestion = await new SuggestionRepository().remove(slug);
 
-    if (suggestion == null) throw new Error("Suggestion not found.");
+    if (suggestion == null) throw createError(StatusCodes.NOT_FOUND, "Suggestion not found.");
 
     return suggestion;
   }

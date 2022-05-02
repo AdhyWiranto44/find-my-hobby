@@ -40,7 +40,7 @@ class ApiService {
 
   sendErrorResponse(err: any) {
     return new ApiService(
-      this.response, 500, false, err.message
+      this.response, err.statusCode || 500, false, err.message
     ).sendResponse();
   }
 

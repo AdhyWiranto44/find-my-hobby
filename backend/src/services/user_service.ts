@@ -1,5 +1,7 @@
 import { hashSync } from "bcrypt"; const ROUNDS = 12;
 import UserRepository from "../repositories/user_repository";
+import { StatusCodes } from 'http-status-codes';
+import createError from 'http-errors';
 
 
 export default class UserService {
@@ -9,7 +11,7 @@ export default class UserService {
   async getAll() {
     const users = await new UserRepository().getAll();
 
-    if (users.length < 1) throw new Error("Users empty.");
+    if (users.length < 1) throw createError(StatusCodes.NOT_FOUND, "Users empty.");
 
     return users;
   }
@@ -17,7 +19,7 @@ export default class UserService {
   async getOne(username: string = "") {
     const user = await new UserRepository().getOne(username);
 
-    if (user == null) throw new Error("User not found.");
+    if (user == null) throw createError(StatusCodes.NOT_FOUND, "User not found.");
 
     return user;
   }
@@ -39,7 +41,7 @@ export default class UserService {
     
     const user = await new UserRepository().update(username, req.body);
 
-    if (user == null) throw new Error("User not found.");
+    if (user == null) throw createError(StatusCodes.NOT_FOUND, "User not found.");
 
     return user;
   }
@@ -47,7 +49,7 @@ export default class UserService {
   async delete(username: string) {
     const user = await new UserRepository().remove(username);
 
-    if (user == null) throw new Error("User not found.");
+    if (user == null) throw createError(StatusCodes.NOT_FOUND, "User not found.");
 
     return user;
   }

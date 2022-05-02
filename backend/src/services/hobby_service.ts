@@ -1,5 +1,7 @@
 import HobbyRepository from "../repositories/hobby_repository";
 import CategoryRepository from "../repositories/category_repository";
+import { StatusCodes } from 'http-status-codes';
+import createError from 'http-errors';
 
 
 export default class HobbyService {
@@ -9,7 +11,7 @@ export default class HobbyService {
   async getAll(filter: any = {}) {
     const hobbies = await new HobbyRepository().getAll(filter);
 
-    if (hobbies.length < 1) throw new Error("Hobbies empty.");
+    if (hobbies.length < 1) throw createError(StatusCodes.NOT_FOUND, "Hobbies empty.");
 
     return hobbies;
   }
@@ -21,7 +23,7 @@ export default class HobbyService {
       return hobby.category == category;
     });
 
-    if (hobbies.length < 1) throw new Error("Hobbies not found.");
+    if (hobbies.length < 1) throw createError(StatusCodes.NOT_FOUND, "Hobbies not found.");
 
     return hobbies;
   }
@@ -29,7 +31,7 @@ export default class HobbyService {
   async getOne(slug: string = "") {
     let hobby = await new HobbyRepository().getOne(slug);
 
-    if (hobby == null) throw new Error("Hobby not found.");
+    if (hobby == null) throw createError(StatusCodes.NOT_FOUND, "Hobby not found.");
 
     const update = { visited_count: hobby.visited_count + 1 };
     hobby = await new HobbyRepository().update(hobby.slug, update);
@@ -38,6 +40,12 @@ export default class HobbyService {
   }
 
   async create(req: any) {
+    if (
+      !req.body.name ||
+      !req.body.description ||
+      !req.body.category
+    ) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+
     const newHobby = {
       name: req.body.name,
       slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
@@ -48,7 +56,7 @@ export default class HobbyService {
     }
 
     const category = await new CategoryRepository().getOne(newHobby.category);
-    if (category == null) throw new Error("Category not found.");
+    if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
 
     const hobby = await new HobbyRepository().insertOne(newHobby);
 
@@ -57,11 +65,11 @@ export default class HobbyService {
 
   async update(req: any, slug: string) {
     const category = await new CategoryRepository().getOne(req.body.category);
-    if (category == null) throw new Error("Category not found.");
+    if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
 
     const hobby = await new HobbyRepository().update(slug, req.body);
 
-    if (hobby == null) throw new Error("Hobby not found.");
+    if (hobby == null) throw createError(StatusCodes.BAD_REQUEST, "Hobby not found.");
 
     return hobby;
   }
@@ -69,7 +77,7 @@ export default class HobbyService {
   async delete(slug: string) {
     const hobby = await new HobbyRepository().remove(slug);
 
-    if (hobby == null) throw new Error("Hobby not found.");
+    if (hobby == null) throw createError(StatusCodes.BAD_REQUEST, "Hobby not found.");
 
     return hobby;
   }

@@ -2,6 +2,8 @@ import { compareSync } from "bcrypt";
 import { randomBytes } from "crypto";
 import { sign, verify } from "jsonwebtoken";
 import UserRepository from "../repositories/user_repository";
+import { StatusCodes } from 'http-status-codes';
+import createError from 'http-errors';
 
 
 class AuthService {
@@ -18,10 +20,10 @@ class AuthService {
   async createJWT(loginData: any) {
   
     const user = await this.getUser(loginData.username);
-    if (user == null) throw new Error("User not found.");
+    if (user == null) throw createError(StatusCodes.NOT_FOUND, "User not found.");
 
     const isPasswordCorrect = compareSync(loginData.password, user.password);
-    if (!isPasswordCorrect) throw new Error("Password incorrect.");
+    if (!isPasswordCorrect) throw createError(StatusCodes.BAD_REQUEST, "Password incorrect.");
     
     const payload = {
       "uid": randomBytes(16).toString('hex'),

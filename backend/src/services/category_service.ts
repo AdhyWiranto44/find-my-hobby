@@ -1,4 +1,6 @@
 import CategoryRepository from "../repositories/category_repository";
+import { StatusCodes } from 'http-status-codes';
+import createError from 'http-errors';
 
 
 export default class CategoryService {
@@ -8,7 +10,7 @@ export default class CategoryService {
   async getAll() {
     const categories = await new CategoryRepository().getAll();
 
-    if (categories.length < 1) throw new Error("Categories empty.");
+    if (categories.length < 1) throw createError(StatusCodes.NOT_FOUND, "Categories empty.");
 
     return categories;
   }
@@ -16,7 +18,7 @@ export default class CategoryService {
   async getOne(slug: string = "") {
     const category = await new CategoryRepository().getOne(slug);
 
-    if (category == null) throw new Error("Category not found.");
+    if (category == null) throw createError(StatusCodes.NOT_FOUND, "Category not found.");
 
     return category;
   }

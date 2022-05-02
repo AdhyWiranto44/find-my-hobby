@@ -23,3 +23,5 @@ myConnection.connect();
 app.listen(process.env.PORT || PORT, () => {
     console.log("http://localhost:" + PORT);
 });
+
+export default app;
