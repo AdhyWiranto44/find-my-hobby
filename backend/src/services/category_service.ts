@@ -24,6 +24,8 @@ export default class CategoryService {
   }
 
   async create(req: any) {
+    if (!req.body.name) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+
     const newCategory = {
       name: req.body.name,
       slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
@@ -35,7 +37,10 @@ export default class CategoryService {
   }
 
   async update(req: any, slug: string) {
+    if (!req.body.name) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+
     const category = await new CategoryRepository().update(slug, req.body);
+    if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
 
     return category;
   }
