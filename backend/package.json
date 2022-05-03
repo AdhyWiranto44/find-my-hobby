@@ -8,7 +8,7 @@
     "build": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json && node dist/app.js",
     "watch": "tsc -p ./tsconfig.json -w",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "author": "Adhy Wiranto",
   "license": "ISC",

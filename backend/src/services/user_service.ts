@@ -25,10 +25,18 @@ export default class UserService {
   }
 
   async create(req: any) {
+    if (
+      !req.body.username ||
+      !req.body.password
+    ) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+
     const newUser = {
       username: req.body.username,
       password: hashSync(req.body.password, ROUNDS)
     }
+
+    const userChecked = await new UserRepository().getOne(newUser.username);
+    if (userChecked !== null) throw createError(StatusCodes.BAD_REQUEST, "User already exists.");
 
     const user = await new UserRepository().insertOne(newUser);
 
@@ -36,12 +44,17 @@ export default class UserService {
   }
 
   async update(req: any, username: string) {
+    if (!req.body.password) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+
     let password = req.body.password;
     if (password) { password = hashSync(password, ROUNDS) }
+
+    const userChecked = await new UserRepository().getOne(username);
+    if (userChecked === null) throw createError(StatusCodes.BAD_REQUEST, "User not found.");
     
     const user = await new UserRepository().update(username, req.body);
 
-    if (user == null) throw createError(StatusCodes.NOT_FOUND, "User not found.");
+    if (user == null) throw createError(StatusCodes.BAD_REQUEST, "User not found.");
 
     return user;
   }
@@ -49,7 +62,7 @@ export default class UserService {
   async delete(username: string) {
     const user = await new UserRepository().remove(username);
 
-    if (user == null) throw createError(StatusCodes.NOT_FOUND, "User not found.");
+    if (user == null) throw createError(StatusCodes.BAD_REQUEST, "User not found.");
 
     return user;
   }

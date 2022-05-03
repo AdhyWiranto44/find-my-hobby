@@ -1,6 +1,6 @@
 import request from "supertest";
 import { StatusCodes} from 'http-status-codes';
-import app from '../../app';
+import { app, myConnection, server} from '../../app';
 import assert from "assert";
 
 const API_PREFIX = "/api/v1";
@@ -171,4 +171,9 @@ describe("DELETE /api/v1/categories/:slug", () => {
       });
   });
 
+});
+
+afterAll(() => {
+  myConnection.closeConnection();
+  server.close();
 });

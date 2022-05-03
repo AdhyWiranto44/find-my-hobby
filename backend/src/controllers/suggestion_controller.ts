@@ -1,8 +1,4 @@
 import { StatusCodes } from "http-status-codes";
-import showAlert from "../helpers/show_alert";
-import { Category } from "../models/Category";
-import Hobby from "../models/Hobby";
-import Suggestion from "../models/Suggestion";
 import ApiService from "../services/api_service";
 import AuthService from "../services/auth_service";
 import SuggestionService from "../services/suggestion_service";

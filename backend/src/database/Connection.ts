@@ -1,4 +1,4 @@
-import { connect, createConnection } from "mongoose";
+import { connect, connection, createConnection } from "mongoose";
 import { LOCAL_ENV, PRODUCTION_ENV } from "../helpers/constants";
 
 
@@ -26,6 +26,10 @@ class Connection {
       default:
         return createConnection(this.localConnectionURI);
     }
+  }
+
+  closeConnection() {
+    return connection.close();
   }
 }
 

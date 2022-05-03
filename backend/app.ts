@@ -20,8 +20,8 @@ app.set("view engine", "ejs");
 const myConnection = new Connection();
 myConnection.connect();
 
-const appServer = app.listen(process.env.PORT || PORT, () => {
+const server = app.listen(process.env.PORT || PORT, () => {
     console.log("http://localhost:" + PORT);
 });
 
-export default app;
+export { app, server, myConnection };

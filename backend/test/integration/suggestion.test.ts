@@ -1,6 +1,6 @@
 import request from "supertest";
 import { StatusCodes } from 'http-status-codes';
-import app from '../../app';
+import { app, myConnection, server } from '../../app';
 
 const API_PREFIX = "/api/v1";
 let JWT = "";
@@ -262,4 +262,9 @@ describe("DELETE /api/v1/suggestions/:slug", () => {
       });
   });
 
+});
+
+afterAll(() => {
+  myConnection.closeConnection();
+  server.close();
 });

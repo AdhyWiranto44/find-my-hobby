@@ -1,7 +1,7 @@
 import { assert } from "console";
 import { StatusCodes } from "http-status-codes";
 import request from "supertest";
-import app from "../../app";
+import { app, myConnection, server} from '../../app';
 
 const API_PREFIX = "/api/v1";
 
@@ -17,4 +17,10 @@ describe("POST /api/v1/login", () => {
         return done();
       });
   });
+  
+});
+
+afterAll(() => {
+  myConnection.closeConnection();
+  server.close();
 });
