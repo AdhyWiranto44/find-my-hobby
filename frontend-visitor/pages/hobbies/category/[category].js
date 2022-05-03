@@ -71,7 +71,7 @@ export default function Hobbies() {
   });
 
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <NavbarHobby />
 
       <div className="container" style={{ marginTop: "100px" }}>
@@ -107,6 +107,6 @@ export default function Hobbies() {
       </div>
 
       <Footer />
-    </>
+    </div>
   )
 }

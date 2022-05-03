@@ -29,7 +29,7 @@ export default function HobbyPage() {
   }, []);
 
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <Navbar />
 
       <div id="welcome" className="bg-warning">
@@ -43,7 +43,7 @@ export default function HobbyPage() {
         </div>
       </div>
 
-      <div className="container">
+      <div className="container my-3">
         <div className="row my-3">
           <div className="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
             <ol className="breadcrumb">
@@ -64,6 +64,6 @@ export default function HobbyPage() {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }

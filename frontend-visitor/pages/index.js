@@ -119,7 +119,7 @@ export default function Home() {
   });
 
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <Navbar />
 
       <div id="welcome" className="container-fluid bg-warning">
@@ -169,6 +169,6 @@ export default function Home() {
       </div>
 
       <Footer />
-    </>
+    </div>
   )
 }
