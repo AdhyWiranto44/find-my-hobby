@@ -4,12 +4,15 @@ import Authentication from '../middlewares/authentication';
 
 
 const router = express.Router();
-router.get("/suggestions", new SuggestionController().getAll);
-router.get("/suggestions/:slug", new SuggestionController().getOne);
-router.get("/suggestions/categories/:slug", new SuggestionController().getByCategory);
-router.post("/suggestions", new Authentication().authenticate, new SuggestionController().create);
-router.patch("/suggestions/:slug", new Authentication().authenticate, new SuggestionController().update);
-router.delete("/suggestions/:slug", new Authentication().authenticate, new SuggestionController().delete);
+const suggestionController = new SuggestionController();
+const authentication = new Authentication();
+
+router.get("/suggestions", suggestionController.getAll);
+router.get("/suggestions/:slug", suggestionController.getOne);
+router.get("/suggestions/categories/:slug", suggestionController.getByCategory);
+router.post("/suggestions", authentication.authenticate, suggestionController.create);
+router.patch("/suggestions/:slug", authentication.authenticate, suggestionController.update);
+router.delete("/suggestions/:slug", authentication.authenticate, suggestionController.delete);
 
 
 export default router;

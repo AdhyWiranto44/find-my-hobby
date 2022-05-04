@@ -4,12 +4,15 @@ import Authentication from '../middlewares/authentication';
 
 
 const router = express.Router();
-router.get("/hobbies", new HobbyController().getAll);
-router.get("/hobbies/:slug", new HobbyController().getOne);
-router.get("/hobbies/categories/:slug", new HobbyController().getByCategory);
-router.post("/hobbies", new Authentication().authenticate, new HobbyController().create);
-router.patch("/hobbies/:slug", new Authentication().authenticate, new HobbyController().update);
-router.delete("/hobbies/:slug", new Authentication().authenticate, new HobbyController().delete);
+const hobbyController = new HobbyController();
+const authentication = new Authentication();
+
+router.get("/hobbies", hobbyController.getAll);
+router.get("/hobbies/:slug", hobbyController.getOne);
+router.get("/hobbies/categories/:slug", hobbyController.getByCategory);
+router.post("/hobbies", authentication.authenticate, hobbyController.create);
+router.patch("/hobbies/:slug", authentication.authenticate, hobbyController.update);
+router.delete("/hobbies/:slug", authentication.authenticate, hobbyController.delete);
 
 
 export default router;

@@ -4,11 +4,14 @@ import Authentication from '../middlewares/authentication';
 
 
 const router = express.Router();
-router.get("/categories", new CategoryController().getAll);
-router.get("/categories/:slug", new CategoryController().getOne);
-router.post("/categories", new Authentication().authenticate, new CategoryController().create);
-router.patch("/categories/:slug", new Authentication().authenticate, new CategoryController().update);
-router.delete("/categories/:slug", new Authentication().authenticate, new CategoryController().delete);
+const categoryController = new CategoryController();
+const authentication = new Authentication();
+
+router.get("/categories", categoryController.getAll);
+router.get("/categories/:slug", categoryController.getOne);
+router.post("/categories", authentication.authenticate, categoryController.create);
+router.patch("/categories/:slug", authentication.authenticate, categoryController.update);
+router.delete("/categories/:slug", authentication.authenticate, categoryController.delete);
 
 
 export default router;
