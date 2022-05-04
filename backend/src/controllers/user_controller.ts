@@ -1,18 +1,13 @@
 import UserService from "../services/user_service";
 import ApiService from "../services/api_service";
 import AuthService from "../services/auth_service";
+import createError from 'http-errors';
 import { StatusCodes } from "http-status-codes";
 
 
 class UserController {
  
   async getAll(req: any, res: any) {
-    try {
-      const decoded: any = new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const users = await new UserService().getAll();
 
@@ -30,12 +25,6 @@ class UserController {
 
   async getOne(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const user = await new UserService().getOne(req.params.username);
 
       return new ApiService(
@@ -51,12 +40,6 @@ class UserController {
   }
 
   async create(req: any, res: any) {
-    try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const user = await new UserService().create(req);
 
@@ -74,12 +57,6 @@ class UserController {
 
   async update(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const user = await new UserService().update(req, req.params.username);
 
       return new ApiService(
@@ -95,12 +72,6 @@ class UserController {
   }
 
   async delete(req: any, res: any) {
-    try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const user = await new UserService().delete(req.params.slug);
 

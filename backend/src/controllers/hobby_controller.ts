@@ -69,12 +69,6 @@ class HobbyController {
 
   async create(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const hobby = await new HobbyService().create(req);
 
       return new ApiService(
@@ -91,12 +85,6 @@ class HobbyController {
 
   async update(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const hobby = await new HobbyService().update(req, req.params.slug);
 
       return new ApiService(
@@ -112,12 +100,6 @@ class HobbyController {
   }
 
   async delete(req: any, res: any) {
-    try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const hobby = await new HobbyService().delete(req.params.slug);
 

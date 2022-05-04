@@ -101,7 +101,8 @@ describe("POST /api/v1/hobbies", () => {
 
   it ("create new hobby", (done) => {
     request(app)
-      .post(`${API_PREFIX}/hobbies?token=${JWT}`)
+      .post(`${API_PREFIX}/hobbies`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -118,7 +119,8 @@ describe("POST /api/v1/hobbies", () => {
 
   it ("create new hobby and category not found", (done) => {
     request(app)
-      .post(`${API_PREFIX}/hobbies?token=${JWT}`)
+      .post(`${API_PREFIX}/hobbies`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -135,7 +137,8 @@ describe("POST /api/v1/hobbies", () => {
 
   it ("create empty hobby", (done) => {
     request(app)
-      .post(`${API_PREFIX}/hobbies?token=${JWT}`)
+      .post(`${API_PREFIX}/hobbies`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -167,7 +170,8 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
 
   it ("update specific hobby by slug", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/hobbies/mengodonf?token=${JWT}`)
+      .patch(`${API_PREFIX}/hobbies/mengodonf`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Membuat Program Komputer",
         "category": "teknologi"
@@ -181,7 +185,8 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
 
   it ("update specific hobby by slug and data not found", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Membuat Program Komputer",
         "category": "teknologi"
@@ -195,7 +200,8 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
 
   it ("update specific hobby by slug with empty update data", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -224,7 +230,8 @@ describe("DELETE /api/v1/hobbies/:slug", () => {
 
   it ("delete specific hobby by slug", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/hobbies/mengodonf?token=${JWT}`)
+      .delete(`${API_PREFIX}/hobbies/mengodonf`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -234,7 +241,8 @@ describe("DELETE /api/v1/hobbies/:slug", () => {
 
   it ("delete specific hobby by slug and hobby not found", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/hobbies/mengodonf?token=${JWT}`)
+      .delete(`${API_PREFIX}/hobbies/mengodonf`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
         if (err) return done(err);

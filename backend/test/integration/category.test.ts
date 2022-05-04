@@ -58,7 +58,8 @@ describe("POST /api/v1/categories", () => {
 
   it ("create new category", (done) => {
     request(app)
-      .post(`${API_PREFIX}/categories?token=${JWT}`)
+      .post(`${API_PREFIX}/categories`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Kategori Baru",
       })
@@ -71,7 +72,8 @@ describe("POST /api/v1/categories", () => {
 
   it ("create empty category", (done) => {
     request(app)
-      .post(`${API_PREFIX}/categories?token=${JWT}`)
+      .post(`${API_PREFIX}/categories`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -99,7 +101,8 @@ describe("PATCH /api/v1/categories/:slug", () => {
 
   it ("update specific category by slug", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/categories/kategori-baru?token=${JWT}`)
+      .patch(`${API_PREFIX}/categories/kategori-baru`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Kategori Anyar"
       })
@@ -112,7 +115,8 @@ describe("PATCH /api/v1/categories/:slug", () => {
 
   it ("update specific category by slug and data not found", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/categories/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/categories/kasndlknasioiwe`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Kategori Baru Banget"
       })
@@ -125,7 +129,8 @@ describe("PATCH /api/v1/categories/:slug", () => {
 
   it ("update specific category by slug with empty update data", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/categories/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/categories/kasndlknasioiwe`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -153,7 +158,8 @@ describe("DELETE /api/v1/categories/:slug", () => {
 
   it ("delete specific category by slug", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/categories/kategori-baru?token=${JWT}`)
+      .delete(`${API_PREFIX}/categories/kategori-baru`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);

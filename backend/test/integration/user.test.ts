@@ -18,7 +18,8 @@ describe("GET /api/v1/users", () => {
   
   it("get all users data from local database", (done) => {
     request(app)
-      .get(`${API_PREFIX}/users?token=${JWT}`)
+      .get(`${API_PREFIX}/users`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -42,7 +43,8 @@ describe("GET /api/v1/users/:username", () => {
 
   it ("get specific user by username", (done) => {
     request(app)
-      .get(`${API_PREFIX}/users/admin?token=${JWT}`)
+      .get(`${API_PREFIX}/users/admin`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -62,7 +64,8 @@ describe("GET /api/v1/users/:username", () => {
 
   it("get specific user by username and data not found", (done) => {
     request(app)
-      .get(`${API_PREFIX}/users/lkasdlkn?token=${JWT}`)
+      .get(`${API_PREFIX}/users/lkasdlkn`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.NOT_FOUND)
       .end((err, res) => {
         if (err) return done(err);
@@ -77,7 +80,8 @@ describe("POST /api/v1/users", () => {
 
   it ("create new user", (done) => {
     request(app)
-      .post(`${API_PREFIX}/users?token=${JWT}`)
+      .post(`${API_PREFIX}/users`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "username": "admin2",
         "password": "12345"
@@ -91,7 +95,8 @@ describe("POST /api/v1/users", () => {
 
   it ("create new user that already exists", (done) => {
     request(app)
-      .post(`${API_PREFIX}/users?token=${JWT}`)
+      .post(`${API_PREFIX}/users`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "username": "admin",
         "password": "12345"
@@ -105,7 +110,8 @@ describe("POST /api/v1/users", () => {
 
   it ("create empty user", (done) => {
     request(app)
-      .post(`${API_PREFIX}/users?token=${JWT}`)
+      .post(`${API_PREFIX}/users`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -134,7 +140,8 @@ describe("PATCH /api/v1/users/:username", () => {
 
   it ("update specific user by username", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/users/admin2?token=${JWT}`)
+      .patch(`${API_PREFIX}/users/admin2`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "password": "admin2"
       })
@@ -147,7 +154,8 @@ describe("PATCH /api/v1/users/:username", () => {
 
   it ("update specific user by username and data not found", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/users/panspdinplasndl?token=${JWT}`)
+      .patch(`${API_PREFIX}/users/panspdinplasndl`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "password": "admin2"
       })
@@ -160,7 +168,8 @@ describe("PATCH /api/v1/users/:username", () => {
 
   it ("update specific user by username with empty update data", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/users/admin?token=${JWT}`)
+      .patch(`${API_PREFIX}/users/admin`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -188,7 +197,8 @@ describe("DELETE /api/v1/users/:username", () => {
 
   it ("delete specific user by username", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/users/admin2?token=${JWT}`)
+      .delete(`${API_PREFIX}/users/admin2`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);

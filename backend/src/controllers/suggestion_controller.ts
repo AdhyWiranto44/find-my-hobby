@@ -8,12 +8,6 @@ class SuggestionController {
 
   async getAll(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const suggestions = await new SuggestionService().getAll();
 
       return new ApiService(
@@ -29,12 +23,6 @@ class SuggestionController {
   }
 
   async getByCategory(req: any, res: any) {
-    try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const suggestions = await new SuggestionService().getByCategory(req.params.slug);
 
@@ -52,12 +40,6 @@ class SuggestionController {
 
   async getOne(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const suggestion = await new SuggestionService().getOne(req.params.slug);
 
       return new ApiService(
@@ -73,12 +55,6 @@ class SuggestionController {
   }
 
   async create(req: any, res: any) {
-    try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const suggestion = await new SuggestionService().create(req);
 
@@ -96,12 +72,6 @@ class SuggestionController {
 
   async update(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const suggestion = await new SuggestionService().update(req, req.params.slug);
 
       return new ApiService(
@@ -117,12 +87,6 @@ class SuggestionController {
   }
 
   async delete(req: any, res: any) {
-    try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const suggestion = await new SuggestionService().delete(req.params.slug);
 

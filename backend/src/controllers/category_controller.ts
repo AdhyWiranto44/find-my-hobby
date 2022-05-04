@@ -1,6 +1,5 @@
 import CategoryService from "../services/category_service";
 import ApiService from "../services/api_service";
-import AuthService from "../services/auth_service";
 import { StatusCodes } from "http-status-codes";
 
 
@@ -40,12 +39,6 @@ class CategoryController {
 
   async create(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const category = await new CategoryService().create(req);
 
       return new ApiService(
@@ -62,12 +55,6 @@ class CategoryController {
 
   async update(req: any, res: any) {
     try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
-    try {
       const category = await new CategoryService().update(req, req.params.slug);
 
       return new ApiService(
@@ -83,12 +70,6 @@ class CategoryController {
   }
 
   async delete(req: any, res: any) {
-    try {
-      new AuthService().checkJWT(req.query.token);
-    } catch(err: any) {
-      return new ApiService(res, StatusCodes.UNAUTHORIZED, false, err.message).sendResponse();
-    }
-
     try {
       const category = await new CategoryService().delete(req.params.slug);
 

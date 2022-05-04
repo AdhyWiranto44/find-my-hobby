@@ -18,7 +18,8 @@ describe("GET /api/v1/suggestions", () => {
   
   it("get all suggestions data from local database", (done) => {
     request(app)
-      .get(`${API_PREFIX}/suggestions?token=${JWT}`)
+      .get(`${API_PREFIX}/suggestions`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -42,7 +43,8 @@ describe("GET /api/v1/suggestions/:slug", () => {
 
   it ("get specific suggestion by slug", (done) => {
     request(app)
-      .get(`${API_PREFIX}/suggestions/mendayung-perahu?token=${JWT}`)
+      .get(`${API_PREFIX}/suggestions/mendayung-perahu`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -52,7 +54,8 @@ describe("GET /api/v1/suggestions/:slug", () => {
 
   it("get specific suggestion by slug and data not found", (done) => {
     request(app)
-      .get(`${API_PREFIX}/suggestions/lkasdlkn?token=${JWT}`)
+      .get(`${API_PREFIX}/suggestions/lkasdlkn`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.NOT_FOUND)
       .end((err, res) => {
         if (err) return done(err);
@@ -76,7 +79,8 @@ describe("GET /api/v1/suggestions/categories/:slug", () => {
 
   it ("get suggestions by category", (done) => {
     request(app)
-      .get(`${API_PREFIX}/suggestions/categories/teknologi?token=${JWT}`)
+      .get(`${API_PREFIX}/suggestions/categories/teknologi`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -86,7 +90,8 @@ describe("GET /api/v1/suggestions/categories/:slug", () => {
 
   it("get suggestions by category and data not found", (done) => {
     request(app)
-      .get(`${API_PREFIX}/suggestions/categories/asndlkans?token=${JWT}`)
+      .get(`${API_PREFIX}/suggestions/categories/asndlkans`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.NOT_FOUND)
       .end((err, res) => {
         if (err) return done(err);
@@ -111,7 +116,8 @@ describe("POST /api/v1/suggestions", () => {
 
   it ("create new suggestion", (done) => {
     request(app)
-      .post(`${API_PREFIX}/suggestions?token=${JWT}`)
+      .post(`${API_PREFIX}/suggestions`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -128,7 +134,8 @@ describe("POST /api/v1/suggestions", () => {
 
   it ("create new suggestion and category not found", (done) => {
     request(app)
-      .post(`${API_PREFIX}/suggestions?token=${JWT}`)
+      .post(`${API_PREFIX}/suggestions`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -145,7 +152,8 @@ describe("POST /api/v1/suggestions", () => {
 
   it ("create empty suggestion", (done) => {
     request(app)
-      .post(`${API_PREFIX}/suggestions?token=${JWT}`)
+      .post(`${API_PREFIX}/suggestions`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -177,7 +185,8 @@ describe("PATCH /api/v1/suggestions/:slug", () => {
 
   it ("update specific suggestion by slug", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/suggestions/mengodonf?token=${JWT}`)
+      .patch(`${API_PREFIX}/suggestions/mengodonf`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Membuat Program Komputer",
         "category": "teknologi"
@@ -191,7 +200,8 @@ describe("PATCH /api/v1/suggestions/:slug", () => {
 
   it ("update specific suggestion by slug and data not found", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/suggestions/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/suggestions/kasndlknasioiwe`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Membuat Program Komputer",
         "category": "teknologi"
@@ -205,7 +215,8 @@ describe("PATCH /api/v1/suggestions/:slug", () => {
 
   it ("update specific suggestion by slug with empty update data", (done) => {
     request(app)
-      .patch(`${API_PREFIX}/suggestions/kasndlknasioiwe?token=${JWT}`)
+      .patch(`${API_PREFIX}/suggestions/kasndlknasioiwe`)
+      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -234,7 +245,8 @@ describe("DELETE /api/v1/suggestions/:slug", () => {
 
   it ("delete specific suggestion by slug", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/suggestions/mengodonf?token=${JWT}`)
+      .delete(`${API_PREFIX}/suggestions/mengodonf`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.OK)
       .end((err, res) => {
         if (err) return done(err);
@@ -244,7 +256,8 @@ describe("DELETE /api/v1/suggestions/:slug", () => {
 
   it ("delete specific suggestion by slug and suggestion not found", (done) => {
     request(app)
-      .delete(`${API_PREFIX}/suggestions/mengodonf?token=${JWT}`)
+      .delete(`${API_PREFIX}/suggestions/mengodonf`)
+      .set("Authorization", `Bearer ${JWT}`)
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
         if (err) return done(err);
