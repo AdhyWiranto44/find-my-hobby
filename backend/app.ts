@@ -17,11 +17,10 @@ app.use(express.urlencoded({extended: true}));
 app.use("/api/v1/", v1);
 app.set("view engine", "ejs");
 
-const myConnection = new Connection();
-myConnection.connect();
+const myConnection: Connection = new Connection();
 
 const server = app.listen(process.env.PORT || PORT, () => {
     console.log("http://localhost:" + PORT);
 });
 
-export { app, server, myConnection };
+export { app, server };

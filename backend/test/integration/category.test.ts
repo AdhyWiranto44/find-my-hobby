@@ -1,23 +1,41 @@
 import request from "supertest";
-import { StatusCodes} from 'http-status-codes';
-import { app, myConnection, server} from '../../app';
-import assert from "assert";
+import { StatusCodes } from 'http-status-codes';
+import { app, server } from '../../app';
+import Connection from "../../src/database/Connection";
+import User from "../../src/models/User";
+import Hobby from "../../src/models/Hobby";
+import Suggestion from "../../src/models/Suggestion";
+import { Category } from "../../src/models/Category";
+import { default_categories, default_hobbies, default_suggestions, default_users } from "../../src/helpers/dummy_data";
+import { randomBytes } from "crypto";
+import { sign } from "jsonwebtoken";
 
 const API_PREFIX = "/api/v1";
 let JWT = "";
+let conn: Connection;
+
+beforeAll( async () => {
+  conn = new Connection();
+  await conn.dropDatabase();
+  
+  await User.insertMany(default_users);
+  await Category.insertMany(default_categories);
+  await Hobby.insertMany(default_hobbies);
+  await Suggestion.insertMany(default_suggestions);
+});
 
 // Create JWT
 beforeAll(() => {
-  const form: any = { "username": "admin", "password": "12345" }
-  request(app).post(`${API_PREFIX}/login`).send(form).end((err, res) => {
-      if (err) throw err;
-      JWT = res.body.data.token;
-    });
+  const payload = {
+    "uid": randomBytes(16).toString('hex'),
+    "username": "admin",
+  }
+  JWT = sign(payload, process.env.SECRET as string, { expiresIn: process.env.TOKEN_EXPIRES_IN as string });
 });
 
 describe("GET /api/v1/categories", () => {
   
-  it("get all categories data from local database", (done) => {
+  it("get all categories data from local database", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/categories`)
       .expect(StatusCodes.OK)
@@ -31,7 +49,7 @@ describe("GET /api/v1/categories", () => {
 
 describe("GET /api/v1/categories/:slug", () => {
 
-  it ("get specific category by slug", (done) => {
+  it ("get specific category by slug", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/categories/audio-visual`)
       .expect(StatusCodes.OK)
@@ -41,7 +59,7 @@ describe("GET /api/v1/categories/:slug", () => {
       });
   });
 
-  it("get specific category by slug and data not found", (done) => {
+  it("get specific category by slug and data not found", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/categories/lkasdlkn`)
       .expect(StatusCodes.NOT_FOUND)
@@ -56,7 +74,7 @@ describe("GET /api/v1/categories/:slug", () => {
 
 describe("POST /api/v1/categories", () => {
 
-  it ("create new category", (done) => {
+  it ("create new category", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/categories`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -70,7 +88,7 @@ describe("POST /api/v1/categories", () => {
       });
   });
 
-  it ("create empty category", (done) => {
+  it ("create empty category", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/categories`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -82,7 +100,7 @@ describe("POST /api/v1/categories", () => {
       });
   });
 
-  it ("create new category and token not provided", (done) => {
+  it ("create new category and token not provided", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/categories`)
       .send({
@@ -99,7 +117,7 @@ describe("POST /api/v1/categories", () => {
 
 describe("PATCH /api/v1/categories/:slug", () => {
 
-  it ("update specific category by slug", (done) => {
+  it ("update specific category by slug", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/categories/kategori-baru`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -113,7 +131,7 @@ describe("PATCH /api/v1/categories/:slug", () => {
       });
   });
 
-  it ("update specific category by slug and data not found", (done) => {
+  it ("update specific category by slug and data not found", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/categories/kasndlknasioiwe`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -127,7 +145,7 @@ describe("PATCH /api/v1/categories/:slug", () => {
       });
   });
 
-  it ("update specific category by slug with empty update data", (done) => {
+  it ("update specific category by slug with empty update data", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/categories/kasndlknasioiwe`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -139,7 +157,7 @@ describe("PATCH /api/v1/categories/:slug", () => {
       });
   });
 
-  it ("update specific category by slug and token not provided", (done) => {
+  it ("update specific category by slug and token not provided", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/categories/kategori-baru`)
       .send({
@@ -156,7 +174,7 @@ describe("PATCH /api/v1/categories/:slug", () => {
 
 describe("DELETE /api/v1/categories/:slug", () => {
 
-  it ("delete specific category by slug", (done) => {
+  it ("delete specific category by slug", (done: any) => {
     request(app)
       .delete(`${API_PREFIX}/categories/kategori-baru`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -167,7 +185,7 @@ describe("DELETE /api/v1/categories/:slug", () => {
       });
   });
 
-  it ("delete specific hobby by slug and token not provided", (done) => {
+  it ("delete specific hobby by slug and token not provided", (done: any) => {
     request(app)
       .delete(`${API_PREFIX}/categories/kategori-baru`)
       .expect(StatusCodes.UNAUTHORIZED)
@@ -180,6 +198,6 @@ describe("DELETE /api/v1/categories/:slug", () => {
 });
 
 afterAll(() => {
-  myConnection.closeConnection();
+  conn.closeConnection();
   server.close();
 });

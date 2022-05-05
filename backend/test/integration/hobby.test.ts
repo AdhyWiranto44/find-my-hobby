@@ -1,22 +1,41 @@
 import request from "supertest";
-import { StatusCodes} from 'http-status-codes';
-import { app, server, myConnection } from '../../app';
+import { StatusCodes } from 'http-status-codes';
+import { app, server } from '../../app';
+import Connection from "../../src/database/Connection";
+import User from "../../src/models/User";
+import Hobby from "../../src/models/Hobby";
+import Suggestion from "../../src/models/Suggestion";
+import { Category } from "../../src/models/Category";
+import { default_categories, default_hobbies, default_suggestions, default_users } from "../../src/helpers/dummy_data";
+import { randomBytes } from "crypto";
+import { sign } from "jsonwebtoken";
 
 const API_PREFIX = "/api/v1";
 let JWT = "";
+let conn: Connection;
+
+beforeAll( async () => {
+  conn = new Connection();
+  await conn.dropDatabase();
+  
+  await User.insertMany(default_users);
+  await Category.insertMany(default_categories);
+  await Hobby.insertMany(default_hobbies);
+  await Suggestion.insertMany(default_suggestions);
+});
 
 // Create JWT
 beforeAll(() => {
-  const form: any = { "username": "admin", "password": "12345" }
-  request(app).post(`${API_PREFIX}/login`).send(form).end((err, res) => {
-      if (err) throw err;
-      JWT = res.body.data.token;
-    });
+  const payload = {
+    "uid": randomBytes(16).toString('hex'),
+    "username": "admin",
+  }
+  JWT = sign(payload, process.env.SECRET as string, { expiresIn: process.env.TOKEN_EXPIRES_IN as string });
 });
 
 describe("GET /api/v1/hobbies", () => {
   
-  it("get all hobbies data from local database", (done) => {
+  it("get all hobbies data from local database", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies`)
       .expect(StatusCodes.OK)
@@ -26,7 +45,7 @@ describe("GET /api/v1/hobbies", () => {
       });
   });
 
-  it("get all hobbies with filter and data found", (done) => {
+  it("get all hobbies with filter and data found", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies?name=Central`)
       .expect(StatusCodes.OK)
@@ -36,7 +55,7 @@ describe("GET /api/v1/hobbies", () => {
       });
   });
 
-  it("get all hobbies with filter and data not found", (done) => {
+  it("get all hobbies with filter and data not found", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies?name=asd`)
       .expect(StatusCodes.NOT_FOUND)
@@ -50,7 +69,7 @@ describe("GET /api/v1/hobbies", () => {
 
 describe("GET /api/v1/hobbies/:slug", () => {
 
-  it ("get specific hobby by slug", (done) => {
+  it ("get specific hobby by slug", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies/regional-optimization-liaison`)
       .expect(StatusCodes.OK)
@@ -60,7 +79,7 @@ describe("GET /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it("get specific hobby by slug and data not found", (done) => {
+  it("get specific hobby by slug and data not found", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies/lkasdlkn`)
       .expect(StatusCodes.NOT_FOUND)
@@ -74,7 +93,7 @@ describe("GET /api/v1/hobbies/:slug", () => {
 
 describe("GET /api/v1/hobbies/categories/:slug", () => {
 
-  it ("get hobbies by category", (done) => {
+  it ("get hobbies by category", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies/categories/teknologi`)
       .expect(StatusCodes.OK)
@@ -84,7 +103,7 @@ describe("GET /api/v1/hobbies/categories/:slug", () => {
       });
   });
 
-  it("get hobbies by category and data not found", (done) => {
+  it("get hobbies by category and data not found", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies/categories/asndlkans`)
       .expect(StatusCodes.NOT_FOUND)
@@ -99,7 +118,7 @@ describe("GET /api/v1/hobbies/categories/:slug", () => {
 
 describe("POST /api/v1/hobbies", () => {
 
-  it ("create new hobby", (done) => {
+  it ("create new hobby", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/hobbies`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -117,7 +136,7 @@ describe("POST /api/v1/hobbies", () => {
       });
   });
 
-  it ("create new hobby and category not found", (done) => {
+  it ("create new hobby and category not found", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/hobbies`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -135,7 +154,7 @@ describe("POST /api/v1/hobbies", () => {
       });
   });
 
-  it ("create empty hobby", (done) => {
+  it ("create empty hobby", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/hobbies`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -147,7 +166,7 @@ describe("POST /api/v1/hobbies", () => {
       });
   });
 
-  it ("create new hobby and token not provided", (done) => {
+  it ("create new hobby and token not provided", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/hobbies`)
       .send({
@@ -168,7 +187,7 @@ describe("POST /api/v1/hobbies", () => {
 
 describe("PATCH /api/v1/hobbies/:slug", () => {
 
-  it ("update specific hobby by slug", (done) => {
+  it ("update specific hobby by slug", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/hobbies/mengodonf`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -183,7 +202,7 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("update specific hobby by slug and data not found", (done) => {
+  it ("update specific hobby by slug and data not found", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -198,7 +217,7 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("update specific hobby by slug with empty update data", (done) => {
+  it ("update specific hobby by slug with empty update data", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/hobbies/kasndlknasioiwe`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -210,7 +229,7 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("update specific hobby by slug and token not provided", (done) => {
+  it ("update specific hobby by slug and token not provided", (done: any) => {
     request(app)
       .patch(`${API_PREFIX}/hobbies/mengodonf`)
       .send({
@@ -228,7 +247,7 @@ describe("PATCH /api/v1/hobbies/:slug", () => {
 
 describe("DELETE /api/v1/hobbies/:slug", () => {
 
-  it ("delete specific hobby by slug", (done) => {
+  it ("delete specific hobby by slug", (done: any) => {
     request(app)
       .delete(`${API_PREFIX}/hobbies/mengodonf`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -239,7 +258,7 @@ describe("DELETE /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("delete specific hobby by slug and hobby not found", (done) => {
+  it ("delete specific hobby by slug and hobby not found", (done: any) => {
     request(app)
       .delete(`${API_PREFIX}/hobbies/mengodonf`)
       .set("Authorization", `Bearer ${JWT}`)
@@ -250,7 +269,7 @@ describe("DELETE /api/v1/hobbies/:slug", () => {
       });
   });
 
-  it ("delete specific hobby by slug and token not provided", (done) => {
+  it ("delete specific hobby by slug and token not provided", (done: any) => {
     request(app)
       .delete(`${API_PREFIX}/hobbies/mengodonf`)
       .expect(StatusCodes.UNAUTHORIZED)
@@ -263,6 +282,6 @@ describe("DELETE /api/v1/hobbies/:slug", () => {
 });
 
 afterAll(() => {
-  myConnection.closeConnection();
+  conn.closeConnection();
   server.close();
 });

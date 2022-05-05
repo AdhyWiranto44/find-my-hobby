@@ -14,7 +14,7 @@ export default class Authentication {
         !req.headers ||
         !req.headers.authorization
       ) throw createError(StatusCodes.UNAUTHORIZED, "Bearer token should be provided.");
-      
+
       const token: string = req.headers.authorization.split(" ")[1];
       const decoded: any = new AuthService().checkJWT(token);
 
