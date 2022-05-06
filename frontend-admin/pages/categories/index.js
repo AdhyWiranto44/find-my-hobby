@@ -1,6 +1,8 @@
+import moment from "moment";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/main";
+import { getCategories } from "../api/category";
 
 
 export default function Index() {
@@ -24,30 +26,43 @@ export default function Index() {
   const [categories, setCategories] = useState(placeholderCategories)
   const [searchTerm, setSearchTerm] = useState("")
 
+  const handleGetCategories = async () => {
+    const foundCategories = await getCategories()
+    setCategories(foundCategories.data.data.categories)
+  }
+
   const renderTableData = () => {
-    return (
-      categories.map((category, i) => {
-        return (
-          <tr>
-            <th scope="row">{i+1}</th>
-            <td>
-              {category.name}
-            </td>
-            <td>
-            {category.createdAt}
-            </td>
-            <td class="d-flex justify-content-center">
-              <Link href={`/categories/${category.slug}/edit`}>
-                <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
-              </Link>
-              <form onSubmit={(e) => handleDelete(e)}>
-                <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={category.slug}></span> Hapus</button>
-              </form>
-            </td>
-          </tr>
-        )
-      })
-    )
+    if (categories.length < 1) {
+      return (
+        <tr>
+          <td colSpan={4}>Data empty.</td>
+        </tr>
+      )
+    } else {
+      return (
+        categories.map((category, i) => {
+          return (
+            <tr>
+              <th scope="row">{i+1}.</th>
+              <td>
+                {category.name}
+              </td>
+              <td>
+              {moment(category.createdAt).fromNow()}
+              </td>
+              <td class="d-flex justify-content-center">
+                <Link href={`/categories/${category.slug}/edit`}>
+                  <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
+                </Link>
+                <form onSubmit={(e) => handleDelete(e)}>
+                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={category.slug}></span> Hapus</button>
+                </form>
+              </td>
+            </tr>
+          )
+        })
+      )
+    }
   }
 
   const filterCategories = (term) => {
@@ -58,13 +73,17 @@ export default function Index() {
     e.preventDefault()
   }
 
+  useEffect(() => {
+    handleGetCategories()
+  }, [])
+
   return (
     <>
       <MainLayout 
         title="Tampil Kategori"
         content={
           <>
-            <div className="container mb-2">
+            <div className="container-fluid mb-2">
               <div className="row">
                 <div className="col-md-3">
                   <label>Cari Kategori</label>
@@ -73,7 +92,7 @@ export default function Index() {
               </div>
             </div>
 
-            <div className="container">
+            <div className="container-fluid">
               <div className="row">
                 <div className="col-md">
                   <div className="table-responsive">
