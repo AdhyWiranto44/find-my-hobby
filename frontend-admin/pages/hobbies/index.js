@@ -1,6 +1,8 @@
-import Link from "next/link";
-import { useState } from "react";
-import MainLayout from "../../layouts/main";
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import MainLayout from "../../layouts/main"
+import moment from 'moment'
+import { getHobbies } from "../api/hobby"
 
 
 export default function Index() {
@@ -93,34 +95,52 @@ export default function Index() {
   const [hobbies, setHobbies] = useState(placeholderHobbies)
   const [searchTerm, setSearchTerm] = useState("")
 
+  const handleGetHobbies = async () => {
+    const foundHobbies = await getHobbies()
+    console.log(foundHobbies)
+    setHobbies(foundHobbies.data.data.hobbies)
+  }
+
+  useEffect(() => {
+    handleGetHobbies()
+  }, [])
+
   const renderTableData = () => {
-    return (
-      hobbies.map((hobby, i) => {
-        return (
-          <tr>
-            <th scope="row">{i+1}</th>
-            <td>
-              {hobby.name}
-            </td>
-            <td class="post-body">{hobby.description}</td>
-            <td>
-            {hobby.category}
-            </td>
-            <td>
-            {hobby.createdAt}
-            </td>
-            <td class="d-flex justify-content-center">
-              <Link href={`/hobbies/${hobby.slug}/edit`}>
-                <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
-              </Link>
-              <form onSubmit={(e) => handleDelete(e)}>
-                <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={hobby.slug}></span> Hapus</button>
-              </form>
-            </td>
-          </tr>
-        )
-      })
-    )
+    if (hobbies.length < 1) {
+      return (
+        <tr>
+          <td colSpan={6}>Data empty.</td>
+        </tr>
+      )
+    } else {
+      return (
+        hobbies.map((hobby, i) => {
+          return (
+            <tr>
+              <th scope="row">{i+1}.</th>
+              <td>
+                {hobby.name}
+              </td>
+              <td className="post-body">{hobby.description}</td>
+              <td>
+              {hobby.category}
+              </td>
+              <td>
+              {moment(hobby.createdAt).fromNow()}
+              </td>
+              <td className="d-flex justify-content-center">
+                <Link href={`/hobbies/${hobby.slug}/edit`}>
+                  <a className="btn btn-warning me-2"><span className="bi bi-pencil-fill"></span> Ubah</a>
+                </Link>
+                <form onSubmit={(e) => handleDelete(e)}>
+                  <button type="submit" className="btn btn-outline-danger"><span className="bi bi-trash-fill" value={hobby.slug}></span> Hapus</button>
+                </form>
+              </td>
+            </tr>
+          )
+        })
+      )
+    }
   }
 
   const filterHobbies = (term) => {
@@ -137,7 +157,7 @@ export default function Index() {
         title="Tampil Hobi"
         content={
           <>
-            <div className="container mb-2">
+            <div className="container-fluid mb-2">
               <div className="row">
                 <div className="col-md-3">
                   <label>Cari Hobi</label>
@@ -146,12 +166,12 @@ export default function Index() {
               </div>
             </div>
 
-            <div className="container">
+            <div className="container-fluid">
               <div className="row">
                 <div className="col-md">
                   <div className="table-responsive">
-                    <table class="table table-bordered table-striped text-center">
-                      <thead class="thead-dark">
+                    <table className="table table-bordered table-striped text-center">
+                      <thead className="thead-dark">
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Judul</th>
@@ -164,7 +184,7 @@ export default function Index() {
                       <tbody>
                         {renderTableData()}
                       </tbody>
-                      <tfoot class="tfoot-dark">
+                      <tfoot className="tfoot-dark">
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Judul</th>

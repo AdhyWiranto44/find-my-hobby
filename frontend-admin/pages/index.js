@@ -1,8 +1,4 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import Title from '../components/title'
 import MainLayout from '../layouts/main'
-import styles from '../styles/Home.module.css'
 
 export default function Home() {
   return (
