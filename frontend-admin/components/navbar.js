@@ -1,12 +1,15 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
+import Cookies from 'js-cookie'
+import { tokenCookie } from "../constants/cookies"
 
 
 export default function Navbar(props) {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleLogout = (e) => {
-    e.preventDefault();
-    router.push("/login");
+    e.preventDefault()
+    Cookies.remove(tokenCookie)
+    router.push("/login")
   }
 
   return (

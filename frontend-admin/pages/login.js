@@ -1,13 +1,29 @@
-import { useRouter } from 'next/router';
-import Title from '../components/title';
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import Title from '../components/title'
+import { login } from './api/auth'
+import Cookies from 'js-cookie'
+import { tokenCookie } from '../constants/cookies'
 
 
 export default function Login() {
-  const router = useRouter();
+  const [form, setForm] = useState({
+    "username": "",
+    "password": ""
+  })
+  const router = useRouter()
+  const token = Cookies.get(tokenCookie)
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    router.push("/");
+  if (token) router.push("/")
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    let jwt = await login(form)
+    jwt = jwt.data.data.token
+    if (jwt !== "") {
+      Cookies.set(tokenCookie, jwt, { expires: 1/12 })
+      router.push("/")
+    }
   }
 
   return (
@@ -21,11 +37,11 @@ export default function Login() {
               </div>
               <div className="mb-3">
                 <label htmlFor="username" className="form-label small mb-1">username</label>
-                <input type="text" className="form-control p-3" id="username" name="username" required autofocus />
+                <input type="text" className="form-control p-3" id="username" name="username" onChange={(e) => setForm({...form, "username": e.target.value})} required autoFocus />
               </div>
               <div className="mb-3">
                 <label htmlFor="password" className="form-label small mb-1">password</label>
-                <input type="password" className="form-control p-3" id="password" name="password" required />
+                <input type="password" className="form-control p-3" id="password" onChange={(e) => setForm({...form, "password": e.target.value})} name="password" required />
               </div>
               <button type="submit" className="btn btn-salmon w-100 p-3 mt-3 fw-bold text-uppercase">login</button>
             </form>

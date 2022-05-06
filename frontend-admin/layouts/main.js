@@ -1,17 +1,26 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/navbar'
 import Sidebar from '../components/sidebar'
-import Title from '../components/title';
+import Title from '../components/title'
+import Cookies from 'js-cookie'
+import { tokenCookie } from '../constants/cookies'
 
 
 export default function MainLayout(props) {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(false)
+  const router = useRouter()
+  const token = Cookies.get(tokenCookie)
+
+  useEffect(() => {
+    if (!token || token === "") router.push("/login")
+  })
 
   const toggleSidebar = () => {
     if (isActive) {
-      setIsActive(false);
+      setIsActive(false)
     } else {
-      setIsActive(true);
+      setIsActive(true)
     }
   }
 
@@ -33,7 +42,7 @@ export default function MainLayout(props) {
       </div>
 
       <footer className="text-secondary text-center py-3 mt-auto marginLeftMinimized" style={{marginTop: "250px"}}>
-        Open Store &#169; {new Date().getFullYear()}. Made with &#10084; By Adhy Wiranto
+        Find My Hobby &#169 {new Date().getFullYear()}. Made with &#10084 By Adhy Wiranto
       </footer>
     </div>
   )

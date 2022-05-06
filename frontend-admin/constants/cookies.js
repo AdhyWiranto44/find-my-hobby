@@ -1,0 +1,1 @@
+export const tokenCookie = "X-FIND-MY-HOBBY"
