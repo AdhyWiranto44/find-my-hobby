@@ -21,7 +21,7 @@ export default function MainLayout(props) {
       <div id="navbar" className={ isActive ? "marginLeftMinimized" : "marginLeft" }>
         <Navbar toggleSidebar={toggleSidebar} />
         {/* <Alert /> */}
-        <div className="container-fluid mt-2">
+        <div className="container-fluid">
           <div className="row">
             <div className="col-md">
               <Title title={props.title} />
