@@ -1,32 +1,35 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Title from "../../components/title";
 import MainLayout from "../../layouts/main";
+import { getCategories } from "../api/category";
+import { createHobby } from "../api/hobby";
 
 
 export default function AddNew() {
-  const categories = [
-    {
-      "name": "Kategori 1",
-      "slug": "kategori-1"
-    },
-    {
-      "name": "Kategori 2",
-      "slug": "kategori-2"
-    },
-    {
-      "name": "Kategori 3",
-      "slug": "kategori-3"
-    },
-  ]
-  const [form, setForm] = useState({
+  const [categories, setCategories] = useState([])
+  const router = useRouter()
+  const defaultForm = {
     "name": "",
     "description": "",
     "category": ""
-  })
-
-  const handleCreateNewHobby = (e) => {
-    e.preventDefault()
   }
+  const [form, setForm] = useState(defaultForm)
+
+  const handleGetCategories = async () => {
+    const foundCategories = await getCategories()
+    setCategories(foundCategories.data.data.categories)
+  }
+
+  const handleCreateNewHobby = async (e) => {
+    e.preventDefault()
+    const hobby = await createHobby(form)
+    router.reload()
+  }
+
+  useEffect(() => {
+    handleGetCategories()
+  }, [])
 
   useEffect(() => {
     console.log(form)
@@ -44,7 +47,7 @@ export default function AddNew() {
                   <form onSubmit={(e) => handleCreateNewHobby(e)}>
                     <div class="mb-3">
                       <label for="name" class="form-label small mb-1 text-capitalize">nama</label>
-                      <input type="text" class="form-control p-3" id="name" name="name" value="" onChange={(e) => setForm({...form, "name": e.target.value})} autofocus required />
+                      <input type="text" class="form-control p-3" id="name" name="name" onChange={(e) => setForm({...form, "name": e.target.value})} autofocus required />
                     </div>
                     <div className="mb-3">
                       <label class="text-muted" for="description"><small>Deskripsi</small></label>
