@@ -11,6 +11,7 @@ const headers = {
 }
 
 export const getHobbies = async () => await axios.get(`${domain}/hobbies`)
-export const createHobby = async (form = {}) => {
-  await axios.post(`${domain}/hobbies`, form, headers)
-}
+export const getHobby = async (slug = "") => await axios.get(`${domain}/hobbies/${slug}`)
+export const createHobby = async (form = {}) => await axios.post(`${domain}/hobbies`, form, headers)
+export const updateHobby = async (slug = "", form = {}) => await axios.path(`${domain}/hobbies/${slug}`, form, headers)
+export const deleteHobby = async (slug = "") => await axios.delete(`${domain}/hobbies/${slug}`, headers)

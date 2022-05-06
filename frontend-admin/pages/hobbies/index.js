@@ -2,12 +2,14 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import MainLayout from "../../layouts/main"
 import moment from 'moment'
-import { getHobbies } from "../api/hobby"
+import { deleteHobby, getHobbies } from "../api/hobby"
+import { useRouter } from "next/router"
 
 
 export default function Index() {
   const [hobbies, setHobbies] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
+  const router = useRouter()
 
   const handleGetHobbies = async () => {
     const foundHobbies = await getHobbies()
@@ -46,8 +48,8 @@ export default function Index() {
                 <Link href={`/hobbies/${hobby.slug}/edit`}>
                   <a className="btn btn-warning me-2"><span className="bi bi-pencil-fill"></span> Ubah</a>
                 </Link>
-                <form onSubmit={(e) => handleDelete(e)}>
-                  <button type="submit" className="btn btn-outline-danger"><span className="bi bi-trash-fill" value={hobby.slug}></span> Hapus</button>
+                <form onSubmit={(e) => handleDelete(e, hobby.slug)}>
+                  <button type="submit" className="btn btn-outline-danger"><span className="bi bi-trash-fill"></span> Hapus</button>
                 </form>
               </td>
             </tr>
@@ -61,8 +63,11 @@ export default function Index() {
     // Do something.
   }
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e, slug = "") => {
     e.preventDefault()
+
+    const result = await deleteHobby(slug)
+    router.reload()
   }
 
   return (
