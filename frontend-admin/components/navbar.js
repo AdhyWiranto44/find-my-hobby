@@ -1,4 +1,14 @@
+import { useRouter } from "next/router";
+
+
 export default function Navbar(props) {
+  const router = useRouter();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    router.push("/login");
+  }
+
   return (
     <nav className="navbar navbar-expand-md navbar-light py-3 sticky-top py-3 border-bottom border-light border-2">
       <div className="container-fluid">
@@ -15,8 +25,8 @@ export default function Navbar(props) {
             </button>
             <ul className="dropdown-menu border-0 shadow">
               <li>
-                <form action="/logout" method="POST">
-                  <button type="submit" className="btn dropdown-item px-3 py-2 fw-bold" onClick="confirm('Yakin ingin keluar?');"><i className="bi bi-box-arrow-right me-1"></i> Logout</button>
+                <form onSubmit={(e) => handleLogout(e)}>
+                  <button type="submit" className="btn dropdown-item px-3 py-2 fw-bold"><i className="bi bi-box-arrow-right me-1"></i> Logout</button>
                 </form>
               </li>
             </ul>

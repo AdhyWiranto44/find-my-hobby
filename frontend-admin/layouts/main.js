@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/navbar'
 import Sidebar from '../components/sidebar'
+import Title from '../components/title';
 
 
 export default function MainLayout(props) {
@@ -20,7 +21,15 @@ export default function MainLayout(props) {
       <div id="navbar" className={ isActive ? "marginLeftMinimized" : "marginLeft" }>
         <Navbar toggleSidebar={toggleSidebar} />
         {/* <Alert /> */}
-        {props.content}
+        <div className="container-fluid mt-2">
+          <div className="row">
+            <div className="col-md">
+              <Title title={props.title} />
+            </div>
+          </div>
+
+          {props.content}
+        </div>
       </div>
 
       <footer className="text-secondary text-center py-3 mt-auto marginLeftMinimized" style={{marginTop: "250px"}}>

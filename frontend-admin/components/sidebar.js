@@ -1,45 +1,51 @@
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+
+
 export default function Sidebar(props) {
+  const router = useRouter()
+
   const menus = [
     {
       "title": "Dashboard",
-      "href": "#",
+      "href": "/",
       "icon": "bi bi-speedometer",
     },
     {
       "title": "Tambah Hobi",
-      "href": "#",
+      "href": "/hobbies/add-new",
       "icon": "bi bi-plus-circle-fill",
     },
     {
       "title": "Tampil Hobi",
-      "href": "#",
+      "href": "/hobbies",
       "icon": "bi bi-card-list",
     },
     {
       "title": "Tambah Kategori",
-      "href": "#",
+      "href": "/categories/add-new",
       "icon": "bi bi-plus-circle-fill",
     },
     {
       "title": "Tampil Kategori",
-      "href": "#",
+      "href": "/categories",
       "icon": "bi bi-card-list",
     },
     {
       "title": "Tampil Saran Hobi",
-      "href": "#",
+      "href": "/suggestions",
       "icon": "bi bi-card-list",
     },
-    {
-      "title": "Ubah Password",
-      "href": "#",
-      "icon": "bi bi-pencil-square",
-    },
-    {
-      "title": "Reset Password",
-      "href": "#",
-      "icon": "bi bi-key-fill",
-    },
+    // {
+    //   "title": "Ubah Password",
+    //   "href": "/users/username/change-password",
+    //   "icon": "bi bi-pencil-square",
+    // },
+    // {
+    //   "title": "Reset Password",
+    //   "href": "/users/username/reset-password",
+    //   "icon": "bi bi-key-fill",
+    // },
   ]
 
   return (
@@ -56,11 +62,13 @@ export default function Sidebar(props) {
               menus.map(menu => {
                 return (
                   <>
-                    <li className="rounded-start">
-                      <a className="d-flex align-items-between" href={menu.href} title={menu.title}>
-                        <i className={`${menu.icon} me-3 h4`}></i>
-                        <p className="mb-0">{menu.title}</p>
-                      </a>
+                    <li className={"rounded-start " + (router.pathname == menu.href ? "menu-active" : "")}>
+                      <Link href={menu.href}>
+                        <a className="d-flex align-items-between" title={menu.title}>
+                          <i className={`${menu.icon} me-3 h4`}></i>
+                          <p className="mb-0">{menu.title}</p>
+                        </a>
+                      </Link>
                     </li>
                   </>
                 )
