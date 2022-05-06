@@ -1,141 +1,60 @@
+import moment from "moment";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/main";
+import { getSuggestions } from "../api/suggestions";
 
 
 export default function Index() {
-  const placeholderSuggestions = [
-    {
-      "name": "Programming",
-      "slug": "coding",
-      "description": "Membuat program komputer.",
-      "category": "teknologi",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Mendaki Gunung",
-      "slug": "mendaki-gunung",
-      "description": "Mendaki berbagai gunung yang indah.",
-      "category": "lainnya",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Menulis",
-      "slug": "menulis",
-      "description": "Membuat buku, novel, cerpen, dan lain sebagainya.",
-      "category": "sastra",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Programming",
-      "slug": "coding",
-      "description": "Membuat program komputer.",
-      "category": "teknologi",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Mendaki Gunung",
-      "slug": "mendaki-gunung",
-      "description": "Mendaki berbagai gunung yang indah.",
-      "category": "lainnya",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Menulis",
-      "slug": "menulis",
-      "description": "Membuat buku, novel, cerpen, dan lain sebagainya.",
-      "category": "sastra",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Programming",
-      "slug": "coding",
-      "description": "Membuat program komputer.",
-      "category": "teknologi",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Mendaki Gunung",
-      "slug": "mendaki-gunung",
-      "description": "Mendaki berbagai gunung yang indah.",
-      "category": "lainnya",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Menulis",
-      "slug": "menulis",
-      "description": "Membuat buku, novel, cerpen, dan lain sebagainya.",
-      "category": "sastra",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Programming",
-      "slug": "coding",
-      "description": "Membuat program komputer.",
-      "category": "teknologi",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Mendaki Gunung",
-      "slug": "mendaki-gunung",
-      "description": "Mendaki berbagai gunung yang indah.",
-      "category": "lainnya",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-    {
-      "name": "Menulis",
-      "slug": "menulis",
-      "description": "Membuat buku, novel, cerpen, dan lain sebagainya.",
-      "category": "sastra",
-      "suggester_email": "adisoft@indonesia.id",
-      "createdAt": "6 Mei 2022"
-    },
-  ]
-  const [suggestions, setSuggestions] = useState(placeholderSuggestions)
+  const [suggestions, setSuggestions] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
 
+  const handleGetSuggestions = async () => {
+    const foundSuggestions = await getSuggestions()
+    setSuggestions(foundSuggestions.data.data.suggestions)
+  }
+
   const renderTableData = () => {
-    return (
-      suggestions.map((suggestion, i) => {
-        return (
-          <tr>
-            <th scope="row">{i+1}</th>
-            <td>
-              {suggestion.name}
-            </td>
-            <td class="post-body">{suggestion.description}</td>
-            <td>
-            {suggestion.category}
-            </td>
-            <td>
-            {suggestion.suggester_email}
-            </td>
-            <td>
-            {suggestion.createdAt}
-            </td>
-            <td class="d-flex justify-content-center">
-              <Link href={`/suggestions/${suggestion.slug}/edit`}>
-                <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
-              </Link>
-              <form onSubmit={(e) => handleDelete(e)}>
-                <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={suggestion.slug}></span> Hapus</button>
-              </form>
-            </td>
-          </tr>
-        )
-      })
-    )
+    if (suggestions.length < 1) {
+      return (
+        <tr>
+          <td colSpan={7}>Data empty.</td>
+        </tr>
+      )
+    } else {
+      return (
+        suggestions.map((suggestion, i) => {
+          return (
+            <tr>
+              <th scope="row">{i+1}</th>
+              <td>
+                {suggestion.name}
+              </td>
+              <td class="post-body">
+                {suggestion.description}
+              </td>
+              <td>
+                {suggestion.category}
+              </td>
+              <td>
+                {suggestion.suggester_email}
+              </td>
+              <td>
+                {moment(suggestion.createdAt).fromNow()}
+              </td>
+              <td class="d-flex justify-content-center">
+                <Link href={`/suggestions/${suggestion.slug}/edit`}>
+                  <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
+                </Link>
+                <form onSubmit={(e) => handleDelete(e)}>
+                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={suggestion.slug}></span> Hapus</button>
+                </form>
+              </td>
+            </tr>
+          )
+        })
+      )
+    }
   }
 
   const filterSuggestions = (term) => {
@@ -145,6 +64,10 @@ export default function Index() {
   const handleDelete = (e) => {
     e.preventDefault()
   }
+
+  useEffect(() => {
+    handleGetSuggestions();
+  }, [])
 
   return (
     <>

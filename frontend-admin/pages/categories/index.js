@@ -6,24 +6,7 @@ import { getCategories } from "../api/category";
 
 
 export default function Index() {
-  const placeholderCategories = [
-    {
-      "name": "Kategori 1",
-      "slug": "kategori-1",
-      "createdAt": "tadi"
-    },
-    {
-      "name": "Kategori 2",
-      "slug": "kategori-2",
-      "createdAt": "tadi"
-    },
-    {
-      "name": "Kategori 3",
-      "slug": "kategori-3",
-      "createdAt": "tadi"
-    },
-  ]
-  const [categories, setCategories] = useState(placeholderCategories)
+  const [categories, setCategories] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
 
   const handleGetCategories = async () => {
