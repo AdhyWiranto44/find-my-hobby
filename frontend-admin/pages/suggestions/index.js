@@ -105,6 +105,39 @@ export default function Index() {
   const [suggestions, setSuggestions] = useState(placeholderSuggestions)
   const [searchTerm, setSearchTerm] = useState("")
 
+  const renderTableData = () => {
+    return (
+      suggestions.map((suggestion, i) => {
+        return (
+          <tr>
+            <th scope="row">{i+1}</th>
+            <td>
+              {suggestion.name}
+            </td>
+            <td class="post-body">{suggestion.description}</td>
+            <td>
+            {suggestion.category}
+            </td>
+            <td>
+            {suggestion.suggester_email}
+            </td>
+            <td>
+            {suggestion.createdAt}
+            </td>
+            <td class="d-flex justify-content-center">
+              <Link href={`/suggestions/${suggestion.slug}/edit`}>
+                <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
+              </Link>
+              <form onSubmit={(e) => handleDelete(e)}>
+                <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={suggestion.slug}></span> Hapus</button>
+              </form>
+            </td>
+          </tr>
+        )
+      })
+    )
+  }
+
   const filterSuggestions = (term) => {
     // Do something.
   }
@@ -145,36 +178,7 @@ export default function Index() {
                         </tr>
                       </thead>
                       <tbody>
-                        {
-                          suggestions.map((suggestion, i) => {
-                            return (
-                              <tr>
-                                <th scope="row">{i+1}</th>
-                                <td>
-                                  {suggestion.name}
-                                </td>
-                                <td class="post-body">{suggestion.description}</td>
-                                <td>
-                                {suggestion.category}
-                                </td>
-                                <td>
-                                {suggestion.suggester_email}
-                                </td>
-                                <td>
-                                {suggestion.createdAt}
-                                </td>
-                                <td class="d-flex justify-content-center">
-                                  <Link href={`/suggestions/${suggestion.slug}/edit`}>
-                                    <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
-                                  </Link>
-                                  <form onSubmit={(e) => handleDelete(e)}>
-                                    <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={suggestion.slug}></span> Hapus</button>
-                                  </form>
-                                </td>
-                              </tr>
-                            )
-                          })
-                        }
+                        {renderTableData()}
                       </tbody>
                       <tfoot class="tfoot-dark">
                         <tr>

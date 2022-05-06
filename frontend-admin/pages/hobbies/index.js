@@ -93,6 +93,36 @@ export default function Index() {
   const [hobbies, setHobbies] = useState(placeholderHobbies)
   const [searchTerm, setSearchTerm] = useState("")
 
+  const renderTableData = () => {
+    return (
+      hobbies.map((hobby, i) => {
+        return (
+          <tr>
+            <th scope="row">{i+1}</th>
+            <td>
+              {hobby.name}
+            </td>
+            <td class="post-body">{hobby.description}</td>
+            <td>
+            {hobby.category}
+            </td>
+            <td>
+            {hobby.createdAt}
+            </td>
+            <td class="d-flex justify-content-center">
+              <Link href={`/hobbies/${hobby.slug}/edit`}>
+                <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
+              </Link>
+              <form onSubmit={(e) => handleDelete(e)}>
+                <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={hobby.slug}></span> Hapus</button>
+              </form>
+            </td>
+          </tr>
+        )
+      })
+    )
+  }
+
   const filterHobbies = (term) => {
     // Do something.
   }
@@ -132,33 +162,7 @@ export default function Index() {
                         </tr>
                       </thead>
                       <tbody>
-                        {
-                          hobbies.map((hobby, i) => {
-                            return (
-                              <tr>
-                                <th scope="row">{i+1}</th>
-                                <td>
-                                  {hobby.name}
-                                </td>
-                                <td class="post-body">{hobby.description}</td>
-                                <td>
-                                {hobby.category}
-                                </td>
-                                <td>
-                                {hobby.createdAt}
-                                </td>
-                                <td class="d-flex justify-content-center">
-                                  <Link href={`/hobbies/${hobby.slug}/edit`}>
-                                    <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
-                                  </Link>
-                                  <form onSubmit={(e) => handleDelete(e)}>
-                                    <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={hobby.slug}></span> Hapus</button>
-                                  </form>
-                                </td>
-                              </tr>
-                            )
-                          })
-                        }
+                        {renderTableData()}
                       </tbody>
                       <tfoot class="tfoot-dark">
                         <tr>

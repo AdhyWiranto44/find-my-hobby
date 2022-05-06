@@ -24,6 +24,32 @@ export default function Index() {
   const [categories, setCategories] = useState(placeholderCategories)
   const [searchTerm, setSearchTerm] = useState("")
 
+  const renderTableData = () => {
+    return (
+      categories.map((category, i) => {
+        return (
+          <tr>
+            <th scope="row">{i+1}</th>
+            <td>
+              {category.name}
+            </td>
+            <td>
+            {category.createdAt}
+            </td>
+            <td class="d-flex justify-content-center">
+              <Link href={`/categories/${category.slug}/edit`}>
+                <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
+              </Link>
+              <form onSubmit={(e) => handleDelete(e)}>
+                <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={category.slug}></span> Hapus</button>
+              </form>
+            </td>
+          </tr>
+        )
+      })
+    )
+  }
+
   const filterCategories = (term) => {
     // Do something.
   }
@@ -61,29 +87,7 @@ export default function Index() {
                         </tr>
                       </thead>
                       <tbody>
-                        {
-                          categories.map((category, i) => {
-                            return (
-                              <tr>
-                                <th scope="row">{i+1}</th>
-                                <td>
-                                  {category.name}
-                                </td>
-                                <td>
-                                {category.createdAt}
-                                </td>
-                                <td class="d-flex justify-content-center">
-                                  <Link href={`/categories/${category.slug}/edit`}>
-                                    <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
-                                  </Link>
-                                  <form onSubmit={(e) => handleDelete(e)}>
-                                    <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={category.slug}></span> Hapus</button>
-                                  </form>
-                                </td>
-                              </tr>
-                            )
-                          })
-                        }
+                        {renderTableData()}
                       </tbody>
                       <tfoot class="tfoot-dark">
                         <tr>
