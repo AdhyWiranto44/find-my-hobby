@@ -45,7 +45,7 @@ export default function Index() {
               {moment(hobby.createdAt).fromNow()}
               </td>
               <td className="d-flex justify-content-center">
-                <Link href={`/hobbies/${hobby.slug}/edit`}>
+                <Link href={`/hobbies/edit/${hobby.slug}`}>
                   <a className="btn btn-warning me-2"><span className="bi bi-pencil-fill"></span> Ubah</a>
                 </Link>
                 <form onSubmit={(e) => handleDelete(e, hobby.slug)}>
