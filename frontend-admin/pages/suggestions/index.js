@@ -1,18 +1,31 @@
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/main";
-import { getSuggestions } from "../api/suggestions";
+import { deleteSuggestion, getSuggestions } from "../api/suggestions";
 
 
 export default function Index() {
   const [suggestions, setSuggestions] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
+  const router = useRouter()
 
   const handleGetSuggestions = async () => {
     let foundSuggestions = await getSuggestions()
     foundSuggestions = foundSuggestions.data.data.suggestions
     setSuggestions(foundSuggestions)
+  }
+
+  const filterSuggestions = (term) => {
+    // Do something.
+  }
+
+  const handleDelete = async (e, slug) => {
+    e.preventDefault()
+
+    const suggestion = await deleteSuggestion(slug)
+    router.reload()
   }
 
   const renderTableData = () => {
@@ -44,8 +57,8 @@ export default function Index() {
                 {moment(suggestion.createdAt).fromNow()}
               </td>
               <td class="d-flex justify-content-center">
-                <form onSubmit={(e) => handleDelete(e)}>
-                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={suggestion.slug}></span> Hapus</button>
+                <form onSubmit={(e) => handleDelete(e, suggestion.slug)}>
+                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill"></span> Hapus</button>
                 </form>
               </td>
             </tr>
@@ -53,14 +66,6 @@ export default function Index() {
         })
       )
     }
-  }
-
-  const filterSuggestions = (term) => {
-    // Do something.
-  }
-
-  const handleDelete = (e) => {
-    e.preventDefault()
   }
 
   useEffect(() => {
