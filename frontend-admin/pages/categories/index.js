@@ -1,11 +1,13 @@
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/main";
-import { getCategories } from "../api/category";
+import { deleteCategory, getCategories } from "../api/category";
 
 
 export default function Index() {
+  const router = useRouter()
   const [categories, setCategories] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
 
@@ -37,8 +39,8 @@ export default function Index() {
                 <Link href={`/categories/edit/${category.slug}`}>
                   <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
                 </Link>
-                <form onSubmit={(e) => handleDelete(e)}>
-                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={category.slug}></span> Hapus</button>
+                <form onSubmit={(e) => handleDelete(e, category.slug)}>
+                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill"></span> Hapus</button>
                 </form>
               </td>
             </tr>
@@ -52,8 +54,11 @@ export default function Index() {
     // Do something.
   }
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e, slug = "") => {
     e.preventDefault()
+
+    const category = await deleteCategory(slug)
+    router.reload()
   }
 
   useEffect(() => {
