@@ -1,8 +1,8 @@
 import axios from 'axios';
+import domain from '../../constants/domain';
 
-const url = `${process.env.NEXT_PUBLIC_BACKEND_DOMAIN}/api/v1/hobbies`;
 
-export const getHobbies = async () => await axios.get(`${url}`);
-export const getHobbiesByName = async (name = "") => await axios.get(`${url}?name=${name}`);
-export const getHobbiesByCategory = async (category = "") => await axios.get(`${url}/categories/${category}`);
-export const getHobby = async (slug = "") => await axios.get(`${url}/${slug}`);
+export const getHobbies = async () => await axios.get(`${domain}`);
+export const getHobbiesByName = async (name = "") => await axios.get(`${domain}?name=${name}`);
+export const getHobbiesByCategory = async (category = "") => await axios.get(`${domain}/categories/${category}`);
+export const getHobby = async (slug = "") => await axios.get(`${domain}/${slug}`);
