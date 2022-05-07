@@ -34,7 +34,7 @@ export default function Index() {
               {moment(category.createdAt).fromNow()}
               </td>
               <td class="d-flex justify-content-center">
-                <Link href={`/categories/${category.slug}/edit`}>
+                <Link href={`/categories/edit/${category.slug}`}>
                   <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
                 </Link>
                 <form onSubmit={(e) => handleDelete(e)}>
