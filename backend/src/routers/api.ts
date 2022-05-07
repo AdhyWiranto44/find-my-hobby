@@ -15,6 +15,9 @@ import { LOCAL_ENV } from '../helpers/constants';
 
 
 const router = express.Router();
+router.get("/", (req, res) => {
+  res.send("Find My Hobby API Works.")
+})
 router.use(hobbyRouter);
 router.use(categoryRouter);
 router.use(suggestionRouter);

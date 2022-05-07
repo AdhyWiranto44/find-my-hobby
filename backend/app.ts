@@ -15,7 +15,9 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: true}));
 app.use("/api/v1/", v1);
-app.set("view engine", "ejs");
+app.get("/", (req, res) => {
+  res.send("Find My Hobby API Works.")
+})
 
 const myConnection: Connection = new Connection();
 
