@@ -1,4 +1,10 @@
 import axios from 'axios'
+import domain from '../../constants/domain'
+import headers from '../../constants/headers'
 
-const domain = process.env.NEXT_PUBLIC_BACKEND_DOMAIN || "http://localhost:8080/api/v1"
+
 export const getCategories = () => axios.get(`${domain}/categories`)
+export const getCategory = async (slug = "") => await axios.get(`${domain}/categories/${slug}`)
+export const createCategory = async (form = {}) => await axios.post(`${domain}/categories`, form, headers)
+export const updateCategory = async (slug = "", form = {}) => await axios.patch(`${domain}/categories/${slug}`, form, headers)
+export const deleteCategory = async (slug = "") => await axios.delete(`${domain}/categories/${slug}`, headers)
