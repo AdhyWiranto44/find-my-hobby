@@ -10,8 +10,9 @@ export default function Index() {
   const [searchTerm, setSearchTerm] = useState("")
 
   const handleGetSuggestions = async () => {
-    const foundSuggestions = await getSuggestions()
-    setSuggestions(foundSuggestions.data.data.suggestions)
+    let foundSuggestions = await getSuggestions()
+    foundSuggestions = foundSuggestions.data.data.suggestions
+    setSuggestions(foundSuggestions)
   }
 
   const renderTableData = () => {
@@ -43,9 +44,6 @@ export default function Index() {
                 {moment(suggestion.createdAt).fromNow()}
               </td>
               <td class="d-flex justify-content-center">
-                <Link href={`/suggestions/${suggestion.slug}/edit`}>
-                  <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
-                </Link>
                 <form onSubmit={(e) => handleDelete(e)}>
                   <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill" value={suggestion.slug}></span> Hapus</button>
                 </form>
@@ -72,13 +70,13 @@ export default function Index() {
   return (
     <>
       <MainLayout
-        title="Tampil Hobi"
+        title="Tampil Saran Hobi"
         content={
           <>
             <div className="container mb-2">
               <div className="row">
                 <div className="col-md-3">
-                  <label>Cari Hobi</label>
+                  <label>Cari Saran Hobi</label>
                   <input type="text" className="form-control" onChange={(e) => setSearchTerm(e.target.value)} />
                 </div>
               </div>
