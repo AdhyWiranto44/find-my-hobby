@@ -23,16 +23,16 @@ export default function AddNew() {
       title="Tambah Kategori Baru"
       content={
         <>
-          <div class="row">
-            <div class="col-md-8">
-              <div class="card shadow-sm border-0">
-                <div class="card-body">
+          <div className="row">
+            <div className="col-md-8">
+              <div className="card shadow-sm border-0">
+                <div className="card-body">
                   <form onSubmit={(e) => handleCreateNewCategory(e)}>
-                    <div class="mb-3">
-                      <label for="name" class="form-label small mb-1 text-capitalize">nama</label>
-                      <input type="text" class="form-control p-3" id="name" name="name" onChange={(e) => setForm({"name": e.target.value})} autofocus required />
+                    <div className="mb-3">
+                      <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
+                      <input type="text" className="form-control p-3" id="name" name="name" onChange={(e) => setForm({"name": e.target.value})} autoFocus required />
                     </div>
-                    <button type="submit" class="btn btn-salmon w-100 p-3 mt-3 fw-bold text-uppercase"><i class="bi bi-plus-circle me-2"></i> tambah</button>
+                    <button type="submit" className="btn btn-salmon w-100 p-3 mt-3 fw-bold text-uppercase"><i className="bi bi-plus-circle me-2"></i> tambah</button>
                   </form>
                 </div>
               </div>

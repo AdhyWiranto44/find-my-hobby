@@ -27,7 +27,7 @@ export default function Index() {
       return (
         categories.map((category, i) => {
           return (
-            <tr>
+            <tr key={i}>
               <th scope="row">{i+1}.</th>
               <td>
                 {category.name}
@@ -35,12 +35,12 @@ export default function Index() {
               <td>
               {moment(category.createdAt).fromNow()}
               </td>
-              <td class="d-flex justify-content-center">
+              <td className="d-flex justify-content-center">
                 <Link href={`/categories/edit/${category.slug}`}>
-                  <a class="btn btn-warning me-2"><span class="bi bi-pencil-fill"></span> Ubah</a>
+                  <a className="btn btn-warning me-2"><span className="bi bi-pencil-fill"></span> Ubah</a>
                 </Link>
                 <form onSubmit={(e) => handleDelete(e, category.slug)}>
-                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill"></span> Hapus</button>
+                  <button type="submit" className="btn btn-outline-danger"><span className="bi bi-trash-fill"></span> Hapus</button>
                 </form>
               </td>
             </tr>
@@ -84,8 +84,8 @@ export default function Index() {
               <div className="row">
                 <div className="col-md">
                   <div className="table-responsive">
-                    <table class="table table-bordered table-striped text-center">
-                      <thead class="thead-dark">
+                    <table className="table table-bordered table-striped text-center">
+                      <thead className="thead-dark">
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Nama</th>
@@ -96,7 +96,7 @@ export default function Index() {
                       <tbody>
                         {renderTableData()}
                       </tbody>
-                      <tfoot class="tfoot-dark">
+                      <tfoot className="tfoot-dark">
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Nama</th>

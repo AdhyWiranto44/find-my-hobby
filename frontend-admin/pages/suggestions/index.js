@@ -39,12 +39,12 @@ export default function Index() {
       return (
         suggestions.map((suggestion, i) => {
           return (
-            <tr>
+            <tr key={i}>
               <th scope="row">{i+1}</th>
               <td>
                 {suggestion.name}
               </td>
-              <td class="post-body">
+              <td className="post-body">
                 {suggestion.description}
               </td>
               <td>
@@ -56,9 +56,9 @@ export default function Index() {
               <td>
                 {moment(suggestion.createdAt).fromNow()}
               </td>
-              <td class="d-flex justify-content-center">
+              <td className="d-flex justify-content-center">
                 <form onSubmit={(e) => handleDelete(e, suggestion.slug)}>
-                  <button type="submit" class="btn btn-outline-danger"><span class="bi bi-trash-fill"></span> Hapus</button>
+                  <button type="submit" className="btn btn-outline-danger"><span className="bi bi-trash-fill"></span> Hapus</button>
                 </form>
               </td>
             </tr>
@@ -91,8 +91,8 @@ export default function Index() {
               <div className="row">
                 <div className="col-md">
                   <div className="table-responsive">
-                    <table class="table table-bordered table-striped text-center">
-                      <thead class="thead-dark">
+                    <table className="table table-bordered table-striped text-center">
+                      <thead className="thead-dark">
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Judul</th>
@@ -106,7 +106,7 @@ export default function Index() {
                       <tbody>
                         {renderTableData()}
                       </tbody>
-                      <tfoot class="tfoot-dark">
+                      <tfoot className="tfoot-dark">
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Judul</th>

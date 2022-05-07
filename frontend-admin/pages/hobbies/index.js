@@ -32,7 +32,7 @@ export default function Index() {
       return (
         hobbies.map((hobby, i) => {
           return (
-            <tr>
+            <tr key={i}>
               <th scope="row">{i+1}.</th>
               <td>
                 {hobby.name}
