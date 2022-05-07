@@ -54,7 +54,7 @@ export default function Edit() {
                   <form onSubmit={(e) => handleUpdateHobby(e)}>
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
-                      <input type="text" className="form-control p-3" id="name" name="name" value={form.name} onChange={(e) => setForm({...form, "name": e.target.value})} autofocus required />
+                      <input type="text" className="form-control p-3" id="name" name="name" value={form.name} onChange={(e) => setForm({...form, "name": e.target.value})} autoFocus required />
                     </div>
                     <div className="mb-3">
                       <label className="text-muted" htmlFor="description"><small>Deskripsi</small></label>
