@@ -35,14 +35,14 @@ export default function Index() {
             <tr key={i}>
               <th scope="row">{i+1}.</th>
               <td>
-                {hobby.name}
+                {hobby.name || <small className="text-muted">[Kosong]</small>}
               </td>
-              <td className="post-body">{hobby.description}</td>
+              <td className="post-body">{hobby.description || <small className="text-muted">[Kosong]</small>}</td>
               <td>
-              {hobby.category}
+              {hobby.category || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
-              {moment(hobby.createdAt).fromNow()}
+              {moment(hobby.createdAt).fromNow() || <small className="text-muted">[Kosong]</small>}
               </td>
               <td className="d-flex justify-content-center">
                 <Link href={`/hobbies/edit/${hobby.slug}`}>

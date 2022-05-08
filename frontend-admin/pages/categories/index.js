@@ -30,10 +30,10 @@ export default function Index() {
             <tr key={i}>
               <th scope="row">{i+1}.</th>
               <td>
-                {category.name}
+                {category.name || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
-              {moment(category.createdAt).fromNow()}
+              {moment(category.createdAt).fromNow() || <small className="text-muted">[Kosong]</small>}
               </td>
               <td className="d-flex justify-content-center">
                 <Link href={`/categories/edit/${category.slug}`}>

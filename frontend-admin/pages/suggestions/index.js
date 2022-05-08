@@ -42,19 +42,19 @@ export default function Index() {
             <tr key={i}>
               <th scope="row">{i+1}</th>
               <td>
-                {suggestion.name}
+                {suggestion.name || <small className="text-muted">[Kosong]</small>}
               </td>
               <td className="post-body">
-                {suggestion.description}
+                {suggestion.description || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
-                {suggestion.category}
+                {suggestion.category || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
-                {suggestion.suggester_email}
+                {suggestion.suggester_email || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
-                {moment(suggestion.createdAt).fromNow()}
+                {moment(suggestion.createdAt).fromNow() || <small className="text-muted">[Kosong]</small>}
               </td>
               <td className="d-flex justify-content-center">
                 <form onSubmit={(e) => handleDelete(e, suggestion.slug)}>
