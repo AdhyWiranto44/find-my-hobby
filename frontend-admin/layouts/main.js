@@ -42,7 +42,7 @@ export default function MainLayout(props) {
       </div>
 
       <footer className="text-secondary text-center py-3 mt-auto marginLeftMinimized" style={{marginTop: "250px"}}>
-        <b>Find My Hobby</b> &#169; {new Date().getFullYear()}. Made with &#10084; By <a className="link-dark" href="https://github.com/adhywranto44" target="_blank">Adhy Wiranto</a>
+        <b>Find My Hobby</b> &#169; {new Date().getFullYear()}. Made with &#10084; By <a className="link-dark" href="https://github.com/adhywiranto44" target="_blank">Adhy Wiranto</a>
       </footer>
     </div>
   )
