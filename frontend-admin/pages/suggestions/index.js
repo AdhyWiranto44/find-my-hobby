@@ -82,7 +82,10 @@ export default function Index() {
               <div className="row">
                 <div className="col-md-3">
                   <label>Cari Saran Hobi</label>
-                  <input type="text" className="form-control" onChange={(e) => setSearchTerm(e.target.value)} />
+                  <div className="d-flex">
+                    <input type="text" className="form-control me-2" onChange={(e) => setSearchTerm(e.target.value)} />
+                    <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetSuggestions()}><i class="bi bi-arrow-clockwise"></i></button>
+                  </div>
                 </div>
               </div>
             </div>
