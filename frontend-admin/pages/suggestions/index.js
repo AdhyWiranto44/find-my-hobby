@@ -1,14 +1,12 @@
 import moment from "moment";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/main";
-import { deleteSuggestion, getSuggestions } from "../api/suggestions";
+import { deleteSuggestion, getSuggestions, getSuggestionsByName } from "../api/suggestions";
 
 
 export default function Index() {
   const [suggestions, setSuggestions] = useState([])
-  const [searchTerm, setSearchTerm] = useState("")
   const router = useRouter()
 
   const handleGetSuggestions = async () => {
@@ -17,8 +15,10 @@ export default function Index() {
     setSuggestions(foundSuggestions)
   }
 
-  const filterSuggestions = (term) => {
-    // Do something.
+  const handleFilterSuggestions = async (name) => {
+    let foundSuggestions = await getSuggestionsByName(name)
+    foundSuggestions = foundSuggestions.data.data.suggestions
+    setSuggestions(foundSuggestions)
   }
 
   const handleDelete = async (e, slug) => {
@@ -83,7 +83,15 @@ export default function Index() {
                 <div className="col-md-3">
                   <label>Cari Saran Hobi</label>
                   <div className="d-flex">
-                    <input type="text" className="form-control me-2" onChange={(e) => setSearchTerm(e.target.value)} />
+                    <input type="text" className="form-control me-2" onChange={(e) => {
+                      setTimeout(() => {
+                        if (e.target.value !== "") {
+                          handleFilterSuggestions(e.target.value);
+                        } else {
+                          handleGetSuggestions();
+                        }
+                      }, 500)
+                    }} />
                     <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetSuggestions()}><i class="bi bi-arrow-clockwise"></i></button>
                   </div>
                 </div>

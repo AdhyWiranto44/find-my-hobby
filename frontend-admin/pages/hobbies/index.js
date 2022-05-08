@@ -2,19 +2,18 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import MainLayout from "../../layouts/main"
 import moment from 'moment'
-import { deleteHobby, getHobbies } from "../api/hobby"
+import { deleteHobby, getHobbies, getHobbiesByName } from "../api/hobby"
 import { useRouter } from "next/router"
 
 
 export default function Index() {
   const [hobbies, setHobbies] = useState([])
-  const [searchTerm, setSearchTerm] = useState("")
   const router = useRouter()
 
   const handleGetHobbies = async () => {
-    const foundHobbies = await getHobbies()
-    console.log(foundHobbies)
-    setHobbies(foundHobbies.data.data.hobbies)
+    let foundHobbies = await getHobbies()
+    foundHobbies = foundHobbies.data.data.hobbies
+    setHobbies(foundHobbies)
   }
 
   useEffect(() => {
@@ -59,8 +58,10 @@ export default function Index() {
     }
   }
 
-  const filterHobbies = (term) => {
-    // Do something.
+  const handleFilterHobby = async (name) => {
+    let foundHobbies = await getHobbiesByName(name)
+    foundHobbies = foundHobbies.data.data.hobbies
+    setHobbies(foundHobbies)
   }
 
   const handleDelete = async (e, slug = "") => {
@@ -81,7 +82,15 @@ export default function Index() {
                 <div className="col-md-3">
                   <label>Cari Hobi</label>
                   <div className="d-flex">
-                    <input type="text" className="form-control me-2" onChange={(e) => setSearchTerm(e.target.value)} />
+                    <input type="text" className="form-control me-2" onChange={(e) => {
+                      setTimeout(() => {
+                        if (e.target.value !== "") {
+                          handleFilterHobby(e.target.value);
+                        } else {
+                          handleGetHobbies();
+                        }
+                      }, 500)
+                    }} />
                     <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetHobbies()}><i class="bi bi-arrow-clockwise"></i></button>
                   </div>
                 </div>

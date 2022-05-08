@@ -6,8 +6,18 @@ import { StatusCodes } from "http-status-codes";
 class CategoryController {
  
   async getAll(req: any, res: any) {
+    const queries = req.query;
+    const filter: any = {}
+    for (const property in queries) {
+      filter[property] = queries[property];
+    }
+
+    if (queries.name) {
+      filter["name"] = { $regex: queries.name + ".*", $options: 'i' };
+    }
+
     try {
-      const categories = await new CategoryService().getAll();
+      const categories = await new CategoryService().getAll(filter);
 
       return new ApiService(
         res, StatusCodes.OK, true,

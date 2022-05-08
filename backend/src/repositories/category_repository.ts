@@ -5,8 +5,8 @@ export default class CategoryRepository {
 
   constructor() {}
   
-  async getAll() {
-    const categories = await Category.find().sort({ created_at: -1 }).exec();
+  async getAll(filter = {}) {
+    const categories = await Category.find(filter).sort({ created_at: -1 }).exec();
 
     return categories;
   }

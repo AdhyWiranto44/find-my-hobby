@@ -4,6 +4,7 @@ import headers from '../../constants/headers'
 
 
 export const getCategories = () => axios.get(`${domain}/categories`)
+export const getCategoriesByName = async (name = "") => await axios.get(`${domain}/categories?name=${name}`)
 export const getCategory = async (slug = "") => await axios.get(`${domain}/categories/${slug}`)
 export const createCategory = async (form = {}) => await axios.post(`${domain}/categories`, form, headers)
 export const updateCategory = async (slug = "", form = {}) => await axios.patch(`${domain}/categories/${slug}`, form, headers)

@@ -5,8 +5,8 @@ export default class SuggestionRepository {
 
   constructor() {}
   
-  async getAll() {
-    const suggestions = await Suggestion.find().sort({ created_at: -1 }).exec();
+  async getAll(filter = {}) {
+    const suggestions = await Suggestion.find(filter).sort({ created_at: -1 }).exec();
 
     return suggestions;
   }

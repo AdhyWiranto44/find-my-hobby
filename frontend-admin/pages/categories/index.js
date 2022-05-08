@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/main";
-import { deleteCategory, getCategories } from "../api/category";
+import { deleteCategory, getCategories, getCategoriesByName } from "../api/category";
 
 
 export default function Index() {
@@ -50,8 +50,10 @@ export default function Index() {
     }
   }
 
-  const filterCategories = (term) => {
-    // Do something.
+  const handleFilterCategories = async (name) => {
+    let foundCategories = await getCategoriesByName(name)
+    foundCategories = foundCategories.data.data.categories
+    setCategories(foundCategories)
   }
 
   const handleDelete = async (e, slug = "") => {
@@ -76,7 +78,15 @@ export default function Index() {
                 <div className="col-md-3">
                   <label>Cari Kategori</label>
                   <div className="d-flex">
-                    <input type="text" className="form-control me-2" onChange={(e) => setSearchTerm(e.target.value)} />
+                    <input type="text" className="form-control me-2" onChange={(e) => {
+                      setTimeout(() => {
+                        if (e.target.value !== "") {
+                          handleFilterCategories(e.target.value);
+                        } else {
+                          handleGetCategories();
+                        }
+                      }, 500)
+                    }} />
                     <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetCategories()}><i class="bi bi-arrow-clockwise"></i></button>
                   </div>
                 </div>

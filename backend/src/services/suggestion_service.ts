@@ -8,8 +8,8 @@ export default class SuggestionService {
 
   constructor() {}
 
-  async getAll() {
-    const suggestions = await new SuggestionRepository().getAll();
+  async getAll(filter = {}) {
+    const suggestions = await new SuggestionRepository().getAll(filter);
 
     if (suggestions.length < 1) throw createError(StatusCodes.NOT_FOUND, "Suggestions empty.");
 

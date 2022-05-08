@@ -7,8 +7,18 @@ import SuggestionService from "../services/suggestion_service";
 class SuggestionController {
 
   async getAll(req: any, res: any) {
+    const queries = req.query;
+    const filter: any = {}
+    for (const property in queries) {
+      filter[property] = queries[property];
+    }
+
+    if (queries.name) {
+      filter["name"] = { $regex: queries.name + ".*", $options: 'i' };
+    }
+
     try {
-      const suggestions = await new SuggestionService().getAll();
+      const suggestions = await new SuggestionService().getAll(filter);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
