@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container">
         <div className="row border-dark">
           <div className="col-md text-center py-3">
-            <small className="mr-2">&#169; {new Date().getFullYear()}. Made with <a className="text-decoration-none text-dark" href={`${domain}/login`}>&#10084;</a> By Adhy Wiranto</small>
+            <small className="mr-2"><b>Find My Hobby</b> &#169; {new Date().getFullYear()}. Made with <a className="text-decoration-none text-dark" href={`${domain}/login`} target="_blank">&#10084;</a> By <a className="link-dark" href="https://github.com/adhywranto44" target="_blank">Adhy Wiranto</a></small>
           </div>
         </div>
       </div>
