@@ -10,7 +10,7 @@ const authentication = new Authentication();
 router.get("/suggestions", authentication.authenticate, suggestionController.getAll);
 router.get("/suggestions/:slug", authentication.authenticate, suggestionController.getOne);
 router.get("/suggestions/categories/:slug", authentication.authenticate, suggestionController.getByCategory);
-router.post("/suggestions", authentication.authenticate, suggestionController.create);
+router.post("/suggestions", suggestionController.create);
 router.patch("/suggestions/:slug", authentication.authenticate, suggestionController.update);
 router.delete("/suggestions/:slug", authentication.authenticate, suggestionController.delete);
 

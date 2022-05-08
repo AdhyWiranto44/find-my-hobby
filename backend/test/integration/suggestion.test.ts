@@ -136,7 +136,6 @@ describe("POST /api/v1/suggestions", () => {
   it ("create new suggestion", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/suggestions`)
-      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -154,7 +153,6 @@ describe("POST /api/v1/suggestions", () => {
   it ("create new suggestion and category not found", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/suggestions`)
-      .set("Authorization", `Bearer ${JWT}`)
       .send({
         "name": "Mengodonf",
         "description": "Mengodonf.",
@@ -172,26 +170,8 @@ describe("POST /api/v1/suggestions", () => {
   it ("create empty suggestion", (done: any) => {
     request(app)
       .post(`${API_PREFIX}/suggestions`)
-      .set("Authorization", `Bearer ${JWT}`)
       .send({})
       .expect(StatusCodes.BAD_REQUEST)
-      .end((err, res) => {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it ("create new suggestion and token not provided", (done: any) => {
-    request(app)
-      .post(`${API_PREFIX}/suggestions`)
-      .send({
-        "name": "Mengodonf",
-        "description": "Mengodonf.",
-        "category": "teknologi",
-        "img": "",
-        "visited_count": 0
-      })
-      .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
         if (err) return done(err);
         return done();
