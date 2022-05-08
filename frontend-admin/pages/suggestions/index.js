@@ -92,7 +92,7 @@ export default function Index() {
                         }
                       }, 500)
                     }} />
-                    <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetSuggestions()}><i class="bi bi-arrow-clockwise"></i></button>
+                    <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetSuggestions()}><i className="bi bi-arrow-clockwise"></i></button>
                   </div>
                 </div>
               </div>

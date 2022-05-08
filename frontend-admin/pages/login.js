@@ -47,7 +47,7 @@ export default function Login() {
               <div className="row gx-3">
                 <div className="col-sm-3">
                   <Link href={`${process.env.NEXT_PUBLIC_VISITOR_DOMAIN || "http://localhost:3000"}`}>
-                    <a className="btn btn-outline-secondary w-100 p-3 mt-3"><i class="bi bi-chevron-left"></i></a>
+                    <a className="btn btn-outline-secondary w-100 p-3 mt-3"><i className="bi bi-chevron-left"></i></a>
                   </Link>
                 </div>
                 <div className="col-sm-9">
