@@ -73,18 +73,22 @@ export default function Hobbies() {
           <div className="col-md-6 offset-md-3">
             <SearchBar 
               onChange={(e) => {
-                if (e.target.value !== "") {
-                  handleFilterHobby(e.target.value);
-                } else {
-                  handleGetHobbies(router.query.category);
-                }
+                setTimeout(() => {
+                  if (e.target.value !== "") {
+                    handleFilterHobby(e.target.value);
+                  } else {
+                    handleGetHobbies(router.query.category);
+                  }
+                }, 500)
               }}
               onClick={(e) => {
-                if (e.target.value !== "") {
-                  handleFilterHobby(e.target.value);
-                } else {
-                  handleGetHobbies(router.query.category);
-                }
+                setTimeout(() => {
+                  if (e.target.value !== "") {
+                    handleFilterHobby(e.target.value);
+                  } else {
+                    handleGetHobbies(router.query.category);
+                  }
+                }, 500)
               }}
             />
           </div>
