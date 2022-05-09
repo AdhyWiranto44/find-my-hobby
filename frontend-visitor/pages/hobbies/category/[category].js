@@ -67,7 +67,6 @@ export default function Hobbies() {
 
   useEffect(() => {
     setCategory(router.query.category);
-    handleGetHobbies(category);
   });
 
   return (
