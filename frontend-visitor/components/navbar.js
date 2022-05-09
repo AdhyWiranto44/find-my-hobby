@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LoginButton from "./loginButton";
 
 export default function Navbar() {
   return (
@@ -43,6 +44,7 @@ export default function Navbar() {
                 Cari Acak
               </a>
             </Link>
+            <LoginButton />
           </div>
         </div>
       </div>

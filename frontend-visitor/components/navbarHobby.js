@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Roller } from "react-awesome-spinners";
 import { default_categories } from "../helpers/constants";
 import { getCategories } from "../pages/api/category";
+import LoginButton from "./loginButton";
 
 export default function NavbarHobby() {
   const [categories, setCategories] = useState([default_categories]);
@@ -87,6 +88,7 @@ export default function NavbarHobby() {
                 Cari Acak
               </a>
             </Link>
+            <LoginButton />
           </div>
         </div>
       </div>
