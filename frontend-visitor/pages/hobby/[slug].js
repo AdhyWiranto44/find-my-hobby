@@ -37,7 +37,9 @@ export default function HobbyPage() {
           <div className="row">
             <div className="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
               <h1 className="fw-bold text-light">{hobby.name}</h1>
-              <p className="text-light">Kategori: {hobby.category}</p>
+              <Link href={`/hobbies/category/${hobby.category}`}>
+                <a className="btn btn-outline-light mt-2" style={{borderRadius: "15px"}}>{hobby.category}</a>
+              </Link>
             </div>
           </div>
         </div>
