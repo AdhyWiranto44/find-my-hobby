@@ -131,6 +131,7 @@ export default function Home() {
               <SearchBar 
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onClick={(e) => handleFilterHobby(e, searchTerm)}
+                onKeyUp={(e) => e.key == "Enter" && handleFilterHobby(e, searchTerm)}
               />
             </div>
             <div className="col-lg-4 offset-lg-4 mt-3">

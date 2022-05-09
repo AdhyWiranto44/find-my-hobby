@@ -8,6 +8,7 @@ export default function SearchBar(props) {
         name="title"
         placeholder="cari berdasarkan nama"
         onChange={props.onChange}
+        onKeyUp={props.onKeyUp}
       />
       <button
         type="button"
