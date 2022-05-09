@@ -10,8 +10,11 @@ export default function HobbyItem(props) {
             <img src="/img/hobi.webp" className="card-img w-100" alt="rekomendasi hobi" />
             <div className="card-img-overlay d-flex">
               <div className="mt-auto">
-                <h5 className="card-title fw-bold">{props.hobby.name}</h5>
-                <p className="card-text text-justify">{props.hobby.description.substring(0, 30)}...</p>
+                <h6 className="card-title fw-bold">{props.hobby.name}</h6>
+                <p className="small card-text text-justify">{props.hobby.description.substring(0, 30)}...</p>
+                <Link href={`/hobby/${props.hobby.slug}`}>
+                  <a className="btn btn-sm btn-outline-light fw-bold" style={{borderRadius: "10px"}}>Detail</a>
+                </Link>
               </div>
             </div>
           </div>
