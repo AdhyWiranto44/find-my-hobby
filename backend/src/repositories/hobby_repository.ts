@@ -23,7 +23,7 @@ export default class HobbyRepository {
   }
 
   async update(slug: string, hobby: any) {
-    const updated = Hobby.findOneAndUpdate({slug}, hobby);
+    const updated = Hobby.findOneAndUpdate({slug}, hobby, { runValidators: true });
 
     return updated;
   }

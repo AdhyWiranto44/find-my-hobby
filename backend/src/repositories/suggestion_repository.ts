@@ -24,7 +24,7 @@ export default class SuggestionRepository {
   }
 
   async update(slug: string, category: any) {
-    const updated = Suggestion.findOneAndUpdate({slug}, category);
+    const updated = Suggestion.findOneAndUpdate({slug}, category, { runValidators: true });
 
     return updated;
   }

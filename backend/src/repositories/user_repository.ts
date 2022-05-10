@@ -22,7 +22,7 @@ class UserRepository {
   }
 
   async update(slug: string, user: any) {
-    const updated = User.findOneAndUpdate({slug}, user);
+    const updated = User.findOneAndUpdate({slug}, user, { runValidators: true });
 
     return updated;
   }

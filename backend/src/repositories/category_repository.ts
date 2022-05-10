@@ -24,7 +24,7 @@ export default class CategoryRepository {
   }
 
   async update(slug: string, category: any) {
-    const updated = Category.findOneAndUpdate({slug}, category);
+    const updated = Category.findOneAndUpdate({slug}, category, { runValidators: true });
 
     return updated;
   }
