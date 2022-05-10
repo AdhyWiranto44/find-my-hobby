@@ -5,9 +5,12 @@ import Sidebar from '../components/sidebar'
 import Title from '../components/title'
 import Cookies from 'js-cookie'
 import { tokenCookie } from '../constants/cookies'
+import Notification from '../components/notification'
+import { TIMEOUT_LONG } from '../constants/timeout'
 
 
 export default function MainLayout(props) {
+  const [notification, setNotification] = useState("")
   const [isActive, setIsActive] = useState(false)
   const router = useRouter()
   const token = Cookies.get(tokenCookie)
@@ -15,6 +18,18 @@ export default function MainLayout(props) {
   useEffect(() => {
     if (!token || token === "") router.push("/login")
   })
+
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+    setTimeout(() => {
+      setNotification("")
+    }, TIMEOUT_LONG)
+  }
 
   const toggleSidebar = () => {
     if (isActive) {
@@ -28,8 +43,12 @@ export default function MainLayout(props) {
     <div className="d-flex flex-column min-vh-100">
       <Sidebar isActive={isActive} />
       <div id="navbar" className={ isActive ? "marginLeftMinimized" : "marginLeft" }>
-        <Navbar toggleSidebar={toggleSidebar} />
-        {/* <Alert /> */}
+        <Navbar 
+          toggleSidebar={toggleSidebar} 
+          renderNotification={renderNotification}
+          />
+        {notification}
+        {props.notification}
         <div className="container-fluid">
           <div className="row">
             <div className="col-md">

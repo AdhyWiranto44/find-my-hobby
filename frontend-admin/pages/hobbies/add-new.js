@@ -1,12 +1,15 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Title from "../../components/title";
+import Notification from "../../components/notification";
+import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
+import { TIMEOUT, TIMEOUT_LONG } from "../../constants/timeout";
 import MainLayout from "../../layouts/main";
 import { getCategories } from "../api/category";
 import { createHobby } from "../api/hobby";
 
 
 export default function AddNew() {
+  const [notification, setNotification] = useState(null)
   const [categories, setCategories] = useState([])
   const router = useRouter()
   const defaultForm = {
@@ -16,6 +19,18 @@ export default function AddNew() {
   }
   const [form, setForm] = useState(defaultForm)
 
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+    setTimeout(() => {
+      setNotification("")
+    }, TIMEOUT_LONG)
+  }
+
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
     setCategories(foundCategories.data.data.categories)
@@ -23,21 +38,25 @@ export default function AddNew() {
 
   const handleCreateNewHobby = async (e) => {
     e.preventDefault()
-    const hobby = await createHobby(form)
-    router.reload()
+    try {
+      const hobby = await createHobby(form)
+      renderNotification(ALERT_SUCCESS, hobby.data.message)
+      setTimeout(() => {
+        router.reload()
+      }, TIMEOUT)
+    } catch (err) {
+      renderNotification(ALERT_FAILED, err.response.data.message)
+    }
   }
 
   useEffect(() => {
     handleGetCategories()
   }, [])
 
-  useEffect(() => {
-    console.log(form)
-  })
-
   return (
     <MainLayout
       title="Tambah Hobi Baru"
+      notification={notification}
       content={
         <>
           <div className="row">
