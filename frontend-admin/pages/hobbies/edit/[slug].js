@@ -1,5 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Notification from "../../../components/notification";
+import { ALERT_FAILED, ALERT_SUCCESS } from "../../../constants/alertStyles";
+import { TIMEOUT, TIMEOUT_LONG } from "../../../constants/timeout";
 import MainLayout from "../../../layouts/main";
 import { getCategories } from "../../api/category";
 import { getHobby, updateHobby } from "../../api/hobby";
@@ -8,6 +11,7 @@ import { getHobby, updateHobby } from "../../api/hobby";
 export default function Edit() {
   const router = useRouter()
   const slug = router.query.slug
+  const [notification, setNotification] = useState(null)
   const [categories, setCategories] = useState([])
   const [hobby, setHobby] = useState({})
   const [form, setForm] = useState({
@@ -16,6 +20,18 @@ export default function Edit() {
     "category": ""
   })
 
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+    setTimeout(() => {
+      setNotification("")
+    }, TIMEOUT_LONG)
+  }
+
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
     setCategories(foundCategories.data.data.categories)
@@ -23,8 +39,15 @@ export default function Edit() {
 
   const handleUpdateHobby = async (e) => {
     e.preventDefault()
-    const hobby = await updateHobby(slug, form)
-    router.push("/hobbies")
+    try {
+      const hobby = await updateHobby(slug, form)
+      renderNotification(ALERT_SUCCESS, hobby.data.message)
+      setTimeout(() => {
+        router.push("/hobbies")
+      }, TIMEOUT)
+    } catch (err) {
+      renderNotification(ALERT_FAILED, err.response.data.message)
+    }
   }
 
   const handleGetHobby = async (slug = "") => {
@@ -45,6 +68,7 @@ export default function Edit() {
   return (
     <MainLayout
       title="Ubah Hobi"
+      notification={notification}
       content={
         <>
           <div className="row">
