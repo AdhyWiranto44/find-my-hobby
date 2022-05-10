@@ -8,18 +8,23 @@ import { deleteSuggestion, getSuggestions, getSuggestionsByName } from "../api/s
 
 export default function Index() {
   const [suggestions, setSuggestions] = useState([])
+  const [total, setTotal] = useState(0)
   const router = useRouter()
 
   const handleGetSuggestions = async () => {
     let foundSuggestions = await getSuggestions()
+    const total = foundSuggestions.data.data.total
     foundSuggestions = foundSuggestions.data.data.suggestions
     setSuggestions(foundSuggestions)
+    setTotal(total)
   }
 
   const handleFilterSuggestions = async (name) => {
     let foundSuggestions = await getSuggestionsByName(name)
+    const total = foundSuggestions.data.data.total
     foundSuggestions = foundSuggestions.data.data.suggestions
     setSuggestions(foundSuggestions)
+    setTotal(total)
   }
 
   const handleDelete = async (e, slug) => {
@@ -105,6 +110,7 @@ export default function Index() {
               <div className="row">
                 <div className="col-md">
                   <div className="table-responsive">
+                    <p>Total: <b>{total}</b> Data Ditemukan</p>
                     <table className="table table-bordered table-striped text-center">
                       <thead className="thead-dark">
                         <tr>

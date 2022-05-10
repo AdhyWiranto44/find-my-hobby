@@ -10,11 +10,15 @@ import { deleteCategory, getCategories, getCategoriesByName } from "../api/categ
 export default function Index() {
   const router = useRouter()
   const [categories, setCategories] = useState([])
+  const [total, setTotal] = useState(0)
   const [searchTerm, setSearchTerm] = useState("")
 
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
-    setCategories(foundCategories.data.data.categories)
+    const total = foundCategories.data.data.total
+    foundCategories = foundCategories.data.data.categories
+    setCategories(foundCategories)
+    setTotal(total)
   }
 
   const renderTableData = () => {
@@ -53,8 +57,10 @@ export default function Index() {
 
   const handleFilterCategories = async (name) => {
     let foundCategories = await getCategoriesByName(name)
+    const total = foundCategories.data.data.total
     foundCategories = foundCategories.data.data.categories
     setCategories(foundCategories)
+    setTotal(total)
   }
 
   const handleDelete = async (e, slug = "") => {
@@ -103,6 +109,7 @@ export default function Index() {
               <div className="row">
                 <div className="col-md">
                   <div className="table-responsive">
+                    <p>Total: <b>{total}</b> Data Ditemukan</p>
                     <table className="table table-bordered table-striped text-center">
                       <thead className="thead-dark">
                         <tr>

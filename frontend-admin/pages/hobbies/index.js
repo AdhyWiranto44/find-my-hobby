@@ -9,12 +9,15 @@ import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout"
 
 export default function Index() {
   const [hobbies, setHobbies] = useState([])
+  const [total, setTotal] = useState(0)
   const router = useRouter()
 
   const handleGetHobbies = async () => {
     let foundHobbies = await getHobbies()
+    const total = foundHobbies.data.data.total
     foundHobbies = foundHobbies.data.data.hobbies
     setHobbies(foundHobbies)
+    setTotal(total)
   }
 
   useEffect(() => {
@@ -61,8 +64,10 @@ export default function Index() {
 
   const handleFilterHobby = async (name) => {
     let foundHobbies = await getHobbiesByName(name)
+    const total = foundHobbies.data.data.total
     foundHobbies = foundHobbies.data.data.hobbies
     setHobbies(foundHobbies)
+    setTotal(total)
   }
 
   const handleDelete = async (e, slug = "") => {
@@ -107,6 +112,7 @@ export default function Index() {
               <div className="row">
                 <div className="col-md">
                   <div className="table-responsive">
+                    <p>Total: <b>{total}</b> Data Ditemukan</p>
                     <table className="table table-bordered table-striped text-center">
                       <thead className="thead-dark">
                         <tr>
