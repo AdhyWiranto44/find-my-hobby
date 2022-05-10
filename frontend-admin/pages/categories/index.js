@@ -59,9 +59,11 @@ export default function Index() {
 
   const handleDelete = async (e, slug = "") => {
     e.preventDefault()
-
-    const category = await deleteCategory(slug)
-    router.reload()
+    const isConfirmed = confirm("Yakin ingin menghapus?")
+    if (isConfirmed) {
+      const category = await deleteCategory(slug)
+      router.reload()
+    }
   }
 
   useEffect(() => {
