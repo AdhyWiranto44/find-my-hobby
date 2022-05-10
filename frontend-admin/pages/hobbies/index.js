@@ -80,9 +80,12 @@ export default function Index() {
         title="Tampil Hobi"
         content={
           <>
+            <Link href="/hobbies/add-new">
+              <a className="btn btn-salmon fw-bold mb-3">Tambah Baru</a>
+            </Link>
             <div className="container-fluid mb-2">
               <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-6 col-lg-3">
                   <label>Cari Hobi</label>
                   <div className="d-flex">
                     <input type="text" className="form-control me-2" onChange={(e) => {
