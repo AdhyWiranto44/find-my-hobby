@@ -1,26 +1,50 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Notification from "../../components/notification";
 import Title from "../../components/title";
+import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
+import { TIMEOUT, TIMEOUT_LONG } from "../../constants/timeout";
 import MainLayout from "../../layouts/main";
 import { createCategory } from "../api/category";
 
 
 export default function AddNew() {
+  const [notification, setNotification] = useState(null)
   const router = useRouter()
   const [form, setForm] = useState({
     "name": ""
   })
 
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+    setTimeout(() => {
+      setNotification("")
+    }, TIMEOUT_LONG)
+  }
+
   const handleCreateNewCategory = async (e) => {
     e.preventDefault()
 
-    const category = await createCategory(form)
-    router.push("/categories")
+    try {
+      const category = await createCategory(form)
+      renderNotification(ALERT_SUCCESS, category.data.message)
+      setTimeout(() => {
+        router.push("/categories")
+      }, TIMEOUT)
+    } catch (err) {
+      renderNotification(ALERT_FAILED, err.response.data.message)
+    }
   }
 
   return (
     <MainLayout
       title="Tambah Kategori Baru"
+      notification={notification}
       content={
         <>
           <div className="row">

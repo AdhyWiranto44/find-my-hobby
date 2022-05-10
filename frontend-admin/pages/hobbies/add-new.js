@@ -42,7 +42,7 @@ export default function AddNew() {
       const hobby = await createHobby(form)
       renderNotification(ALERT_SUCCESS, hobby.data.message)
       setTimeout(() => {
-        router.reload()
+        router.push("/hobbies")
       }, TIMEOUT)
     } catch (err) {
       renderNotification(ALERT_FAILED, err.response.data.message)
