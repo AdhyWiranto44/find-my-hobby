@@ -1,19 +1,39 @@
+import { useState } from 'react'
 import { useRouter } from "next/router"
 import Cookies from 'js-cookie'
 import { tokenCookie } from "../constants/cookies"
+import { TIMEOUT } from '../constants/timeout'
+import Notification from "./notification"
 
 
 export default function Navbar(props) {
+  const [notification, setNotification] = useState("")
   const router = useRouter()
+
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+  }
 
   const handleLogout = (e) => {
     e.preventDefault()
-    Cookies.remove(tokenCookie)
-    router.push("/login")
+    const isConfirmed = confirm("Yakin ingin logout?")
+    if (isConfirmed) {
+      renderNotification("alert-success", "Logout success.")
+      setTimeout(() => {
+        Cookies.remove(tokenCookie)
+        router.push("/login")
+      }, TIMEOUT)
+    }
   }
 
   return (
     <nav className="navbar navbar-expand-md navbar-light py-3 sticky-top py-3 border-bottom border-light border-2">
+      {notification}
       <div className="container-fluid">
         <div className="navbarLeftMenu">
           <button type="button" className="border-0 bg-transparent" onClick={props.toggleSidebar}>

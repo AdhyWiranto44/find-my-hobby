@@ -4,6 +4,7 @@ import MainLayout from "../../layouts/main"
 import moment from 'moment'
 import { deleteHobby, getHobbies, getHobbiesByName } from "../api/hobby"
 import { useRouter } from "next/router"
+import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout"
 
 
 export default function Index() {
@@ -89,7 +90,7 @@ export default function Index() {
                         } else {
                           handleGetHobbies();
                         }
-                      }, 500)
+                      }, TIMEOUT_HALF_A_SECOND)
                     }} />
                     <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetHobbies()}><i className="bi bi-arrow-clockwise"></i></button>
                   </div>

@@ -7,6 +7,7 @@ import NavbarHobby from '../../../components/navbarHobby';
 import { Roller } from 'react-awesome-spinners';
 import { default_hobby } from '../../../helpers/constants';
 import SearchBar from '../../../components/searchBar';
+import { TIMEOUT_HALF_A_SECOND } from '../../../../frontend-admin/constants/timeout';
 
 
 export default function Hobbies() {
@@ -84,7 +85,7 @@ export default function Hobbies() {
                   } else {
                     handleGetHobbies(router.query.category);
                   }
-                }, 500)
+                }, TIMEOUT_HALF_A_SECOND)
               }}
               onClick={(e) => {
                 setTimeout(() => {
@@ -93,7 +94,7 @@ export default function Hobbies() {
                   } else {
                     handleGetHobbies(router.query.category);
                   }
-                }, 500)
+                }, TIMEOUT_HALF_A_SECOND)
               }}
             />
           </div>

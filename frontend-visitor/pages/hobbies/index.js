@@ -10,6 +10,7 @@ import { Roller } from 'react-awesome-spinners';
 import { default_categories, default_hobby } from '../../helpers/constants';
 import { getCategories } from '../api/category';
 import Link from 'next/link';
+import { TIMEOUT_HALF_A_SECOND } from '../../../frontend-admin/constants/timeout';
 
 
 export default function Hobbies() {
@@ -79,7 +80,7 @@ export default function Hobbies() {
                   } else {
                     handleGetHobbies(router.query.category);
                   }
-                }, 500)
+                }, TIMEOUT_HALF_A_SECOND)
               }}
               onClick={(e) => {
                 setTimeout(() => {
@@ -88,7 +89,7 @@ export default function Hobbies() {
                   } else {
                     handleGetHobbies(router.query.category);
                   }
-                }, 500)
+                }, TIMEOUT_HALF_A_SECOND)
               }}
             />
           </div>

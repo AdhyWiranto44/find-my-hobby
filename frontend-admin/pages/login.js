@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 import { tokenCookie } from '../constants/cookies'
 import Link from 'next/link'
 import Notification from '../components/notification'
+import { TIMEOUT } from '../constants/timeout'
 
 
 export default function Login() {
@@ -36,7 +37,7 @@ export default function Login() {
       setTimeout(() => {
         Cookies.set(tokenCookie, jwt.data.data.token, { expires: 1/12 })
         router.push("/")
-      }, 2000)
+      }, TIMEOUT)
     } catch (err) {
       renderNotification("alert-danger", err.response.data.message)
     }

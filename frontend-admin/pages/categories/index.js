@@ -2,6 +2,7 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout";
 import MainLayout from "../../layouts/main";
 import { deleteCategory, getCategories, getCategoriesByName } from "../api/category";
 
@@ -85,7 +86,7 @@ export default function Index() {
                         } else {
                           handleGetCategories();
                         }
-                      }, 500)
+                      }, TIMEOUT_HALF_A_SECOND)
                     }} />
                     <button className="btn btn-salmon" title="Refresh data" onClick={(e) => handleGetCategories()}><i className="bi bi-arrow-clockwise"></i></button>
                   </div>
