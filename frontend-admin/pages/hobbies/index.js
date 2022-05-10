@@ -67,9 +67,11 @@ export default function Index() {
 
   const handleDelete = async (e, slug = "") => {
     e.preventDefault()
-
-    const result = await deleteHobby(slug)
-    router.reload()
+    const isConfirmed = confirm("Yakin ingin menghapus?")
+    if (isConfirmed) {
+      const result = await deleteHobby(slug)
+      router.reload()
+    }
   }
 
   return (
