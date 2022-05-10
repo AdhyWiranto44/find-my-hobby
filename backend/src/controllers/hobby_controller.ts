@@ -58,13 +58,25 @@ class HobbyController {
   }
 
   async getByCategory(req: any, res: any) {
+    const queries = req.query;
+    const filter: any = { "category": req.params.category }
+    const pagination: any = { "limit": 1, "skip": 0 }
+
+    for (const property in queries) {
+      if (property == "limit" || property == "skip") {
+        pagination[property] = parseInt(queries[property]);
+      }
+    }
+    
     try {
-      const hobbies = await new HobbyService().getByCategory(req.params.slug);
+      const hobbies = await new HobbyService().getByCategory(filter.category, pagination.limit, pagination.skip);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
-        "Hobbies found.", 
+        `Hobbies found by category ${filter.category}.`, 
         { 
+          "total": hobbies.length,
+          "category": filter.category,
           "hobbies": hobbies
         }
       ).sendResponse();

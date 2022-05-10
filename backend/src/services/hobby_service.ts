@@ -16,12 +16,9 @@ export default class HobbyService {
     return hobbies;
   }
 
-  async getByCategory(category: string) {
-    let hobbies = await new HobbyRepository().getAll();
-    
-    hobbies = hobbies.filter(hobby => {
-      return hobby.category == category;
-    });
+  async getByCategory(category: string, limit: number = 1, skip: number = 0) {
+    const filter = { "category": category }
+    const hobbies = await new HobbyRepository().getAll(filter, limit, skip);
 
     if (hobbies.length < 1) throw createError(StatusCodes.NOT_FOUND, "Hobbies not found.");
 

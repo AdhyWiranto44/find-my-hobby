@@ -9,7 +9,7 @@ const authentication = new Authentication();
 
 router.get("/hobbies", hobbyController.getAll);
 router.get("/hobbies/:slug", hobbyController.getOne);
-router.get("/hobbies/categories/:slug", hobbyController.getByCategory);
+router.get("/hobbies/categories/:category", hobbyController.getByCategory);
 router.post("/hobbies", authentication.authenticate, hobbyController.create);
 router.patch("/hobbies/:slug", authentication.authenticate, hobbyController.update);
 router.delete("/hobbies/:slug", authentication.authenticate, hobbyController.delete);
