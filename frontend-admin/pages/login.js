@@ -1,13 +1,15 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Title from '../components/title'
 import { login } from './api/auth'
 import Cookies from 'js-cookie'
 import { tokenCookie } from '../constants/cookies'
 import Link from 'next/link'
+import Notification from '../components/notification'
 
 
 export default function Login() {
+  const [notification, setNotification] = useState("")
   const [form, setForm] = useState({
     "username": "",
     "password": ""
@@ -17,18 +19,32 @@ export default function Login() {
 
   if (token) router.push("/")
 
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault()
-    let jwt = await login(form)
-    jwt = jwt.data.data.token
-    if (jwt !== "") {
-      Cookies.set(tokenCookie, jwt, { expires: 1/12 })
-      router.push("/")
+    try {
+      let jwt = await login(form)
+      renderNotification("alert-success", "Login success.")
+      setTimeout(() => {
+        Cookies.set(tokenCookie, jwt.data.data.token, { expires: 1/12 })
+        router.push("/")
+      }, 2000)
+    } catch (err) {
+      renderNotification("alert-danger", err.response.data.message)
     }
   }
 
   return (
     <div className="bg-salmon">
+      {notification}
       <div className="container-fluid">
         <div className="row position-absolute h-100 w-100 overflow-hidden">
           <div className="col-lg-6 login d-flex align-items-center justify-content-center">
