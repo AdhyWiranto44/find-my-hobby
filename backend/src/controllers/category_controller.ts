@@ -8,7 +8,12 @@ class CategoryController {
   async getAll(req: any, res: any) {
     const queries = req.query;
     const filter: any = {}
+    const pagination: any = { "limit": 1, "skip": 0 }
+
     for (const property in queries) {
+      if (property == "limit" || property == "skip") {
+        pagination[property] = parseInt(queries[property]);
+      }
       filter[property] = queries[property];
     }
 
@@ -17,12 +22,13 @@ class CategoryController {
     }
 
     try {
-      const categories = await new CategoryService().getAll(filter);
+      const categories = await new CategoryService().getAll(filter, pagination.limit, pagination.skip);
 
       return new ApiService(
         res, StatusCodes.OK, true,
         "Categories found.",
         {
+          "total": categories.length,
           "categories": categories
         }
       ).sendResponse();

@@ -45,6 +45,16 @@ describe("GET /api/v1/categories", () => {
       });
   });
 
+  it("get all categories data with pagination", (done: any) => {
+    request(app)
+      .get(`${API_PREFIX}/categories?limit=10&skip=0`)
+      .expect(StatusCodes.OK)
+      .end((err, res) => {
+        if (err) return done(err);
+        return done();
+      });
+  });
+
 });
 
 describe("GET /api/v1/categories/:slug", () => {

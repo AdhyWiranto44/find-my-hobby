@@ -9,7 +9,12 @@ class SuggestionController {
   async getAll(req: any, res: any) {
     const queries = req.query;
     const filter: any = {}
+    const pagination: any = { "limit": 1, "skip": 0 }
+
     for (const property in queries) {
+      if (property == "limit" || property == "skip") {
+        pagination[property] = parseInt(queries[property]);
+      }
       filter[property] = queries[property];
     }
 
@@ -18,12 +23,13 @@ class SuggestionController {
     }
 
     try {
-      const suggestions = await new SuggestionService().getAll(filter);
+      const suggestions = await new SuggestionService().getAll(filter, pagination.limit, pagination.skip);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
         "Suggestions found.", 
         { 
+          "total": suggestions.length,
           "suggestions": suggestions 
         }
       ).sendResponse();

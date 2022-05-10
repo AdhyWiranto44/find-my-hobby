@@ -5,8 +5,12 @@ export default class CategoryRepository {
 
   constructor() {}
   
-  async getAll(filter = {}) {
-    const categories = await Category.find(filter).sort({ created_at: -1 }).exec();
+  async getAll(filter = {}, limit: number = 1, skip: number = 0) {
+    const categories = await Category.find(filter)
+    .limit(limit)
+    .skip(skip)
+    .sort({ created_at: -1 })
+    .exec();
 
     return categories;
   }

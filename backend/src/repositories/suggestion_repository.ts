@@ -5,8 +5,12 @@ export default class SuggestionRepository {
 
   constructor() {}
   
-  async getAll(filter = {}) {
-    const suggestions = await Suggestion.find(filter).sort({ created_at: -1 }).exec();
+  async getAll(filter = {}, limit: number = 1, skip: number = 0) {
+    const suggestions = await Suggestion.find(filter)
+    .limit(limit)
+    .skip(skip)
+    .sort({ created_at: -1 })
+    .exec();
 
     return suggestions;
   }

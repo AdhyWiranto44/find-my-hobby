@@ -4,8 +4,12 @@ class UserRepository {
 
   constructor() {}
 
-  async getAll() {
-    const users = await User.find().sort({ created_at: -1 }).exec();
+  async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
+    const users = await User.find(filter)
+    .limit(limit)
+    .skip(skip)
+    .sort({ created_at: -1 })
+    .exec();
 
     return users;
   }

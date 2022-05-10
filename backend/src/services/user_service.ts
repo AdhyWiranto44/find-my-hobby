@@ -8,8 +8,8 @@ export default class UserService {
 
   constructor() {}
 
-  async getAll() {
-    const users = await new UserRepository().getAll();
+  async getAll(filter = {}, limit: number = 1, skip: number = 0) {
+    const users = await new UserRepository().getAll(filter, limit, skip);
 
     if (users.length < 1) throw createError(StatusCodes.NOT_FOUND, "Users empty.");
 

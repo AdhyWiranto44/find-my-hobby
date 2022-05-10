@@ -8,8 +8,8 @@ export default class HobbyService {
 
   constructor() {}
 
-  async getAll(filter: any = {}) {
-    const hobbies = await new HobbyRepository().getAll(filter);
+  async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
+    const hobbies = await new HobbyRepository().getAll(filter, limit, skip);
 
     if (hobbies.length < 1) throw createError(StatusCodes.NOT_FOUND, "Hobbies empty.");
 

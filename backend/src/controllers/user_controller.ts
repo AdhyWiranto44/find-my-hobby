@@ -8,13 +8,29 @@ import { StatusCodes } from "http-status-codes";
 class UserController {
  
   async getAll(req: any, res: any) {
+    const queries = req.query;
+    const filter: any = {}
+    const pagination: any = { "limit": 1, "skip": 0 }
+    
+    for (const property in queries) {
+      if (property == "limit" || property == "skip") {
+        pagination[property] = parseInt(queries[property]);
+      }
+      filter[property] = queries[property];
+    }
+
+    if (queries.username) {
+      filter["username"] = { $regex: queries.username + ".*", $options: 'i' };
+    }
+
     try {
-      const users = await new UserService().getAll();
+      const users = await new UserService().getAll(filter, pagination.limit, pagination.skip);
 
       return new ApiService(
         res, StatusCodes.OK, true,
         "Users found.",
         {
+          "total": users.length,
           "users": users
         }
       ).sendResponse();

@@ -52,6 +52,17 @@ describe("GET /api/v1/users", () => {
       });
   });
 
+  it("get all users data with pagination", (done: any) => {
+    request(app)
+      .get(`${API_PREFIX}/users?limit=10&skip=0`)
+      .set("Authorization", `Bearer ${JWT}`)
+      .expect(StatusCodes.OK)
+      .end((err, res) => {
+        if (err) return done(err);
+        return done();
+      });
+  });
+
   it("get all users data from local database and token not provided.", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/users`)

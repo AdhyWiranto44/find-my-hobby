@@ -12,7 +12,12 @@ class HobbyController {
   async getAll(req: any, res: any) {
     const queries = req.query;
     const filter: any = {}
+    const pagination: any = { "limit": 1, "skip": 0 }
+
     for (const property in queries) {
+      if (property == "limit" || property == "skip") {
+        pagination[property] = parseInt(queries[property]);
+      }
       filter[property] = queries[property];
     }
 
@@ -21,12 +26,13 @@ class HobbyController {
     }
 
     try {
-      const hobbies = await new HobbyService().getAll(filter);
+      const hobbies = await new HobbyService().getAll(filter, pagination.limit, pagination.skip);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
         "Hobbies found.", 
         { 
+          "total": hobbies.length,
           "hobbies": hobbies 
         }
       ).sendResponse();

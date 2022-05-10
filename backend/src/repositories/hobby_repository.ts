@@ -4,8 +4,13 @@ export default class HobbyRepository {
 
   constructor() {}
 
-  async getAll(filter: any = {}) {
-    const hobbies = await Hobby.find(filter).sort({ created_at: -1 }).exec();
+  async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
+    const hobbies = await Hobby
+      .find(filter)
+      .limit(limit)
+      .skip(skip)
+      .sort({ created_at: -1 })
+      .exec();
 
     return hobbies;
   }

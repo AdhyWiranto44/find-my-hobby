@@ -7,8 +7,8 @@ export default class CategoryService {
 
   constructor() {}
 
-  async getAll(filter = {}) {
-    const categories = await new CategoryRepository().getAll(filter);
+  async getAll(filter = {}, limit: number = 1, skip: number = 0) {
+    const categories = await new CategoryRepository().getAll(filter, limit, skip);
 
     if (categories.length < 1) throw createError(StatusCodes.NOT_FOUND, "Categories empty.");
 

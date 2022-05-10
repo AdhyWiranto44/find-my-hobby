@@ -45,6 +45,16 @@ describe("GET /api/v1/hobbies", () => {
       });
   });
 
+  it("get all hobbies data with pagination", (done: any) => {
+    request(app)
+      .get(`${API_PREFIX}/hobbies?limit=10&skip=0`)
+      .expect(StatusCodes.OK)
+      .end((err, res) => {
+        if (err) return done(err);
+        return done();
+      });
+  });
+
   it("get all hobbies with filter and data found", (done: any) => {
     request(app)
       .get(`${API_PREFIX}/hobbies?name=Central`)
