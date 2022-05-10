@@ -24,9 +24,11 @@ export default function Index() {
 
   const handleDelete = async (e, slug) => {
     e.preventDefault()
-
-    const suggestion = await deleteSuggestion(slug)
-    router.reload()
+    const isConfirmed = confirm("Yakin ingin menghapus?")
+    if (isConfirmed) {
+      const suggestion = await deleteSuggestion(slug)
+      router.reload()
+    }
   }
 
   const renderTableData = () => {
