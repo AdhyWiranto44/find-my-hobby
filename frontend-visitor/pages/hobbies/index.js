@@ -1,4 +1,3 @@
-import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -7,10 +6,8 @@ import HobbyItem from '../../components/hobbyItem';
 import NavbarHobby from '../../components/navbarHobby';
 import SearchBar from '../../components/searchBar';
 import { Roller } from 'react-awesome-spinners';
-import { default_categories, default_hobby } from '../../helpers/constants';
-import { getCategories } from '../api/category';
-import Link from 'next/link';
-import { TIMEOUT_HALF_A_SECOND } from '../../../frontend-admin/constants/timeout';
+import { default_hobby } from '../../helpers/constants';
+import { TIMEOUT_HALF_A_SECOND } from '../../constants/timeout'
 
 
 export default function Hobbies() {

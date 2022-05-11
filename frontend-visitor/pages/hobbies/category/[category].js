@@ -7,7 +7,7 @@ import NavbarHobby from '../../../components/navbarHobby';
 import { Roller } from 'react-awesome-spinners';
 import { default_hobby } from '../../../helpers/constants';
 import SearchBar from '../../../components/searchBar';
-import { TIMEOUT_HALF_A_SECOND } from '../../../../frontend-admin/constants/timeout';
+import { TIMEOUT_HALF_A_SECOND } from '../../../constants/timeout'
 
 
 export default function Hobbies() {
