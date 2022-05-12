@@ -18,6 +18,8 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="keywords" content="personal, hobby, website, community, productivity" />
+        <meta name="description" content="Find My Hobby adalah platform untuk mencari hobi baru." />
         <title>Find My Hobby - Cari kegemaranmu sekarang!</title>
       </Head>
 
