@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Image from 'next/image'
 
 
 export default function Sidebar(props) {
@@ -52,7 +53,7 @@ export default function Sidebar(props) {
     <>
       <div id="sidebar" className={"sidebar bg-light-salmon position-fixed h-100 overflow-auto border-end border-light border-2 " + (props.isActive ? "sidebarMinimized sidebarHidden" : "")} style={{zIndex: "1"}}>
         <div id="company-image" className="d-flex justify-content-center my-4 overflow-hidden position-relative">
-          <img className="rounded-circle" src="/img/default.jpg" alt="default" width="64" height="64" />
+          <Image className="rounded-circle" src="/img/default.jpg" alt="default" width="64" height="64" />
         </div>
         <h5 className="company-name fw-bold text-center">Find My Hobby</h5>
         <ul className="sidebar-menu-container">

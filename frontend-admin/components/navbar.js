@@ -5,6 +5,7 @@ import { tokenCookie } from "../constants/cookies"
 import { TIMEOUT } from '../constants/timeout'
 import Notification from "./notification"
 import { ALERT_SUCCESS } from '../constants/alertStyles'
+import Image from 'next/image'
 
 
 export default function Navbar(props) {
@@ -34,7 +35,7 @@ export default function Navbar(props) {
           <small className="d-none d-md-inline text-end">Selamat datang! <br /><b>Admin</b></small>
           <div className="btn-group dropstart">
             <button type="button" className="btn btn-secondary dropdown-toggle border-0 bg-transparent" data-bs-toggle="dropdown" aria-expanded="false">
-              <img className="rounded-circle me-2" src="/img/default.jpg" alt="default" width="36" height="36" />
+              <Image className="rounded-circle me-2" src="/img/default.jpg" alt="default" width="36" height="36" />
             </button>
             <ul className="dropdown-menu border-0 shadow">
               <li>

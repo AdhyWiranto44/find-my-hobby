@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Notification from "../../../components/notification";
 import { ALERT_FAILED, ALERT_SUCCESS } from "../../../constants/alertStyles";
 import { TIMEOUT, TIMEOUT_LONG } from "../../../constants/timeout";
@@ -28,12 +28,12 @@ export default function Edit() {
     }, TIMEOUT_LONG)
   }
 
-  const handleGetCategory = async () => {
+  const handleGetCategory = useCallback( async () => {
     let foundCategory = await getCategory(slug)
     foundCategory = foundCategory.data.data.category
     setCategory(foundCategory)
     setForm(foundCategory)
-  }
+  }, [slug])
 
   const handleUpdateCategory = async (e) => {
     e.preventDefault()
@@ -50,7 +50,7 @@ export default function Edit() {
 
   useEffect(() => {
     handleGetCategory(slug)
-  }, [])
+  }, [handleGetCategory, slug])
 
   return (
     <MainLayout

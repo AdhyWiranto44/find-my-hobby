@@ -63,7 +63,7 @@ export default function Edit() {
 
   useEffect(() => {
     handleGetHobby(slug)
-  }, [])
+  }, [slug])
 
   return (
     <MainLayout
