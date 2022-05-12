@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Find My Hobby</title>
+        <title>Find My Hobby - Cari kegemaranmu sekarang!</title>
       </Head>
 
       <Component {...pageProps} />
