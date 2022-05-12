@@ -1,0 +1,24 @@
+{
+  "name": "find-my-hobby",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend-visitor && npm run dev\" \"cd frontend-admin && npm run dev\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adhywiranto44/find-my-hobby.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adhywiranto44/find-my-hobby/issues"
+  },
+  "homepage": "https://github.com/adhywiranto44/find-my-hobby#readme",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^7.1.0"
+  }
+}
