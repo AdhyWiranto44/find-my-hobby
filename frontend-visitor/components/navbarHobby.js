@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Roller } from "react-awesome-spinners";
@@ -47,7 +48,7 @@ export default function NavbarHobby() {
     if (categories[0].name !== "category") {
       setLoading(false);
     }
-  });
+  }, [categories]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light fixed-top border-bottom" style={{
@@ -56,7 +57,7 @@ export default function NavbarHobby() {
     }}>
       <div className="container">
         <Link href="/">
-          <a className="navbar-brand"><img src="/img/logo.webp" width="35" alt="Logo Find My Hobby" /></a>
+          <a className="navbar-brand"><Image src="/img/logo.webp" width="35" alt="Logo Find My Hobby" /></a>
         </Link>
         <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div className="nav-menu">

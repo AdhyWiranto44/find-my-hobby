@@ -116,7 +116,7 @@ export default function Home() {
     if (hobbies[0].name !== "name" && categories[0].name) {
       setLoading(false);
     }
-  });
+  }, [hobbies, categories]);
 
   return (
     <div className="d-flex flex-column min-vh-100">

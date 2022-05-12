@@ -26,7 +26,7 @@ export default function HobbyPage() {
 
   useEffect(() => {
     handleGetHobby(slug);
-  }, []);
+  }, [slug]);
 
   return (
     <div className="d-flex flex-column min-vh-100">

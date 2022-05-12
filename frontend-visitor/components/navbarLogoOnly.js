@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function NavbarLogoOnly() {
@@ -7,7 +8,7 @@ export default function NavbarLogoOnly() {
       backdropFilter: "blur(10px)"
       }}>
       <div className="container">
-        <Link href="/"><a className="navbar-brand"><img src="/img/logo.webp" width="35" alt="Logo Find My Hobby" /></a></Link>
+        <Link href="/"><a className="navbar-brand"><Image src="/img/logo.webp" width="35" alt="Logo Find My Hobby" /></a></Link>
         <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div className="nav-menu">
             <div className="bar1"></div>

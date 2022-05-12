@@ -1,5 +1,5 @@
 import Footer from '../../components/footer';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { getHobbies, getHobbiesByName } from '../api/hobby';
 import HobbyItem from '../../components/hobbyItem';
@@ -16,10 +16,10 @@ export default function Hobbies() {
   const router = useRouter();
   let search = router.query.search;
 
-  const handleGetHobbies = async () => {
+  const handleGetHobbies = useCallback( async () => {
     const data = await getHobbies();
     setHobbies(data.data.data.hobbies);
-  }
+  }, [])
 
   const handleFilterHobby = async (name) => {
     const data = await getHobbiesByName(name);
@@ -54,13 +54,13 @@ export default function Hobbies() {
     } else {
       handleGetHobbies();
     }
-  }, []);
+  }, [handleGetHobbies, search]);
 
   useEffect(() => {
     if (hobbies[0].name !== "name") {
       setLoading(false);
     }
-  });
+  }, [hobbies]);
 
   return (
     <div className="d-flex flex-column min-vh-100">
