@@ -9,7 +9,11 @@ export default function Navbar() {
       backdropFilter: "blur(10px)"
       }}>
       <div className="container">
-        <Link href="/"><a className="navbar-brand"><Image src="/img/logo.webp" width="35" alt="Logo Find My Hobby" /></a></Link>
+        <Link href="/">
+          <a className="navbar-brand">
+            <Image src="/img/logo.webp" width={35} height={35} alt="Logo Find My Hobby" />
+          </a>
+        </Link>
         <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div className="nav-menu">
             <div className="bar1"></div>

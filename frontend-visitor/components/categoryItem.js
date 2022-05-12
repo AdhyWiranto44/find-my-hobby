@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function CategoryItem(props) {
   return (
-    <div id="categoryItem" key={props.key} className="col-6 col-md-3 col-lg-2">
+    <div id="categoryItem" className="col-6 col-md-3 col-lg-2">
       <Link href={`/hobbies/category/${props.category.slug}`}>
         <a className="text-decoration-none text-dark">
           <div className="card bg-light border mb-4" style={{ borderRadius: "15px" }}>
