@@ -56,7 +56,7 @@ export default function NavbarHobby() {
     }}>
       <div className="container">
         <Link href="/">
-          <a className="navbar-brand"><img src="/img/logo.webp" width="35" alt="Find My Hobby" /></a>
+          <a className="navbar-brand"><img src="/img/logo.webp" width="35" alt="Logo Find My Hobby" /></a>
         </Link>
         <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div className="nav-menu">

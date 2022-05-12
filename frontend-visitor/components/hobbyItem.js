@@ -7,7 +7,7 @@ export default function HobbyItem(props) {
       <Link href={`/hobby/${props.hobby.slug}`}>
         <a>
           <div className="card bg-dark text-white border-0 shadow overflow-hidden mb-4" style={{ borderRadius: "15px" }}>
-            <img src="/img/hobi.webp" className="card-img w-100" alt="rekomendasi hobi" />
+            <img src="/img/hobi.webp" className="card-img w-100" alt="Gambar Hobi" />
             <div className="card-img-overlay d-flex">
               <div className="mt-auto">
                 <h6 className="card-title fw-bold">{props.hobby.name}</h6>
