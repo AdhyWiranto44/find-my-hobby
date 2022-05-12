@@ -13,11 +13,11 @@ import { TIMEOUT_HALF_A_SECOND } from '../../../constants/timeout'
 export default function Hobbies() {
   const [hobbies, setHobbies] = useState([default_hobby]);
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState("");
   const router = useRouter();
+  const category = router.query.category;
   let search = router.query.search;
 
-  const handleGetHobbies = async (category) => {
+  const handleGetHobbies = async () => {
     await getHobbiesByCategory(category).then(data => {
       setHobbies(data.data.data.hobbies);
     }).catch(err => {
@@ -56,7 +56,7 @@ export default function Hobbies() {
     if (search && search !== "") {
       handleFilterHobby(search);
     } else {
-      handleGetHobbies(category);
+      handleGetHobbies();
     }
   }, []);
 
@@ -64,10 +64,6 @@ export default function Hobbies() {
     if (hobbies[0].name !== "name") {
       setLoading(false);
     }
-  });
-
-  useEffect(() => {
-    setCategory(router.query.category);
   });
 
   return (
