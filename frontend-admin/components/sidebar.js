@@ -37,6 +37,11 @@ export default function Sidebar(props) {
       "href": "/suggestions",
       "icon": "bi bi-card-list",
     },
+    {
+      "title": "Tampil Pengguna",
+      "href": "/users",
+      "icon": "bi bi-people-fill",
+    },
     // {
     //   "title": "Ubah Password",
     //   "href": "/users/username/change-password",
