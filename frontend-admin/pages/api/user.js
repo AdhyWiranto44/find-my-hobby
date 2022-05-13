@@ -9,11 +9,21 @@ export const getUsers = async () => {
   let users = [...response.data.data.users]
   users = await filterByUserLogin(users)
   response.data.data.users = users
+  response.data.data.total--
   console.log(response);
 
   return response
 }
-export const getUsersByUsername = async (username = "") => await axios.get(`${domain}/users?username=${username}&limit=0&skip=0`, headers)
+export const getUsersByUsername = async (username = "") => {
+  let response = await axios.get(`${domain}/users?username=${username}&limit=0&skip=0`, headers)
+  let users = [...response.data.data.users]
+  users = await filterByUserLogin(users)
+  response.data.data.users = users
+  response.data.data.total--
+  console.log(response);
+
+  return response
+}
 export const getUser = async (username = "") => await axios.get(`${domain}/users/${username}`)
 export const createUser = async (form = {}) => await axios.post(`${domain}/users`, form, headers)
 export const updateUser = async (username = "", form = {}) => await axios.patch(`${domain}/users/${username}`, form, headers)
