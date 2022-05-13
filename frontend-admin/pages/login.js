@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Title from '../components/title'
 import { login } from './api/auth'
 import Cookies from 'js-cookie'
@@ -8,7 +8,6 @@ import Link from 'next/link'
 import Notification from '../components/notification'
 import { TIMEOUT } from '../constants/timeout'
 import { ALERT_FAILED, ALERT_SUCCESS } from '../constants/alertStyles'
-import Image from 'next/image'
 
 
 export default function Login() {
@@ -76,7 +75,7 @@ export default function Login() {
             </form>
           </div>
           <div className="col-lg-6 d-none d-lg-block p-0 overflow-hidden">
-            <Image className="w-100 h-100" src="/img/login_bg.jpg" alt="login_bg" style={{ objectFit: "cover" }} />
+            <img className="w-100 h-100" src="/img/login_bg.jpg" alt="login_bg" style={{ objectFit: "cover" }} />
           </div>
         </div>
       </div>
