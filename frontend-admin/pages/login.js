@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Title from '../components/title'
 import { login } from './api/auth'
 import Cookies from 'js-cookie'
-import { tokenCookie } from '../constants/cookies'
+import { tokenCookie, usernameCookie } from '../constants/cookies'
 import Link from 'next/link'
 import Notification from '../components/notification'
 import { TIMEOUT } from '../constants/timeout'
@@ -37,6 +37,7 @@ export default function Login() {
       renderNotification(ALERT_SUCCESS, "Login success.")
       setTimeout(() => {
         Cookies.set(tokenCookie, jwt.data.data.token, { expires: 1/12 })
+        Cookies.set(usernameCookie, form.username, { expires: 1/12 })
         router.push("/")
       }, TIMEOUT)
     } catch (err) {

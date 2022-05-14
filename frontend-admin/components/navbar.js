@@ -1,16 +1,15 @@
-import { useState } from 'react'
 import { useRouter } from "next/router"
 import Cookies from 'js-cookie'
-import { tokenCookie } from "../constants/cookies"
+import { tokenCookie, usernameCookie } from "../constants/cookies"
 import { TIMEOUT } from '../constants/timeout'
-import Notification from "./notification"
 import { ALERT_SUCCESS } from '../constants/alertStyles'
 import Image from 'next/image'
 
 
 export default function Navbar(props) {
   const router = useRouter()
-
+  const username = Cookies.get(usernameCookie) || "username"
+  
   const handleLogout = (e) => {
     e.preventDefault()
     const isConfirmed = confirm("Yakin ingin logout?")
@@ -18,6 +17,7 @@ export default function Navbar(props) {
       props.renderNotification(ALERT_SUCCESS, "Logout success.")
       setTimeout(() => {
         Cookies.remove(tokenCookie)
+        Cookies.remove(usernameCookie)
         router.push("/login")
       }, TIMEOUT)
     }
@@ -32,7 +32,7 @@ export default function Navbar(props) {
           </button>
         </div>
         <div className="userProfile d-flex align-items-center">
-          <small className="d-none d-md-inline text-end">Selamat datang! <br /><b>Admin</b></small>
+          <small className="d-none d-md-inline text-end">Selamat datang! <br /><b>{username}</b></small>
           <div className="btn-group dropstart">
             <button type="button" className="btn btn-secondary dropdown-toggle border-0 bg-transparent" data-bs-toggle="dropdown" aria-expanded="false">
               <Image className="rounded-circle" src="/img/default.jpg" alt="default" width="36" height="36" />
