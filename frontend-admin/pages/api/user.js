@@ -10,7 +10,6 @@ export const getUsers = async () => {
   users = await filterByUserLogin(users)
   response.data.data.users = users
   response.data.data.total--
-  console.log(response);
 
   return response
 }
@@ -20,7 +19,6 @@ export const getUsersByUsername = async (username = "") => {
   users = await filterByUserLogin(users)
   response.data.data.users = users
   response.data.data.total--
-  console.log(response);
 
   return response
 }

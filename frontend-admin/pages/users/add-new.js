@@ -12,7 +12,8 @@ export default function AddNew() {
   const router = useRouter()
   const [form, setForm] = useState({
     "username": "",
-    "password": ""
+    "password": "",
+    "confirm_password": ""
   })
 
   const renderNotification = (color, message) => {
