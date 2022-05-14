@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useRouter } from "next/router"
 import Cookies from 'js-cookie'
 import { tokenCookie, usernameCookie } from "../constants/cookies"
@@ -8,7 +9,11 @@ import Image from 'next/image'
 
 export default function Navbar(props) {
   const router = useRouter()
-  const username = Cookies.get(usernameCookie) || "username"
+  const [username, setUsername] = useState("username")
+
+  useEffect(() => {
+    setUsername(Cookies.get(usernameCookie))
+  })
   
   const handleLogout = (e) => {
     e.preventDefault()
