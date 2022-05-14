@@ -2,6 +2,7 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Notification from "../../components/notification";
 import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
 import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout";
 import MainLayout from "../../layouts/main";
