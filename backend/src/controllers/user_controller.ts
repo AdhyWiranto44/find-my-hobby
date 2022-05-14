@@ -89,7 +89,7 @@ class UserController {
 
   async delete(req: any, res: any) {
     try {
-      const user = await new UserService().delete(req.params.slug);
+      const user = await new UserService().delete(req.params.username);
 
       return new ApiService(
         res, StatusCodes.OK, true,
