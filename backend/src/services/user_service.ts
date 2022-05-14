@@ -44,15 +44,19 @@ export default class UserService {
   }
 
   async update(req: any, username: string) {
-    if (!req.body.password) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+    if (req.body == {}) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
 
-    let password = req.body.password;
-    if (password) { password = hashSync(password, ROUNDS) }
+    const form: any = {}
+
+    const password = req.body.password;
+    if (password && password != "") {
+      form["password"] = hashSync(password, ROUNDS)
+    }
 
     const userChecked = await new UserRepository().getOne(username);
     if (userChecked === null) throw createError(StatusCodes.BAD_REQUEST, "User not found.");
     
-    const user = await new UserRepository().update(username, req.body);
+    const user = await new UserRepository().update(username, form);
 
     if (user == null) throw createError(StatusCodes.BAD_REQUEST, "User not found.");
 

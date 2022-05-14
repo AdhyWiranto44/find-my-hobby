@@ -25,14 +25,14 @@ class UserRepository {
     return created;
   }
 
-  async update(slug: string, user: any) {
-    const updated = User.findOneAndUpdate({slug}, user, { runValidators: true });
+  async update(username: string, user: any) {
+    const updated = User.findOneAndUpdate({username}, user, { runValidators: true });
 
     return updated;
   }
 
-  async remove(slug: string) {
-    const removed = User.findOneAndRemove({slug});
+  async remove(username: string) {
+    const removed = User.findOneAndRemove({username});
 
     return removed;
   }
