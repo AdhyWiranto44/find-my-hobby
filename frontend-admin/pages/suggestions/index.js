@@ -1,15 +1,30 @@
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout";
+import Notification from "../../components/notification";
+import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
+import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout";
 import MainLayout from "../../layouts/main";
 import { deleteSuggestion, getSuggestions, getSuggestionsByName } from "../api/suggestions";
 
 
 export default function Index() {
   const [suggestions, setSuggestions] = useState([])
+  const [notification, setNotification] = useState(null)
   const [total, setTotal] = useState(0)
   const router = useRouter()
+
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+    setTimeout(() => {
+      setNotification("")
+    }, TIMEOUT_LONG)
+  }
 
   const handleGetSuggestions = async () => {
     let foundSuggestions = await getSuggestions()
@@ -29,10 +44,18 @@ export default function Index() {
 
   const handleDelete = async (e, slug) => {
     e.preventDefault()
-    const isConfirmed = confirm("Yakin ingin menghapus?")
-    if (isConfirmed) {
-      const suggestion = await deleteSuggestion(slug)
-      router.reload()
+
+    try {
+      const isConfirmed = confirm("Yakin ingin menghapus?")
+      if (isConfirmed) {
+        const suggestion = await deleteSuggestion(slug)
+        renderNotification(ALERT_SUCCESS, suggestion.data.message)
+        setTimeout(() => {
+          handleGetSuggestions()
+        }, TIMEOUT)
+      }
+    } catch (err) {
+      renderNotification(ALERT_FAILED, err.message)
     }
   }
 
@@ -84,6 +107,7 @@ export default function Index() {
     <>
       <MainLayout
         title="Tampil Saran Hobi"
+        notification={notification}
         content={
           <>
             <div className="container mb-2">

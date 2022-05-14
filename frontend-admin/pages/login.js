@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import { tokenCookie, usernameCookie } from '../constants/cookies'
 import Link from 'next/link'
 import Notification from '../components/notification'
-import { TIMEOUT } from '../constants/timeout'
+import { TIMEOUT, TIMEOUT_LONG } from '../constants/timeout'
 import { ALERT_FAILED, ALERT_SUCCESS } from '../constants/alertStyles'
 
 
@@ -28,6 +28,9 @@ export default function Login() {
         message={message}
       />
     )
+    setTimeout(() => {
+      setNotification("")
+    }, TIMEOUT_LONG)
   }
 
   const handleLogin = async (e) => {

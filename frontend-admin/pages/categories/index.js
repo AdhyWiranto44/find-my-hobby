@@ -2,7 +2,8 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout";
+import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
+import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout";
 import MainLayout from "../../layouts/main";
 import { deleteCategory, getCategories, getCategoriesByName } from "../api/category";
 
@@ -11,7 +12,19 @@ export default function Index() {
   const router = useRouter()
   const [categories, setCategories] = useState([])
   const [total, setTotal] = useState(0)
-  const [searchTerm, setSearchTerm] = useState("")
+  const [notification, setNotification] = useState(null)
+
+  const renderNotification = (color, message) => {
+    setNotification(
+      <Notification 
+        color={color}
+        message={message}
+      />
+    )
+    setTimeout(() => {
+      setNotification("")
+    }, TIMEOUT_LONG)
+  }
 
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
@@ -65,10 +78,18 @@ export default function Index() {
 
   const handleDelete = async (e, slug = "") => {
     e.preventDefault()
-    const isConfirmed = confirm("Yakin ingin menghapus?")
-    if (isConfirmed) {
-      const category = await deleteCategory(slug)
-      router.reload()
+    
+    try {
+      const isConfirmed = confirm("Yakin ingin menghapus?")
+      if (isConfirmed) {
+        const category = await deleteCategory(slug)
+        renderNotification(ALERT_SUCCESS, category.data.message)
+        setTimeout(() => {
+          handleGetCategories()
+        }, TIMEOUT)
+      }
+    } catch (err) {
+      renderNotification(ALERT_FAILED, err.message)
     }
   }
 
@@ -80,6 +101,7 @@ export default function Index() {
     <>
       <MainLayout 
         title="Tampil Kategori"
+        notification={notification}
         content={
           <>
             <Link href="/categories/add-new">
