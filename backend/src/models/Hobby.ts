@@ -21,6 +21,7 @@ const hobbySchema = new Schema({
     },
     img: String,
     visited_count: Number,
+    community_name: String,
     community_link: String,
     suggester_email: String
 }, { timestamps: true });

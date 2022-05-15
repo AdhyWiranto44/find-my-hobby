@@ -55,10 +55,13 @@ export default function Index() {
               <td>
                 {hobby.name || <small className="text-muted">[Kosong]</small>}
               </td>
-              <td className="post-body">{hobby.description || <small className="text-muted">[Kosong]</small>}</td>
+              <td className="post-body">{hobby.description.substring(0, 100) + "..." || <small className="text-muted">[Kosong]</small>}</td>
               <td>{hobby.visited_count + " kali" || <small className="text-muted">[Kosong]</small>}</td>
               <td>
-              {hobby.category || <small className="text-muted">[Kosong]</small>}
+                {hobby.category || <small className="text-muted">[Kosong]</small>}
+              </td>
+              <td>
+                {<a className="text-decoration-none fw-bold" href={hobby.community_link}>{hobby.community_name}</a> || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
               {moment(hobby.createdAt).fromNow() || <small className="text-muted">[Kosong]</small>}
@@ -146,6 +149,7 @@ export default function Index() {
                           <th scope="col">Deskripsi</th>
                           <th scope="col">Dilihat</th>
                           <th scope="col">Kategori</th>
+                          <th scope="col">Link Komunitas</th>
                           <th scope="col">Ditambahkan</th>
                           <th scope="col">Aksi</th>
                         </tr>
@@ -160,6 +164,7 @@ export default function Index() {
                           <th scope="col">Deskripsi</th>
                           <th scope="col">Dilihat</th>
                           <th scope="col">Kategori</th>
+                          <th scope="col">Link Komunitas</th>
                           <th scope="col">Ditambahkan</th>
                           <th scope="col">Aksi</th>
                         </tr>

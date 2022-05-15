@@ -34,6 +34,7 @@ for (let i = 0; i < 50; i++) {
     description: faker.lorem.paragraph(),
     category: categories[Math.floor(Math.random()*categories.length)],
     img: "",
+    community_name: "Komunitas di Facebook",
     community_link: "https://facebook.com/",
     visited_count: 0
   }
