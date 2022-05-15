@@ -1,9 +1,14 @@
+import DatabaseHelper from "../database/DatabaseHelper";
 import { Category } from "../models/Category";
 
 
 export default class CategoryRepository {
 
-  constructor() {}
+  connection: any = null;
+
+  constructor() {
+    this.connection = DatabaseHelper.getConnection();
+  }
   
   async getAll(filter = {}, limit: number = 1, skip: number = 0) {
     const categories = await Category.find(filter)

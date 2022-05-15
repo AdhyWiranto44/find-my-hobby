@@ -1,8 +1,13 @@
+import DatabaseHelper from "../database/DatabaseHelper";
 import Hobby from "../models/Hobby";
 
 export default class HobbyRepository {
 
-  constructor() {}
+  connection: any = null;
+
+  constructor() {
+    this.connection = DatabaseHelper.getConnection();
+  }
 
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
     const hobbies = await Hobby

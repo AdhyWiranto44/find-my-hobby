@@ -1,9 +1,14 @@
+import DatabaseHelper from "../database/DatabaseHelper";
 import Suggestion from "../models/Suggestion";
 
 
 export default class SuggestionRepository {
 
-  constructor() {}
+  connection: any = null;
+
+  constructor() {
+    this.connection = DatabaseHelper.getConnection();
+  }
   
   async getAll(filter = {}, limit: number = 1, skip: number = 0) {
     const suggestions = await Suggestion.find(filter)

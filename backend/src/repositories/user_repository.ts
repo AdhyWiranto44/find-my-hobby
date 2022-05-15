@@ -1,8 +1,13 @@
+import DatabaseHelper from "../database/DatabaseHelper";
 import User from "../models/User";
 
 class UserRepository {
 
-  constructor() {}
+  connection: any = null;
+
+  constructor() {
+    this.connection = DatabaseHelper.getConnection();
+  }
 
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
     const users = await User.find(filter)
