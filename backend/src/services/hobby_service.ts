@@ -37,20 +37,12 @@ export default class HobbyService {
   }
 
   async create(req: any) {
-    if (
-      !req.body.name ||
-      !req.body.description ||
-      !req.body.category
-    ) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+    if (!req.body) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
 
-    const newHobby = {
-      name: req.body.name,
-      slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
-      description: req.body.description,
-      category: req.body.category,
-      img: "",
-      visited_count: 0
-    }
+    const newHobby: any = {...req.body}
+    newHobby["slug"] = req.body.name.replace(/\s+/g, '-').toLowerCase();
+    newHobby["img"] = "";
+    newHobby["visited_count"] = 0;
 
     const category = await new CategoryRepository().getOne(newHobby.category);
     if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");

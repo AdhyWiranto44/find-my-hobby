@@ -61,7 +61,7 @@ export default function Index() {
                 {hobby.category || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
-                {<a className="text-decoration-none fw-bold" href={hobby.community_link}>{hobby.community_name}</a> || <small className="text-muted">[Kosong]</small>}
+                {hobby.community_link ? <a className="text-decoration-none fw-bold" href={hobby.community_link}>{hobby.community_name}</a> : <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
               {moment(hobby.createdAt).fromNow() || <small className="text-muted">[Kosong]</small>}

@@ -15,6 +15,8 @@ export default function AddNew() {
   const defaultForm = {
     "name": "",
     "description": "",
+    "community_name": "",
+    "community_link": "",
     "category": ""
   }
   const [form, setForm] = useState(defaultForm)
@@ -71,6 +73,14 @@ export default function AddNew() {
                     <div className="mb-3">
                       <label className="text-muted" htmlFor="description"><small>Deskripsi</small></label>
                       <textarea className="form-control" id="description" name="description" rows="15" onChange={(e) => setForm({...form, "description": e.target.value})} required></textarea>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="community_name" className="form-label small mb-1 text-capitalize">nama komunitas</label>
+                      <input type="text" className="form-control p-3" id="community_name" name="community_name" onChange={(e) => setForm({...form, "community_name": e.target.value})} />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="community_link" className="form-label small mb-1 text-capitalize">link komunitas</label>
+                      <input type="text" className="form-control p-3" id="community_link" name="community_link" onChange={(e) => setForm({...form, "community_link": e.target.value})} />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="unit" className="form-label small mb-1 text-capitalize">kategori</label>
