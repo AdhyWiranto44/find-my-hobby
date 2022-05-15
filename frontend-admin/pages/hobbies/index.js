@@ -56,6 +56,7 @@ export default function Index() {
                 {hobby.name || <small className="text-muted">[Kosong]</small>}
               </td>
               <td className="post-body">{hobby.description || <small className="text-muted">[Kosong]</small>}</td>
+              <td>{hobby.visited_count + " kali" || <small className="text-muted">[Kosong]</small>}</td>
               <td>
               {hobby.category || <small className="text-muted">[Kosong]</small>}
               </td>
@@ -143,6 +144,7 @@ export default function Index() {
                           <th scope="col">No</th>
                           <th scope="col">Judul</th>
                           <th scope="col">Deskripsi</th>
+                          <th scope="col">Dilihat</th>
                           <th scope="col">Kategori</th>
                           <th scope="col">Ditambahkan</th>
                           <th scope="col">Aksi</th>
@@ -156,6 +158,7 @@ export default function Index() {
                           <th scope="col">No</th>
                           <th scope="col">Judul</th>
                           <th scope="col">Deskripsi</th>
+                          <th scope="col">Dilihat</th>
                           <th scope="col">Kategori</th>
                           <th scope="col">Ditambahkan</th>
                           <th scope="col">Aksi</th>
