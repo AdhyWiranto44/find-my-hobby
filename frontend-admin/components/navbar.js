@@ -13,7 +13,7 @@ export default function Navbar(props) {
 
   useEffect(() => {
     setUsername(Cookies.get(usernameCookie))
-  })
+  }, [])
   
   const handleLogout = (e) => {
     e.preventDefault()
