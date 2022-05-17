@@ -55,7 +55,7 @@ class CategoryController {
 
   async create(req: any, res: any) {
     try {
-      const category = await new CategoryService().create(req);
+      const category = await new CategoryService().create(req.body);
 
       return new ApiService(
         res, StatusCodes.OK, true,
@@ -71,7 +71,7 @@ class CategoryController {
 
   async update(req: any, res: any) {
     try {
-      const category = await new CategoryService().update(req, req.params.slug);
+      const category = await new CategoryService().update(req.body, req.params.slug);
 
       return new ApiService(
         res, StatusCodes.OK, true,

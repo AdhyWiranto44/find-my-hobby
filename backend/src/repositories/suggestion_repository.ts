@@ -1,4 +1,5 @@
 import DatabaseHelper from "../database/DatabaseHelper";
+import SuggestionInterface from "../interfaces/suggestion_interface";
 import Suggestion from "../models/Suggestion";
 
 
@@ -26,14 +27,14 @@ export default class SuggestionRepository {
     return suggestion;
   }
 
-  async insertOne(suggestion: any) {
+  async insertOne(suggestion: SuggestionInterface) {
     const created = await new Suggestion(suggestion).save();
 
     return created;
   }
 
-  async update(slug: string, category: any) {
-    const updated = Suggestion.findOneAndUpdate({slug}, category, { runValidators: true });
+  async update(slug: string, suggestion: SuggestionInterface) {
+    const updated = Suggestion.findOneAndUpdate({slug}, suggestion, { runValidators: true });
 
     return updated;
   }

@@ -1,6 +1,7 @@
 import CategoryRepository from "../repositories/category_repository";
 import { StatusCodes } from 'http-status-codes';
 import createError from 'http-errors';
+import CategoryInterface from "../interfaces/category_interface";
 
 
 export default class CategoryService {
@@ -23,23 +24,23 @@ export default class CategoryService {
     return category;
   }
 
-  async create(req: any) {
-    if (!req.body.name) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
-
-    const newCategory = {
-      name: req.body.name,
-      slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
+  async create(newCategory: CategoryInterface) {
+    if (Object.keys(newCategory).length === 0) {
+      throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
     }
 
+    newCategory["slug"] = newCategory.name.replace(/\s+/g, '-').toLowerCase();
     const category = await new CategoryRepository().insertOne(newCategory);
 
     return category;
   }
 
-  async update(req: any, slug: string) {
-    if (!req.body.name) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+  async update(updateCategory: CategoryInterface, slug: string) {
+    if (Object.keys(updateCategory).length === 0) {
+      throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+    }
 
-    const category = await new CategoryRepository().update(slug, req.body);
+    const category = await new CategoryRepository().update(slug, updateCategory);
     if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
 
     return category;

@@ -1,6 +1,5 @@
 import { StatusCodes } from "http-status-codes";
 import ApiService from "../services/api_service";
-import AuthService from "../services/auth_service";
 import SuggestionService from "../services/suggestion_service";
 
 
@@ -72,7 +71,7 @@ class SuggestionController {
 
   async create(req: any, res: any) {
     try {
-      const suggestion = await new SuggestionService().create(req);
+      const suggestion = await new SuggestionService().create(req.body);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
@@ -88,7 +87,7 @@ class SuggestionController {
 
   async update(req: any, res: any) {
     try {
-      const suggestion = await new SuggestionService().update(req, req.params.slug);
+      const suggestion = await new SuggestionService().update(req.body, req.params.slug);
 
       return new ApiService(
         res, StatusCodes.OK, true, 

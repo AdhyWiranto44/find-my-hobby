@@ -2,6 +2,7 @@ import CategoryRepository from "../repositories/category_repository";
 import SuggestionRepository from "../repositories/suggestion_repository";
 import { StatusCodes} from 'http-status-codes';
 import createError from 'http-errors';
+import SuggestionInterface from "../interfaces/suggestion_interface";
 
 
 export default class SuggestionService {
@@ -36,36 +37,29 @@ export default class SuggestionService {
     return suggestion;
   }
 
-  async create(req: any) {
-    if (
-      !req.body.name ||
-      !req.body.description ||
-      !req.body.category
-    ) throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
-    
-    const newSuggestion = {
-      name: req.body.name,
-      slug: req.body.name.replace(/\s+/g, '-').toLowerCase(),
-      description: req.body.description,
-      category: req.body.category,
-      img: "",
-      visited_count: 0,
-      suggester_email: req.body.suggester_email
+  async create(newSuggestion: SuggestionInterface) {
+    if (Object.keys(newSuggestion).length === 0) {
+      throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
     }
+
+    newSuggestion["slug"] = newSuggestion.name.replace(/\s+/g, '-').toLowerCase();
 
     const category = await new CategoryRepository().getOne(newSuggestion.category);
     if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
-
     const suggestion = await new SuggestionRepository().insertOne(newSuggestion);
 
     return suggestion;
   }
 
-  async update(req: any, slug: string) {
-    const category = await new CategoryRepository().getOne(req.body.category);
+  async update(updateSuggestion: SuggestionInterface, slug: string) {
+    if (Object.keys(updateSuggestion).length === 0) {
+      throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+    }
+
+    const category = await new CategoryRepository().getOne(updateSuggestion.category);
     if (category == null) throw createError(StatusCodes.BAD_REQUEST, "Category not found.");
 
-    const suggestion = await new SuggestionRepository().update(slug, req.body);
+    const suggestion = await new SuggestionRepository().update(slug, updateSuggestion);
 
     if (suggestion == null) throw createError(StatusCodes.BAD_REQUEST, "Suggestion not found.");
 

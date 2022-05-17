@@ -1,4 +1,5 @@
 import DatabaseHelper from "../database/DatabaseHelper";
+import CategoryInterface from "../interfaces/category_interface";
 import { Category } from "../models/Category";
 
 
@@ -26,13 +27,13 @@ export default class CategoryRepository {
     return category;
   }
 
-  async insertOne(category: any) {
+  async insertOne(category: CategoryInterface) {
     const created = await new Category(category).save();
 
     return created;
   }
 
-  async update(slug: string, category: any) {
+  async update(slug: string, category: CategoryInterface) {
     const updated = Category.findOneAndUpdate({slug}, category, { runValidators: true });
 
     return updated;
