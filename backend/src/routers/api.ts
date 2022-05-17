@@ -4,14 +4,16 @@ import categoryRouter from "./category_router";
 import suggestionRouter from "./suggestion_router";
 import authRouter from "./auth_router";
 import userRouter from "./user_router";
+import roleRouter from "./role_router";
 import User from '../models/User';
-import { default_categories, default_hobbies, default_suggestions, default_users } from '../helpers/dummy_data';
+import { default_categories, default_hobbies, default_suggestions, default_users, default_roles } from '../helpers/dummy_data';
 import { Category } from '../models/Category';
 import Hobby from '../models/Hobby';
 import Suggestion from '../models/Suggestion';
 import Connection from '../database/Connection';
 import ApiService from '../services/api_service';
 import { LOCAL_ENV } from '../helpers/constants';
+import Role from '../models/Role';
 
 
 const router = express.Router();
@@ -23,6 +25,7 @@ router.use(categoryRouter);
 router.use(suggestionRouter);
 router.use(authRouter);
 router.use(userRouter);
+router.use(roleRouter);
 router.post("/insertDefaultData", async (req, res) => {
   try {
     if (process.env.ENVIRONMENT != LOCAL_ENV) {
@@ -38,6 +41,7 @@ router.post("/insertDefaultData", async (req, res) => {
     // insert default data
     console.log("Inserting default data...");
     await User.insertMany(default_users);
+    await Role.insertMany(default_roles);
     await Category.insertMany(default_categories);
     await Hobby.insertMany(default_hobbies);
     await Suggestion.insertMany(default_suggestions);

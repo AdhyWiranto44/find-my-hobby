@@ -77,3 +77,14 @@ export const default_users = [
     "password": hashSync("12345", 12)
   }
 ];
+
+export const default_roles = [
+  {
+    name: "Administrator",
+    slug: "administrator"
+  },
+  {
+    name: "Moderator",
+    slug: "moderator"
+  }
+];
