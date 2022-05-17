@@ -57,7 +57,7 @@ class UserController {
 
   async create(req: any, res: any) {
     try {
-      const user = await new UserService().create(req);
+      const user = await new UserService().create(req.body);
 
       return new ApiService(
         res, StatusCodes.OK, true,
@@ -73,7 +73,7 @@ class UserController {
 
   async update(req: any, res: any) {
     try {
-      const user = await new UserService().update(req, req.params.username);
+      const user = await new UserService().update(req.body, req.params.username);
 
       return new ApiService(
         res, StatusCodes.OK, true,

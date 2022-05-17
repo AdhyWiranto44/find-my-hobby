@@ -1,4 +1,5 @@
 import DatabaseHelper from "../database/DatabaseHelper";
+import UserInterface from "../interfaces/user_interface";
 import User from "../models/User";
 
 class UserRepository {
@@ -24,13 +25,13 @@ class UserRepository {
     return user;
   }
 
-  async insertOne(user: any) {
+  async insertOne(user: UserInterface) {
     const created = await new User(user).save();
 
     return created;
   }
 
-  async update(username: string, user: any) {
+  async update(username: string, user: UserInterface) {
     const updated = User.findOneAndUpdate({username}, user, { runValidators: true });
 
     return updated;
