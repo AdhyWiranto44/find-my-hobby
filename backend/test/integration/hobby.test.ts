@@ -169,7 +169,7 @@ describe("POST /api/v1/hobbies", () => {
       .post(`${API_PREFIX}/hobbies`)
       .set("Authorization", `Bearer ${JWT}`)
       .send({})
-      .expect(StatusCodes.BAD_REQUEST)
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR)
       .end((err, res) => {
         if (err) return done(err);
         return done();

@@ -1,4 +1,5 @@
 import DatabaseHelper from "../database/DatabaseHelper";
+import HobbyInterface from "../interfaces/hobby_interface";
 import Hobby from "../models/Hobby";
 
 export default class HobbyRepository {
@@ -26,13 +27,13 @@ export default class HobbyRepository {
     return hobby;
   }
 
-  async insertOne(hobby: any) {
+  async insertOne(hobby: HobbyInterface) {
     const created = await new Hobby(hobby).save();
 
     return created;
   }
 
-  async update(slug: string, hobby: any) {
+  async update(slug: string, hobby: HobbyInterface) {
     const updated = Hobby.findOneAndUpdate({slug}, hobby, { runValidators: true });
 
     return updated;

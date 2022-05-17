@@ -1,7 +1,7 @@
 import HobbyService from "../services/hobby_service";
 import ApiService from "../services/api_service";
-import AuthService from "../services/auth_service";
 import { StatusCodes } from "http-status-codes";
+import HobbyInterface from "../interfaces/hobby_interface";
 
 
 class HobbyController {
@@ -87,7 +87,7 @@ class HobbyController {
 
   async create(req: any, res: any) {
     try {
-      const hobby = await new HobbyService().create(req);
+      const hobby = await new HobbyService().create(req.body);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
@@ -103,7 +103,7 @@ class HobbyController {
 
   async update(req: any, res: any) {
     try {
-      const hobby = await new HobbyService().update(req, req.params.slug);
+      const hobby = await new HobbyService().update(req.body, req.params.slug);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
