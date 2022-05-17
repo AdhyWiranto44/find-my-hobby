@@ -38,6 +38,10 @@ export default class HobbyService {
   }
 
   async create(newHobby: HobbyInterface) {
+    if (Object.keys(newHobby).length === 0) {
+      throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+    }
+
     newHobby["slug"] = newHobby.name.replace(/\s+/g, '-').toLowerCase();
 
     const category = await new CategoryRepository().getOne(newHobby.category);
@@ -49,6 +53,10 @@ export default class HobbyService {
   }
 
   async update(updateHobby: HobbyInterface, slug: string) {
+    if (Object.keys(updateHobby).length === 0) {
+      throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
+    }
+
     const hobby = await new HobbyRepository().update(slug, updateHobby);
     if (hobby == null) throw createError(StatusCodes.BAD_REQUEST, "Hobby not found.");
 
