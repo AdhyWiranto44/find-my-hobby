@@ -28,6 +28,7 @@ class AuthService {
     const payload = {
       "uid": randomBytes(16).toString('hex'),
       "username": user.username,
+      "role": user.role
     }
     const encoded: any = sign(payload, process.env.SECRET as string, { expiresIn: process.env.TOKEN_EXPIRES_IN as string });
 
