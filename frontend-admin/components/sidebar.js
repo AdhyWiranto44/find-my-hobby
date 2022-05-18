@@ -42,6 +42,11 @@ export default function Sidebar(props) {
       "href": "/users",
       "icon": "bi bi-people-fill",
     },
+    {
+      "title": "Tampil Hak Akses",
+      "href": "/roles",
+      "icon": "bi bi-person-rolodex",
+    },
     // {
     //   "title": "Ubah Password",
     //   "href": "/users/username/change-password",
