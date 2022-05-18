@@ -5,12 +5,13 @@ import { ALERT_FAILED, ALERT_SUCCESS } from "../../../constants/alertStyles";
 import { TIMEOUT, TIMEOUT_LONG } from "../../../constants/timeout";
 import MainLayout from "../../../layouts/main";
 import { getCategory, updateCategory } from "../../api/category";
+import { getRole, updateRole } from "../../api/role";
 
 
 export default function Edit() {
   const router = useRouter()
   const [notification, setNotification] = useState(null)
-  const [category, setCategory] = useState({})
+  const [role, setRole] = useState({})
   const slug = router.query.slug
   const [form, setForm] = useState({
     "name": ""
@@ -28,20 +29,21 @@ export default function Edit() {
     }, TIMEOUT_LONG)
   }
 
-  const handleGetCategory = useCallback( async () => {
-    let foundCategory = await getCategory(slug)
-    foundCategory = foundCategory.data.data.category
-    setCategory(foundCategory)
-    setForm(foundCategory)
+  const handleGetRole = useCallback( async () => {
+    let foundRole = await getRole(slug)
+    foundRole = foundRole.data.data.Role
+    setRole(foundRole)
+    setForm(foundRole)
   }, [slug])
 
-  const handleUpdateCategory = async (e) => {
+  const handleUpdateRole = async (e) => {
     e.preventDefault()
+
     try {
-      const category = await updateCategory(slug, form)
-      renderNotification(ALERT_SUCCESS, category.data.message)
+      const role = await updateRole(slug, form)
+      renderNotification(ALERT_SUCCESS, role.data.message)
       setTimeout(() => {
-        router.push("/categories")
+        router.push("/roles")
       }, TIMEOUT)
     } catch (err) {
       renderNotification(ALERT_FAILED, err.response.data.message)
@@ -49,12 +51,12 @@ export default function Edit() {
   }
 
   useEffect(() => {
-    handleGetCategory(slug)
-  }, [handleGetCategory, slug])
+    handleGetRole(slug)
+  }, [handleGetRole, slug])
 
   return (
     <MainLayout
-      title="Ubah Kategori"
+      title="Ubah Hak Akses"
       notification={notification}
       content={
         <>
@@ -62,7 +64,7 @@ export default function Edit() {
             <div className="col-md-8">
               <div className="card shadow-sm border-0">
                 <div className="card-body">
-                  <form onSubmit={(e) => handleUpdateCategory(e)}>
+                  <form onSubmit={(e) => handleUpdateRole(e)}>
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
                       <input type="text" className="form-control p-3" id="name" name="name" value={form.name} onChange={(e) => setForm({"name": e.target.value})} autoFocus required />
