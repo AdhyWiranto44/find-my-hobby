@@ -52,6 +52,9 @@ export default function Index() {
                 {user.username || <small className="text-muted">[Kosong]</small>}
               </td>
               <td>
+                {user.role || <small className="text-muted">[Kosong]</small>}
+              </td>
+              <td>
                 {moment(user.createdAt).fromNow() || <small className="text-muted">[Kosong]</small>}
               </td>
               <td className="d-flex justify-content-center">
@@ -138,6 +141,7 @@ export default function Index() {
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Username</th>
+                          <th scope="col">Role</th>
                           <th scope="col">Ditambahkan</th>
                           <th scope="col">Aksi</th>
                         </tr>
@@ -149,6 +153,7 @@ export default function Index() {
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Username</th>
+                          <th scope="col">Role</th>
                           <th scope="col">Ditambahkan</th>
                           <th scope="col">Aksi</th>
                         </tr>
