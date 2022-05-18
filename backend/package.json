@@ -7,6 +7,7 @@
     "start": "node dist/app.js",
     "build": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json && node dist/app.js",
+    "insertDefaultData": "curl -X POST http://localhost:8080/api/v1/insertDefaultData",
     "watch": "tsc -p ./tsconfig.json -w",
     "test": "jest --detectOpenHandles"
   },
