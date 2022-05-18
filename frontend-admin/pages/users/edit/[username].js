@@ -1,20 +1,21 @@
 import { useRouter } from "next/router";
-import { useEffect, useState, useCallback } from "react";
-import Notification from "../../../components/notification";
+import { useEffect, useState } from "react";
 import { ALERT_FAILED, ALERT_SUCCESS } from "../../../constants/alertStyles";
 import { TIMEOUT, TIMEOUT_LONG } from "../../../constants/timeout";
 import MainLayout from "../../../layouts/main";
+import { getRoles } from "../../api/role";
 import { getUser, updateUser } from "../../api/user";
+import Notification from "../../../components/notification";
 
 
 export default function Edit() {
   const router = useRouter()
   const [notification, setNotification] = useState(null)
   const [user, setUser] = useState({})
+  const [roles, setRoles] = useState([])
   const username = router.query.username
   const [form, setForm] = useState({
-    "password": "",
-    "confirm_password": ""
+    "role": "",
   })
 
   const renderNotification = (color, message) => {
@@ -29,19 +30,20 @@ export default function Edit() {
     }, TIMEOUT_LONG)
   }
 
-  const handleGetUser = useCallback( async () => {
+  const handleGetUser = async (username = "") => {
     let foundUser = await getUser(username)
     foundUser = foundUser.data.data.user
     setUser(foundUser)
     setForm(foundUser)
-  }, [username])
+  }
+
+  const handleGetRoles = async () => {
+    const foundRoles = await getRoles()
+    setRoles(foundRoles.data.data.roles)
+  }
 
   const handleUpdateUser = async (e) => {
     e.preventDefault()
-
-    if (form.password !== form.confirm_password) {
-      return renderNotification(ALERT_FAILED, "password and confirm_password should be same.")
-    }
 
     try {
       const User = await updateUser(username, form)
@@ -56,7 +58,11 @@ export default function Edit() {
 
   useEffect(() => {
     handleGetUser(username)
-  }, [handleGetUser, username])
+  }, [username])
+
+  useEffect(() => {
+    handleGetRoles()
+  }, [])
 
   return (
     <MainLayout
@@ -70,12 +76,17 @@ export default function Edit() {
                 <div className="card-body">
                   <form onSubmit={(e) => handleUpdateUser(e)}>
                     <div className="mb-3">
-                      <label htmlFor="password" className="form-label small mb-1 text-capitalize">Password</label>
-                      <input type="password" className="form-control p-3" id="password" name="password" value={form.password} onChange={(e) => setForm({...form, "password": e.target.value})} required />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="confirm_password" className="form-label small mb-1 text-capitalize">Konfirmasi Password</label>
-                      <input type="password" className="form-control p-3" id="confirm_password" name="confirm_password" value={form.confirm_password} onChange={(e) => setForm({...form, "confirm_password": e.target.value})} required />
+                      <label htmlFor="role" className="form-label small mb-1 text-capitalize">Role</label>
+                      <select className="form-select p-3" aria-label="Default select example" id="role" name="role" value={form.role} onChange={(e) => setForm({...form, "role": e.target.value})} required>
+                        <option value="" selected>-- Pilih Role --</option>
+                        {
+                          roles.map((role, idx) => {
+                            return (
+                              <option key={idx} value={role.slug}>{role.name}</option>
+                            )
+                          })
+                        }
+                      </select>
                     </div>
                     <button type="submit" className="btn btn-salmon w-100 p-3 mt-3 fw-bold text-uppercase"><i className="bi bi-plus-circle me-2"></i> ubah</button>
                   </form>

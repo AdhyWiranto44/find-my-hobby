@@ -22,7 +22,7 @@ export const getUsersByUsername = async (username = "") => {
 
   return response
 }
-export const getUser = async (username = "") => await axios.get(`${domain}/users/${username}`)
+export const getUser = async (username = "") => await axios.get(`${domain}/users/${username}`, headers)
 export const createUser = async (form = {}) => await axios.post(`${domain}/users`, form, headers)
 export const updateUser = async (username = "", form = {}) => await axios.patch(`${domain}/users/${username}`, form, headers)
 export const deleteUser = async (username = "") => await axios.delete(`${domain}/users/${username}`, headers)

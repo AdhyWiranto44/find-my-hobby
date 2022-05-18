@@ -61,6 +61,9 @@ export default function Index() {
                 <Link href={`/users/edit/${user.username}`}>
                   <a className="btn btn-warning me-2"><span className="bi bi-pencil-fill"></span> Ubah</a>
                 </Link>
+                <Link href={`/users/edit/password/${user.username}`}>
+                  <a className="btn btn-warning me-2"><span className="bi bi-key-fill"></span> Ubah Password</a>
+                </Link>
                 <form onSubmit={(e) => handleDelete(e, user.username)}>
                   <button type="submit" className="btn btn-outline-danger"><span className="bi bi-trash-fill"></span> Hapus</button>
                 </form>
