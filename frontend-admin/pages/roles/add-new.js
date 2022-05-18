@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Notification from "../../components/notification";
-import Title from "../../components/title";
 import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
 import { TIMEOUT, TIMEOUT_LONG } from "../../constants/timeout";
 import MainLayout from "../../layouts/main";
-import { createCategory } from "../api/category";
+import { createRole } from "../api/role";
 
 
 export default function AddNew() {
@@ -27,14 +26,14 @@ export default function AddNew() {
     }, TIMEOUT_LONG)
   }
 
-  const handleCreateNewCategory = async (e) => {
+  const handleCreateNewRole = async (e) => {
     e.preventDefault()
 
     try {
-      const category = await createCategory(form)
-      renderNotification(ALERT_SUCCESS, category.data.message)
+      const role = await createRole(form)
+      renderNotification(ALERT_SUCCESS, role.data.message)
       setTimeout(() => {
-        router.push("/categories")
+        router.push("/roles")
       }, TIMEOUT)
     } catch (err) {
       renderNotification(ALERT_FAILED, err.response.data.message)
@@ -43,7 +42,7 @@ export default function AddNew() {
 
   return (
     <MainLayout
-      title="Tambah Kategori Baru"
+      title="Tambah Hak Akses Baru"
       notification={notification}
       content={
         <>
@@ -51,7 +50,7 @@ export default function AddNew() {
             <div className="col-md-8">
               <div className="card shadow-sm border-0">
                 <div className="card-body">
-                  <form onSubmit={(e) => handleCreateNewCategory(e)}>
+                  <form onSubmit={(e) => handleCreateNewRole(e)}>
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
                       <input type="text" className="form-control p-3" id="name" name="name" onChange={(e) => setForm({"name": e.target.value})} autoFocus required />
