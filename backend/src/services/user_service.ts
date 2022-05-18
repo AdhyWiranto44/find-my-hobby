@@ -1,8 +1,9 @@
-import { hashSync } from "bcrypt"; const ROUNDS = 12;
+import { hashSync } from "bcrypt";
 import UserRepository from "../repositories/user_repository";
 import { StatusCodes } from 'http-status-codes';
 import createError from 'http-errors';
 import UserInterface from "../interfaces/user_interface";
+import { ROUNDS } from "../helpers/constants";
 
 
 export default class UserService {

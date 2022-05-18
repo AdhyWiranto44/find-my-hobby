@@ -1,5 +1,6 @@
 import { hashSync } from "bcrypt";
 import { faker } from '@faker-js/faker';
+import { ROUNDS } from "./constants";
 
 
 export const default_categories = [
@@ -74,7 +75,13 @@ export const default_suggestions = [
 export const default_users = [
   {
     "username": "admin",
-    "password": hashSync("12345", 12)
+    "password": hashSync("12345", ROUNDS),
+    "role": "administrator"
+  },
+  {
+    "username": "adhy",
+    "password": hashSync("12345", ROUNDS),
+    "role": "moderator"
   }
 ];
 

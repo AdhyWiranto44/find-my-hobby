@@ -120,7 +120,8 @@ describe("POST /api/v1/users", () => {
       .set("Authorization", `Bearer ${JWT}`)
       .send({
         "username": "admin2",
-        "password": "12345"
+        "password": "12345",
+        "role": "administrator"
       })
       .expect(StatusCodes.OK)
       .end((err, res) => {
@@ -135,7 +136,8 @@ describe("POST /api/v1/users", () => {
       .set("Authorization", `Bearer ${JWT}`)
       .send({
         "username": "admin",
-        "password": "12345"
+        "password": "12345",
+        "role": "administrator"
       })
       .expect(StatusCodes.BAD_REQUEST)
       .end((err, res) => {
@@ -161,7 +163,8 @@ describe("POST /api/v1/users", () => {
       .post(`${API_PREFIX}/users`)
       .send({
         "username": "admin2",
-        "password": "12345"
+        "password": "12345",
+        "role": "administrator"
       })
       .expect(StatusCodes.UNAUTHORIZED)
       .end((err, res) => {
