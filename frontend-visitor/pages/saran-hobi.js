@@ -4,6 +4,8 @@ import { getCategories } from './api/category'
 import Footer from '../components/footer'
 import { createSuggestion } from "./api/suggestion"
 import NavbarLogoOnly from "../components/navbarLogoOnly"
+import notificationSuccess from "../helpers/notificationSuccess"
+import notificationFailed from "../helpers/notificationFailed"
 
 
 export default function SaranHobi() {
@@ -17,8 +19,17 @@ export default function SaranHobi() {
 
   const handleCreateNewSuggestion = async (e) => {
     e.preventDefault()
-    const suggestion = await createSuggestion(form)
-    router.reload()
+    try {
+      const suggestion = await createSuggestion(form)
+      notificationSuccess({
+        message: suggestion.data.message
+      })
+      router.reload()
+    } catch (err) {
+      notificationFailed({
+        message: err.response.data.message
+      })
+    }
   }
 
   const handleGetCategories = async () => {
