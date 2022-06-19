@@ -13,8 +13,8 @@
     "createDatabase": "npx sequelize-cli db:create",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate-undo": "npx sequelize-cli db:migrate:undo",
-    "seed": "npx sequelize-cli db:seed",
-    "seed-undo": "npx sequelize-cli db:seed:undo"
+    "seed": "npx sequelize-cli db:seed:all",
+    "seed-undo": "npx sequelize-cli db:seed:undo:all"
   },
   "author": "Adhy Wiranto",
   "license": "ISC",
