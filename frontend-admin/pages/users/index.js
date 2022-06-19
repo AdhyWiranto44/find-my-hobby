@@ -2,9 +2,10 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Notification from "../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout";
+import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout";
+import notificationFailed from "../../helpers/notificationFailed";
+import notificationSuccess from "../../helpers/notificationSuccess";
+import notificationWarning from "../../helpers/notificationWarning";
 import MainLayout from "../../layouts/main";
 import { deleteUser, getUsers, getUsersByUsername } from "../api/user";
 
@@ -13,19 +14,6 @@ export default function Index() {
   const router = useRouter()
   const [users, setUsers] = useState([])
   const [total, setTotal] = useState(0)
-  const [notification, setNotification] = useState(null)
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetUsers = async () => {
     const foundUsers = await getUsers()
@@ -87,16 +75,20 @@ export default function Index() {
     e.preventDefault()
 
     try {
-      const isConfirmed = confirm("Yakin ingin menghapus?")
+      const isConfirmed = await notificationWarning({
+        title: "Yakin ingin menghapus?"
+      })
       if (isConfirmed) {
         const user = await deleteUser(username)
-        renderNotification(ALERT_SUCCESS, user.data.message)
-        setTimeout(() => {
-          handleGetUsers()
-        }, TIMEOUT)
+        notificationSuccess({
+          message: user.data.message
+        })
+        handleGetUsers()
       }
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.message)
+      notificationFailed({
+        message: err.message
+      })
     }
   }
 
@@ -108,7 +100,6 @@ export default function Index() {
     <>
       <MainLayout
         title="Tampil Pengguna"
-        notification={notification}
         content={
           <>
             <Link href="/users/add-new">

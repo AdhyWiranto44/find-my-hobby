@@ -1,56 +1,44 @@
 import { useRouter } from "next/router";
-import { useEffect, useState, useCallback } from "react";
-import Notification from "../../../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_LONG } from "../../../../constants/timeout";
+import { useState } from "react";
+import notificationFailed from "../../../../helpers/notificationFailed";
+import notificationSuccess from "../../../../helpers/notificationSuccess";
 import MainLayout from "../../../../layouts/main";
-import { getRoles } from "../../../api/role";
-import { getUser, updateUser } from "../../../api/user";
+import { updateUser } from "../../../api/user";
 
 
 export default function Edit() {
   const router = useRouter()
-  const [notification, setNotification] = useState(null)
   const username = router.query.username
   const [form, setForm] = useState({
     "password": "",
     "confirm_password": ""
   })
 
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
-
   const handleUpdateUser = async (e) => {
     e.preventDefault()
 
     if (form.password !== form.confirm_password) {
-      return renderNotification(ALERT_FAILED, "password and confirm_password should be same.")
+      return notificationFailed({
+        message: "password and confirm_password should be same."
+      })
     }
 
     try {
       const User = await updateUser(username, form)
-      renderNotification(ALERT_SUCCESS, User.data.message)
-      setTimeout(() => {
-        router.push("/users")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: User.data.message
+      })
+      router.push("/users")
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.response.data.message)
+      notificationFailed({
+        message: err.response.data.message
+      })
     }
   }
 
   return (
     <MainLayout
       title={`Ubah Pengguna: ${username}`}
-      notification={notification}
       content={
         <>
           <div className="row">

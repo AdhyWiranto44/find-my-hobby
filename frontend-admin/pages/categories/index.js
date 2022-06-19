@@ -2,30 +2,17 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Notification from "../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
 import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout";
+import notificationFailed from "../../helpers/notificationFailed";
+import notificationSuccess from "../../helpers/notificationSuccess";
+import notificationWarning from "../../helpers/notificationWarning";
 import MainLayout from "../../layouts/main";
 import { deleteCategory, getCategories, getCategoriesByName } from "../api/category";
 
 
 export default function Index() {
-  const router = useRouter()
   const [categories, setCategories] = useState([])
   const [total, setTotal] = useState(0)
-  const [notification, setNotification] = useState(null)
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
@@ -81,16 +68,20 @@ export default function Index() {
     e.preventDefault()
     
     try {
-      const isConfirmed = confirm("Yakin ingin menghapus?")
+      const isConfirmed = await notificationWarning({
+        title: "Yakin ingin menghapus?"
+      })
       if (isConfirmed) {
         const category = await deleteCategory(slug)
-        renderNotification(ALERT_SUCCESS, category.data.message)
-        setTimeout(() => {
-          handleGetCategories()
-        }, TIMEOUT)
+        notificationSuccess({
+          message: category.data.message
+        })
+        handleGetCategories()
       }
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.message)
+      notificationFailed({
+        message: err.message
+      })
     }
   }
 
@@ -102,7 +93,6 @@ export default function Index() {
     <>
       <MainLayout 
         title="Tampil Kategori"
-        notification={notification}
         content={
           <>
             <Link href="/categories/add-new">

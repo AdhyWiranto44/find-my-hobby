@@ -3,8 +3,10 @@ import { useRouter } from "next/router"
 import Cookies from 'js-cookie'
 import { tokenCookie, usernameCookie } from "../constants/cookies"
 import { TIMEOUT } from '../constants/timeout'
-import { ALERT_SUCCESS } from '../constants/alertStyles'
 import Image from 'next/image'
+import Swal from 'sweetalert2'
+import notificationSuccess from '../helpers/notificationSuccess'
+import notificationWarning from '../helpers/notificationWarning'
 
 
 export default function Navbar(props) {
@@ -15,16 +17,18 @@ export default function Navbar(props) {
     setUsername(Cookies.get(usernameCookie))
   }, [])
   
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault()
-    const isConfirmed = confirm("Yakin ingin logout?")
+    const isConfirmed = await notificationWarning({
+      message: "Yakin ingin logout?"
+    })
     if (isConfirmed) {
-      props.renderNotification(ALERT_SUCCESS, "Logout success.")
-      setTimeout(() => {
-        Cookies.remove(tokenCookie)
-        Cookies.remove(usernameCookie)
-        router.push("/login")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: "Logout success."
+      })
+      Cookies.remove(tokenCookie)
+      Cookies.remove(usernameCookie)
+      router.push("/login")
     }
   }
 

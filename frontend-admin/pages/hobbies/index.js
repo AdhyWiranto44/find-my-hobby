@@ -4,28 +4,16 @@ import MainLayout from "../../layouts/main"
 import moment from 'moment'
 import { deleteHobby, getHobbies, getHobbiesByName } from "../api/hobby"
 import { useRouter } from "next/router"
-import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout"
-import Notification from "../../components/notification"
-import { ALERT_FAILED } from "../../constants/alertStyles"
+import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout"
+import notificationWarning from "../../helpers/notificationWarning"
+import notificationSuccess from "../../helpers/notificationSuccess"
+import notificationFailed from "../../helpers/notificationFailed"
 
 
 export default function Index() {
   const [hobbies, setHobbies] = useState([])
   const [total, setTotal] = useState(0)
-  const [notification, setNotification] = useState(null)
   const router = useRouter()
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetHobbies = async () => {
     let foundHobbies = await getHobbies()
@@ -93,16 +81,20 @@ export default function Index() {
     e.preventDefault()
 
     try {
-      const isConfirmed = confirm("Yakin ingin menghapus?")
+      const isConfirmed = await notificationWarning({
+        title: "Yakin ingin menghapus?"
+      })
       if (isConfirmed) {
         const result = await deleteHobby(slug)
-        renderNotification(ALERT_SUCCESS, result.data.message)
-        setTimeout(() => {
-          handleGetHobbies()
-        }, TIMEOUT)
+        notificationSuccess({
+          message: result.data.message
+        })
+        handleGetHobbies()
       }
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.message)
+      notificationFailed({
+        message: err.message
+      })
     }
   }
 
@@ -110,7 +102,6 @@ export default function Index() {
     <>
       <MainLayout
         title="Tampil Hobi"
-        notification={notification}
         content={
           <>
             <Link href="/hobbies/add-new">

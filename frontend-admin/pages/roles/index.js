@@ -2,9 +2,10 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Notification from "../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout";
+import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout";
+import notificationFailed from "../../helpers/notificationFailed";
+import notificationSuccess from "../../helpers/notificationSuccess";
+import notificationWarning from "../../helpers/notificationWarning";
 import MainLayout from "../../layouts/main";
 import { deleteRole, getRoles, getRolesByName } from "../api/role";
 
@@ -13,19 +14,6 @@ export default function Index() {
   const router = useRouter()
   const [roles, setRoles] = useState([])
   const [total, setTotal] = useState(0)
-  const [notification, setNotification] = useState(null)
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetRoles = async () => {
     const foundRoles = await getRoles()
@@ -81,16 +69,20 @@ export default function Index() {
     e.preventDefault()
     
     try {
-      const isConfirmed = confirm("Yakin ingin menghapus?")
+      const isConfirmed = await notificationWarning({
+        title: "Yakin ingin menghapus?"
+      })
       if (isConfirmed) {
         const role = await deleteRole(slug)
-        renderNotification(ALERT_SUCCESS, role.data.message)
-        setTimeout(() => {
-          handleGetRoles()
-        }, TIMEOUT)
+        notificationSuccess({
+          message: role.data.message
+        })
+        handleGetRoles()
       }
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.message)
+      notificationFailed({
+        message: err.message
+      })
     }
   }
 
@@ -102,7 +94,6 @@ export default function Index() {
     <>
       <MainLayout 
         title="Tampil Hak Akses"
-        notification={notification}
         content={
           <>
             <Link href="/roles/add-new">

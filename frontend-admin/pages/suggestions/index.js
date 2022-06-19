@@ -1,30 +1,18 @@
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Notification from "../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_HALF_A_SECOND, TIMEOUT_LONG } from "../../constants/timeout";
+import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout";
+import notificationFailed from "../../helpers/notificationFailed";
+import notificationSuccess from "../../helpers/notificationSuccess";
+import notificationWarning from "../../helpers/notificationWarning";
 import MainLayout from "../../layouts/main";
 import { deleteSuggestion, getSuggestions, getSuggestionsByName } from "../api/suggestions";
 
 
 export default function Index() {
   const [suggestions, setSuggestions] = useState([])
-  const [notification, setNotification] = useState(null)
   const [total, setTotal] = useState(0)
   const router = useRouter()
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetSuggestions = async () => {
     let foundSuggestions = await getSuggestions()
@@ -46,16 +34,20 @@ export default function Index() {
     e.preventDefault()
 
     try {
-      const isConfirmed = confirm("Yakin ingin menghapus?")
+      const isConfirmed = await notificationWarning({
+        title: "Yakin ingin menghapus?"
+      })
       if (isConfirmed) {
         const suggestion = await deleteSuggestion(slug)
-        renderNotification(ALERT_SUCCESS, suggestion.data.message)
-        setTimeout(() => {
-          handleGetSuggestions()
-        }, TIMEOUT)
+        notificationSuccess({
+          message: suggestion.data.message
+        })
+        handleGetSuggestions()
       }
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.message)
+      notificationFailed({
+        message: err.message
+      })
     }
   }
 
@@ -107,7 +99,6 @@ export default function Index() {
     <>
       <MainLayout
         title="Tampil Saran Hobi"
-        notification={notification}
         content={
           <>
             <div className="container mb-2">

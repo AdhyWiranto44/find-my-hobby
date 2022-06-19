@@ -5,13 +5,11 @@ import { login } from './api/auth'
 import Cookies from 'js-cookie'
 import { tokenCookie, usernameCookie } from '../constants/cookies'
 import Link from 'next/link'
-import Notification from '../components/notification'
-import { TIMEOUT, TIMEOUT_LONG } from '../constants/timeout'
-import { ALERT_FAILED, ALERT_SUCCESS } from '../constants/alertStyles'
+import notificationSuccess from '../helpers/notificationSuccess'
+import notificationFailed from '../helpers/notificationFailed'
 
 
 export default function Login() {
-  const [notification, setNotification] = useState("")
   const [form, setForm] = useState({
     "username": "",
     "password": ""
@@ -21,36 +19,25 @@ export default function Login() {
 
   if (token) router.push("/")
 
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
-
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
       let jwt = await login(form)
-      renderNotification(ALERT_SUCCESS, "Login success.")
-      setTimeout(() => {
-        Cookies.set(tokenCookie, jwt.data.data.token, { expires: 1/12 })
-        Cookies.set(usernameCookie, form.username, { expires: 1/12 })
-        router.push("/")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: "Login success."
+      })
+      Cookies.set(tokenCookie, jwt.data.data.token, { expires: 1/12 })
+      Cookies.set(usernameCookie, form.username, { expires: 1/12 })
+      router.push("/")
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.response.data.message)
+      notificationFailed({
+        message: err.response.data.message
+      })
     }
   }
 
   return (
     <div className="bg-salmon">
-      {notification}
       <div className="container-fluid">
         <div className="row position-absolute h-100 w-100 overflow-hidden">
           <div className="col-lg-6 login d-flex align-items-center justify-content-center">

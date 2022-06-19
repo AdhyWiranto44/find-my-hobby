@@ -1,34 +1,20 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_LONG } from "../../../constants/timeout";
 import MainLayout from "../../../layouts/main";
 import { getRoles } from "../../api/role";
 import { getUser, updateUser } from "../../api/user";
-import Notification from "../../../components/notification";
+import notificationSuccess from "../../../helpers/notificationSuccess";
+import notificationFailed from "../../../helpers/notificationFailed";
 
 
 export default function Edit() {
   const router = useRouter()
-  const [notification, setNotification] = useState(null)
   const [user, setUser] = useState({})
   const [roles, setRoles] = useState([])
   const username = router.query.username
   const [form, setForm] = useState({
     "role": "",
   })
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetUser = async (username = "") => {
     let foundUser = await getUser(username)
@@ -47,12 +33,14 @@ export default function Edit() {
 
     try {
       const User = await updateUser(username, form)
-      renderNotification(ALERT_SUCCESS, User.data.message)
-      setTimeout(() => {
-        router.push("/users")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: User.data.message
+      })
+      router.push("/users")
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.response.data.message)
+      notificationFailed({
+        message: err.response.data.message
+      })
     }
   }
 
@@ -67,7 +55,6 @@ export default function Edit() {
   return (
     <MainLayout
       title={`Ubah Pengguna: ${username}`}
-      notification={notification}
       content={
         <>
           <div className="row">

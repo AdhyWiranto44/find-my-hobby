@@ -1,33 +1,18 @@
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
-import Notification from "../../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_LONG } from "../../../constants/timeout";
+import notificationFailed from "../../../helpers/notificationFailed";
+import notificationSuccess from "../../../helpers/notificationSuccess";
 import MainLayout from "../../../layouts/main";
-import { getCategory, updateCategory } from "../../api/category";
 import { getRole, updateRole } from "../../api/role";
 
 
 export default function Edit() {
   const router = useRouter()
-  const [notification, setNotification] = useState(null)
   const [role, setRole] = useState({})
   const slug = router.query.slug
   const [form, setForm] = useState({
     "name": ""
   })
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetRole = useCallback( async () => {
     let foundRole = await getRole(slug)
@@ -41,12 +26,14 @@ export default function Edit() {
 
     try {
       const role = await updateRole(slug, form)
-      renderNotification(ALERT_SUCCESS, role.data.message)
-      setTimeout(() => {
-        router.push("/roles")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: role.data.message
+      })
+      router.push("/roles")
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.response.data.message)
+      notificationFailed({
+        message: err.response.data.message
+      })
     }
   }
 
@@ -57,7 +44,6 @@ export default function Edit() {
   return (
     <MainLayout
       title="Ubah Hak Akses"
-      notification={notification}
       content={
         <>
           <div className="row">

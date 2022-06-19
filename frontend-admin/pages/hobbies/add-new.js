@@ -1,15 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Notification from "../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_LONG } from "../../constants/timeout";
+import notificationFailed from "../../helpers/notificationFailed";
+import notificationSuccess from "../../helpers/notificationSuccess";
 import MainLayout from "../../layouts/main";
 import { getCategories } from "../api/category";
 import { createHobby } from "../api/hobby";
 
 
 export default function AddNew() {
-  const [notification, setNotification] = useState(null)
   const [categories, setCategories] = useState([])
   const router = useRouter()
   const defaultForm = {
@@ -21,18 +19,6 @@ export default function AddNew() {
   }
   const [form, setForm] = useState(defaultForm)
 
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
-
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
     setCategories(foundCategories.data.data.categories)
@@ -42,12 +28,14 @@ export default function AddNew() {
     e.preventDefault()
     try {
       const hobby = await createHobby(form)
-      renderNotification(ALERT_SUCCESS, hobby.data.message)
-      setTimeout(() => {
-        router.push("/hobbies")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: hobby.data.message
+      })
+      router.push("/hobbies")
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.response.data.message)
+      notificationFailed({
+        message: err.response.data.message
+      })
     }
   }
 
@@ -58,7 +46,6 @@ export default function AddNew() {
   return (
     <MainLayout
       title="Tambah Hobi Baru"
-      notification={notification}
       content={
         <>
           <div className="row">

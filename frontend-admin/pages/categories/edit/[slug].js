@@ -1,32 +1,18 @@
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
-import Notification from "../../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_LONG } from "../../../constants/timeout";
+import notificationFailed from "../../../helpers/notificationFailed";
+import notificationSuccess from "../../../helpers/notificationSuccess";
 import MainLayout from "../../../layouts/main";
 import { getCategory, updateCategory } from "../../api/category";
 
 
 export default function Edit() {
   const router = useRouter()
-  const [notification, setNotification] = useState(null)
   const [category, setCategory] = useState({})
   const slug = router.query.slug
   const [form, setForm] = useState({
     "name": ""
   })
-
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
 
   const handleGetCategory = useCallback( async () => {
     let foundCategory = await getCategory(slug)
@@ -39,12 +25,14 @@ export default function Edit() {
     e.preventDefault()
     try {
       const category = await updateCategory(slug, form)
-      renderNotification(ALERT_SUCCESS, category.data.message)
-      setTimeout(() => {
-        router.push("/categories")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: category.data.message
+      })
+      router.push("/categories")
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.response.data.message)
+      notificationFailed({
+        message: err.response.data.message
+      })
     }
   }
 
@@ -55,7 +43,6 @@ export default function Edit() {
   return (
     <MainLayout
       title="Ubah Kategori"
-      notification={notification}
       content={
         <>
           <div className="row">

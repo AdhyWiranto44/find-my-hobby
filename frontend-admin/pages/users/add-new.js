@@ -1,15 +1,13 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import Notification from "../../components/notification";
-import { ALERT_FAILED, ALERT_SUCCESS } from "../../constants/alertStyles";
-import { TIMEOUT, TIMEOUT_LONG } from "../../constants/timeout";
+import notificationFailed from "../../helpers/notificationFailed";
+import notificationSuccess from "../../helpers/notificationSuccess";
 import MainLayout from "../../layouts/main";
 import { getRoles } from "../api/role";
 import { createUser } from "../api/user";
 
 
 export default function AddNew() {
-  const [notification, setNotification] = useState(null)
   const [roles, setRoles] = useState([])
   const router = useRouter()
   const [form, setForm] = useState({
@@ -28,40 +26,31 @@ export default function AddNew() {
     handleGetRoles()
   }, [handleGetRoles])
 
-  const renderNotification = (color, message) => {
-    setNotification(
-      <Notification 
-        color={color}
-        message={message}
-      />
-    )
-    setTimeout(() => {
-      setNotification("")
-    }, TIMEOUT_LONG)
-  }
-
   const handleCreateNewUser = async (e) => {
     e.preventDefault()
 
     if (form.password !== form.confirm_password) {
-      return renderNotification(ALERT_FAILED, "password and confirm_password should be same.")
+      return notificationFailed({
+        message: "password and confirm_password should be same."
+      })
     }
 
     try {
       const user = await createUser(form)
-      renderNotification(ALERT_SUCCESS, user.data.message)
-      setTimeout(() => {
-        router.push("/users")
-      }, TIMEOUT)
+      notificationSuccess({
+        message: user.data.message
+      })
+      router.push("/users")
     } catch (err) {
-      renderNotification(ALERT_FAILED, err.response.data.message)
+      notificationFailed({
+        message: err.response.data.message
+      })
     }
   }
 
   return (
     <MainLayout
       title="Tambah Pengguna Baru"
-      notification={notification}
       content={
         <>
           <div className="row">
