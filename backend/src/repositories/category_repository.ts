@@ -1,4 +1,4 @@
-import DatabaseHelper from "../database/DatabaseHelper";
+import ConnectionPostgres from "../database/ConnectionPostgres";
 import CategoryInterface from "../interfaces/category_interface";
 import { Category } from "../models/Category";
 
@@ -8,21 +8,17 @@ export default class CategoryRepository {
   connection: any = null;
 
   constructor() {
-    this.connection = DatabaseHelper.getConnection();
+    this.connection = ConnectionPostgres.connect();
   }
-  
+
   async getAll(filter = {}, limit: number = 1, skip: number = 0) {
-    const categories = await Category.find(filter)
-    .limit(limit)
-    .skip(skip)
-    .sort({ created_at: -1 })
-    .exec();
+    const [categories, metadata] = await this.connection.query(`SELECT * FROM categories LIMIT ${limit} OFFSET ${skip}`)
 
     return categories;
   }
 
   async getOne(slug: any) {
-    const category = Category.findOne({ slug }).exec();
+    const [category, metadata] = await this.connection.query(`SELECT * FROM categories WHERE slug = '${slug}'`);
 
     return category;
   }
@@ -40,7 +36,7 @@ export default class CategoryRepository {
   }
 
   async remove(slug: string) {
-    const removed = Category.findOneAndRemove({slug});
+    const removed = this.connection.query(`DELETE FROM categories WHERE slug = '${slug}'`);
 
     return removed;
   }
