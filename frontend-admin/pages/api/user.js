@@ -5,7 +5,7 @@ import { decode } from 'jsonwebtoken'
 
 
 export const getUsers = async () => {
-  let response = await axios.get(`${domain}/users?limit=0&skip=0`, headers)
+  let response = await axios.get(`${domain}/users?limit=50&skip=0`, headers)
   let users = [...response.data.data.users]
   users = await filterByUserLogin(users)
   response.data.data.users = users
@@ -14,7 +14,7 @@ export const getUsers = async () => {
   return response
 }
 export const getUsersByUsername = async (username = "") => {
-  let response = await axios.get(`${domain}/users?username=${username}&limit=0&skip=0`, headers)
+  let response = await axios.get(`${domain}/users?username=${username}&limit=50&skip=0`, headers)
   let users = [...response.data.data.users]
   users = await filterByUserLogin(users)
   response.data.data.users = users
