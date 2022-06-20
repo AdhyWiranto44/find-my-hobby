@@ -1,7 +1,7 @@
 import ConnectionPostgres from "../database/ConnectionPostgres";
 import CategoryInterface from "../interfaces/category_interface";
-import { Category } from "../models/Category";
-import { QueryTypes } from 'sequelize';
+import Category from "../../models/Category";
+import { DataTypes } from 'sequelize';
 
 
 export default class CategoryRepository {
@@ -13,51 +13,63 @@ export default class CategoryRepository {
   }
 
   async getAll(filter = {}, limit: number = 1, skip: number = 0) {
-    const [categories, metadata] = await this.connection.query(`SELECT * FROM categories LIMIT ${limit} OFFSET ${skip}`)
+    const categories = Category(this.connection, DataTypes)
+      .findAll({
+        where: filter, limit: limit, offset: skip,
+        order: [['createdAt', 'DESC']]
+      });
 
     return categories;
   }
 
   async getOne(slug: any) {
-    const [category, metadata] = await this.connection.query(`SELECT * FROM categories WHERE slug = '${slug}'`);
+    const category = Category(this.connection, DataTypes)
+    .findOne({
+      where: {slug}
+    });
 
     return category;
   }
 
   async insertOne(category: CategoryInterface) {
-    const created = await this.connection.query(
-      `INSERT INTO categories ("name", "slug", "createdAt", "updatedAt") VALUES (:name, :slug, :createdAt, :updatedAt)`,
-      {
-        replacements: {
-          ...category,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        type: QueryTypes.INSERT
-      }
+    Category(this.connection, DataTypes)
+    .create(
+      {...category, createdAt: new Date(), updatedAt: new Date()}
+    );
+
+    const created = Category(this.connection, DataTypes)
+      .findOne(
+        {where: {slug: category.slug}}
       );
 
     return created;
   }
 
   async update(slug: string, category: CategoryInterface) {
-    const updated = this.connection.query(
-      `UPDATE categories SET "name" = :name, "updatedAt" = :updatedAt WHERE "slug" = :slug`,
-      {
-        replacements: {
-          name: category.name,
-          updatedAt: new Date(),
-          slug: slug
-        },
-        type: QueryTypes.UPDATE
-      }
-    )
+    Category(this.connection, DataTypes)
+      .update(
+        {...category, updatedAt: new Date()}, 
+        {where: {slug: slug}
+      });
+
+    const updated = Category(this.connection, DataTypes)
+      .findOne(
+        {where: {slug}}
+      );
 
     return updated;
   }
 
   async remove(slug: string) {
-    const removed = this.connection.query(`DELETE FROM categories WHERE slug = '${slug}'`);
+    const removed = Category(this.connection, DataTypes)
+    .findOne(
+      {where: {slug}}
+    );
+
+    Category(this.connection, DataTypes)
+      .destroy({
+        where: {slug}
+      });
 
     return removed;
   }

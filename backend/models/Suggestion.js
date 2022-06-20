@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     suggester_email: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Suggestion',
+    modelName: 'Suggestion', tableName: 'suggestions'
   });
   return Suggestion;
 };

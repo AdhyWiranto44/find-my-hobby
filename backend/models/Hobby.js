@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     suggester_email: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Hobby',
+    modelName: 'Hobby', tableName: 'hobbies'
   });
   return Hobby;
 };

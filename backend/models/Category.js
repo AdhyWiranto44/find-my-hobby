@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    sequelize, modelName: 'Category',
+    sequelize, modelName: 'Category', tableName: 'categories'
   });
   return Category;
 };

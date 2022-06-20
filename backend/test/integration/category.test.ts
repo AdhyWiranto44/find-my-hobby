@@ -1,7 +1,7 @@
 import request from "supertest";
 import { StatusCodes } from 'http-status-codes';
 import { app, server } from '../../app';
-import Connection from "../../src/database/Connection";
+import ConnectionPostgres from "../../src/database/ConnectionPostgres";
 import User from "../../src/models/User";
 import Hobby from "../../src/models/Hobby";
 import Suggestion from "../../src/models/Suggestion";
@@ -12,10 +12,10 @@ import { sign } from "jsonwebtoken";
 
 const API_PREFIX = "/api/v1";
 let JWT = "";
-let conn: Connection;
+let conn: ConnectionPostgres;
 
 beforeAll( async () => {
-  conn = new Connection();
+  conn = new ConnectionPostgres();
   await conn.dropDatabase();
   
   await User.insertMany(default_users);
@@ -208,6 +208,6 @@ describe("DELETE /api/v1/categories/:slug", () => {
 });
 
 afterAll(() => {
-  conn.closeConnection();
+  conn.closeConnectionPostgres();
   server.close();
 });
