@@ -14,7 +14,7 @@ export default class SuggestionRepository {
   }
   
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
-    const suggestions = Suggestion(this.connection, DataTypes)
+    const suggestions = await Suggestion(this.connection, DataTypes)
       .findAll({
         where: {
           ...filter,
@@ -29,7 +29,7 @@ export default class SuggestionRepository {
   }
 
   async getOne(slug: any) {
-    const suggestion = Suggestion(this.connection, DataTypes)
+    const suggestion = await Suggestion(this.connection, DataTypes)
     .findOne({
       where: {slug}
     });
@@ -38,12 +38,12 @@ export default class SuggestionRepository {
   }
 
   async insertOne(suggestion: SuggestionInterface) {
-    Suggestion(this.connection, DataTypes)
+    await Suggestion(this.connection, DataTypes)
     .create(
       {...suggestion, createdAt: new Date(), updatedAt: new Date()}
     );
 
-  const created = Suggestion(this.connection, DataTypes)
+  const created = await Suggestion(this.connection, DataTypes)
     .findOne(
       {where: {slug: suggestion.slug}}
     );
@@ -52,13 +52,13 @@ export default class SuggestionRepository {
   }
 
   async update(slug: string, suggestion: SuggestionInterface) {
-    Suggestion(this.connection, DataTypes)
+    await Suggestion(this.connection, DataTypes)
       .update(
         {...suggestion, updatedAt: new Date()}, 
         {where: {slug: slug}
       });
 
-    const updated = Suggestion(this.connection, DataTypes)
+    const updated = await Suggestion(this.connection, DataTypes)
       .findOne(
         {where: {slug}}
       );
@@ -67,12 +67,12 @@ export default class SuggestionRepository {
   }
 
   async remove(slug: string) {
-    const removed = Suggestion(this.connection, DataTypes)
+    const removed = await Suggestion(this.connection, DataTypes)
     .findOne(
       {where: {slug}}
     );
 
-    Suggestion(this.connection, DataTypes)
+    await Suggestion(this.connection, DataTypes)
       .destroy({
         where: {slug}
       });

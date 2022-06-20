@@ -12,7 +12,7 @@ export default class HobbyRepository {
   }
 
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
-    const hobbies = Hobby(this.connection, DataTypes)
+    const hobbies = await Hobby(this.connection, DataTypes)
     .findAll({
       where: {
         ...filter,
@@ -27,7 +27,7 @@ export default class HobbyRepository {
   }
 
   async getOne(slug: string = "") {
-    const hobby = Hobby(this.connection, DataTypes)
+    const hobby = await Hobby(this.connection, DataTypes)
     .findOne({
       where: {slug}
     });
@@ -36,12 +36,12 @@ export default class HobbyRepository {
   }
 
   async insertOne(hobby: HobbyInterface) {
-    Hobby(this.connection, DataTypes)
+    await Hobby(this.connection, DataTypes)
     .create(
       {...hobby, createdAt: new Date(), updatedAt: new Date()}
     );
 
-    const created = Hobby(this.connection, DataTypes)
+    const created = await Hobby(this.connection, DataTypes)
       .findOne(
         {where: {slug: hobby.slug}}
       );
@@ -50,13 +50,13 @@ export default class HobbyRepository {
   }
 
   async update(slug: string, hobby: HobbyInterface) {
-    Hobby(this.connection, DataTypes)
+    await Hobby(this.connection, DataTypes)
       .update(
         {...hobby, updatedAt: new Date()}, 
         {where: {slug: slug}
       });
 
-    const updated = Hobby(this.connection, DataTypes)
+    const updated = await Hobby(this.connection, DataTypes)
       .findOne(
         {where: {slug}}
       );
@@ -65,12 +65,12 @@ export default class HobbyRepository {
   }
 
   async remove(slug: string) {
-    const removed = Hobby(this.connection, DataTypes)
+    const removed = await Hobby(this.connection, DataTypes)
     .findOne(
       {where: {slug}}
     );
 
-    Hobby(this.connection, DataTypes)
+    await Hobby(this.connection, DataTypes)
       .destroy({
         where: {slug}
       });

@@ -14,7 +14,7 @@ export default class RoleRepository {
   }
   
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
-    const roles = Role(this.connection, DataTypes)
+    const roles = await Role(this.connection, DataTypes)
     .findAll({
       where: {
         ...filter,
@@ -29,7 +29,7 @@ export default class RoleRepository {
   }
 
   async getOne(slug: any) {
-    const role = Role(this.connection, DataTypes)
+    const role = await Role(this.connection, DataTypes)
     .findOne({
       where: {slug}
     });
@@ -38,12 +38,12 @@ export default class RoleRepository {
   }
 
   async insertOne(role: RoleInterface) {
-    Role(this.connection, DataTypes)
+    await Role(this.connection, DataTypes)
     .create(
       {...role, createdAt: new Date(), updatedAt: new Date()}
     );
 
-    const created = Role(this.connection, DataTypes)
+    const created = await Role(this.connection, DataTypes)
       .findOne(
         {where: {slug: role.slug}}
       );
@@ -52,13 +52,13 @@ export default class RoleRepository {
   }
 
   async update(slug: string, role: RoleInterface) {
-    Role(this.connection, DataTypes)
+    await Role(this.connection, DataTypes)
       .update(
         {...role, updatedAt: new Date()}, 
         {where: {slug: slug}
       });
 
-    const updated = Role(this.connection, DataTypes)
+    const updated = await Role(this.connection, DataTypes)
       .findOne(
         {where: {slug}}
       );
@@ -67,12 +67,12 @@ export default class RoleRepository {
   }
 
   async remove(slug: string) {
-    const removed = Role(this.connection, DataTypes)
+    const removed = await Role(this.connection, DataTypes)
     .findOne(
       {where: {slug}}
     );
 
-    Role(this.connection, DataTypes)
+    await Role(this.connection, DataTypes)
       .destroy({
         where: {slug}
       });

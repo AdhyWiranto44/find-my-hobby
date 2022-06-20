@@ -13,11 +13,11 @@ class UserRepository {
   }
 
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
-    const users = User(this.connection, DataTypes)
+    const users = await User(this.connection, DataTypes)
     .findAll({
       where: {
         ...filter,
-        name: {
+        username: {
           [Op.like]: filter.username !== undefined ? `${filter.username}%` : `%`
         }
       }, limit: limit, offset: skip,
@@ -28,7 +28,7 @@ class UserRepository {
   }
 
   async getOne(username: string) {
-    const user = User(this.connection, DataTypes)
+    const user = await User(this.connection, DataTypes)
     .findOne({
       where: {username}
     });
@@ -37,27 +37,27 @@ class UserRepository {
   }
 
   async insertOne(user: UserInterface) {
-    User(this.connection, DataTypes)
+    await User(this.connection, DataTypes)
       .create(
         {...user, createdAt: new Date(), updatedAt: new Date()}
       );
 
-    const created = User(this.connection, DataTypes)
+    const created = await User(this.connection, DataTypes)
       .findOne(
-        {where: {slug: user.username}}
+        {where: {username: user.username}}
       );
 
     return created;
   }
 
   async update(username: string, user: UserInterface) {
-    User(this.connection, DataTypes)
+    await User(this.connection, DataTypes)
       .update(
         {...user, updatedAt: new Date()}, 
         {where: {username: username}
       });
 
-    const updated = User(this.connection, DataTypes)
+    const updated = await User(this.connection, DataTypes)
       .findOne(
         {where: {username}}
       );
@@ -66,12 +66,12 @@ class UserRepository {
   }
 
   async remove(username: string) {
-    const removed = User(this.connection, DataTypes)
+    const removed = await User(this.connection, DataTypes)
     .findOne(
       {where: {username}}
     );
 
-    User(this.connection, DataTypes)
+    await User(this.connection, DataTypes)
       .destroy({
         where: {username}
       });

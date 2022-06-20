@@ -13,7 +13,7 @@ export default class CategoryRepository {
   }
 
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
-    const categories = Category(this.connection, DataTypes)
+    const categories = await Category(this.connection, DataTypes)
       .findAll({
         where: {
           ...filter,
@@ -28,7 +28,7 @@ export default class CategoryRepository {
   }
 
   async getOne(slug: any) {
-    const category = Category(this.connection, DataTypes)
+    const category = await Category(this.connection, DataTypes)
     .findOne({
       where: {slug}
     });
@@ -37,12 +37,12 @@ export default class CategoryRepository {
   }
 
   async insertOne(category: CategoryInterface) {
-    Category(this.connection, DataTypes)
+    await Category(this.connection, DataTypes)
       .create(
         {...category, createdAt: new Date(), updatedAt: new Date()}
       );
 
-    const created = Category(this.connection, DataTypes)
+    const created = await Category(this.connection, DataTypes)
       .findOne(
         {where: {slug: category.slug}}
       );
@@ -51,13 +51,13 @@ export default class CategoryRepository {
   }
 
   async update(slug: string, category: CategoryInterface) {
-    Category(this.connection, DataTypes)
+    await Category(this.connection, DataTypes)
       .update(
         {...category, updatedAt: new Date()}, 
         {where: {slug: slug}
       });
 
-    const updated = Category(this.connection, DataTypes)
+    const updated = await Category(this.connection, DataTypes)
       .findOne(
         {where: {slug}}
       );
@@ -66,12 +66,12 @@ export default class CategoryRepository {
   }
 
   async remove(slug: string) {
-    const removed = Category(this.connection, DataTypes)
+    const removed = await Category(this.connection, DataTypes)
     .findOne(
       {where: {slug}}
     );
 
-    Category(this.connection, DataTypes)
+    await  Category(this.connection, DataTypes)
       .destroy({
         where: {slug}
       });
