@@ -18,10 +18,6 @@ class RoleController {
       }
     }
 
-    if (queries.name) {
-      filter["name"] = { $regex: queries.name + ".*", $options: 'i' };
-    }
-
     try {
       const roles = await new RoleService().getAll(filter, pagination.limit, pagination.skip);
 

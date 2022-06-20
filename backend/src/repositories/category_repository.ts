@@ -1,7 +1,7 @@
 import ConnectionPostgres from "../database/ConnectionPostgres";
 import CategoryInterface from "../interfaces/category_interface";
 import Category from "../../models/Category";
-import { DataTypes } from 'sequelize';
+import { DataTypes, Op } from 'sequelize';
 
 
 export default class CategoryRepository {
@@ -12,10 +12,15 @@ export default class CategoryRepository {
     this.connection = ConnectionPostgres.connect();
   }
 
-  async getAll(filter = {}, limit: number = 1, skip: number = 0) {
+  async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
     const categories = Category(this.connection, DataTypes)
       .findAll({
-        where: {...filter}, limit: limit, offset: skip,
+        where: {
+          ...filter,
+          name: {
+            [Op.like]: filter.name !== undefined ? `${filter.name}%` : `%`
+          }
+        }, limit: limit, offset: skip,
         order: [['createdAt', 'DESC']]
       });
 

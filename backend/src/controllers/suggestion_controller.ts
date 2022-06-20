@@ -18,10 +18,6 @@ class SuggestionController {
       }
     }
 
-    if (queries.name) {
-      filter["name"] = { $regex: queries.name + ".*", $options: 'i' };
-    }
-
     try {
       const suggestions = await new SuggestionService().getAll(filter, pagination.limit, pagination.skip);
 

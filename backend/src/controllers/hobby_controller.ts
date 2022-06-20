@@ -22,10 +22,6 @@ class HobbyController {
       }
     }
 
-    if (queries.name) {
-      filter["name"] = { $regex: queries.name + ".*", $options: 'i' };
-    }
-
     try {
       const hobbies = await new HobbyService().getAll(filter, pagination.limit, pagination.skip);
 

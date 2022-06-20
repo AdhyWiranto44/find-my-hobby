@@ -18,10 +18,6 @@ class CategoryController {
       }
     }
 
-    if (queries.name) {
-      filter["name"] = { $regex: queries.name + ".*", $options: 'i' };
-    }
-
     try {
       const categories = await new CategoryService().getAll(filter, pagination.limit, pagination.skip);
 

@@ -20,10 +20,6 @@ class UserController {
       }
     }
 
-    if (queries.username) {
-      filter["username"] = { $regex: queries.username + ".*", $options: 'i' };
-    }
-
     try {
       const users = await new UserService().getAll(filter, pagination.limit, pagination.skip);
 
