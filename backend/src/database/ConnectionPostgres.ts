@@ -18,7 +18,11 @@ class ConnectionPostgres {
   }
 
   closeConnection() {
-    // Do something.
+    return ConnectionPostgres.connection.closeConnection();
+  }
+
+  dropDatabase() {
+    return ConnectionPostgres.connection.dropDatabase();
   }
 }
 

@@ -15,7 +15,7 @@ export default class CategoryRepository {
   async getAll(filter = {}, limit: number = 1, skip: number = 0) {
     const categories = Category(this.connection, DataTypes)
       .findAll({
-        where: filter, limit: limit, offset: skip,
+        where: {...filter}, limit: limit, offset: skip,
         order: [['createdAt', 'DESC']]
       });
 

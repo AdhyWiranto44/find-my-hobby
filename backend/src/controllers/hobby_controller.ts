@@ -17,8 +17,9 @@ class HobbyController {
     for (const property in queries) {
       if (property == "limit" || property == "skip") {
         pagination[property] = parseInt(queries[property]);
+      } else {
+        filter[property] = queries[property];
       }
-      filter[property] = queries[property];
     }
 
     if (queries.name) {

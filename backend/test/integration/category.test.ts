@@ -9,19 +9,24 @@ import { Category } from "../../src/models/Category";
 import { default_categories, default_hobbies, default_suggestions, default_users } from "../../src/helpers/dummy_data";
 import { randomBytes } from "crypto";
 import { sign } from "jsonwebtoken";
+import categorySeeder from "../../seeders/20220619083213-category";
 
 const API_PREFIX = "/api/v1";
 let JWT = "";
-let conn: ConnectionPostgres;
+let conn: any;
 
 beforeAll( async () => {
-  conn = new ConnectionPostgres();
-  await conn.dropDatabase();
-  
-  await User.insertMany(default_users);
-  await Category.insertMany(default_categories);
-  await Hobby.insertMany(default_hobbies);
-  await Suggestion.insertMany(default_suggestions);
+  conn = ConnectionPostgres.connect();
+
+  // Delete all data from all tables
+  // conn.query(`DELETE FROM users`);
+  // conn.query(`DELETE FROM roles`);
+  // conn.query(`DELETE FROM hobbies`);
+  // conn.query(`DELETE FROM suggestions`);
+  conn.query(`DELETE FROM categories`);
+
+  // Tambahkan data dummy: users, roles, hobbies, suggestions, categories
+  categorySeeder.up();
 });
 
 // Create JWT
@@ -208,6 +213,6 @@ describe("DELETE /api/v1/categories/:slug", () => {
 });
 
 afterAll(() => {
-  conn.closeConnectionPostgres();
+  conn.closeConnection();
   server.close();
 });
