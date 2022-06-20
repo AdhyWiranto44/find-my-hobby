@@ -1,6 +1,7 @@
 import ConnectionPostgres from "../database/ConnectionPostgres";
 import CategoryInterface from "../interfaces/category_interface";
 import { Category } from "../models/Category";
+import { QueryTypes } from 'sequelize';
 
 
 export default class CategoryRepository {
@@ -24,13 +25,33 @@ export default class CategoryRepository {
   }
 
   async insertOne(category: CategoryInterface) {
-    const created = await new Category(category).save();
+    const created = await this.connection.query(
+      `INSERT INTO categories ("name", "slug", "createdAt", "updatedAt") VALUES (:name, :slug, :createdAt, :updatedAt)`,
+      {
+        replacements: {
+          ...category,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        type: QueryTypes.INSERT
+      }
+      );
 
     return created;
   }
 
   async update(slug: string, category: CategoryInterface) {
-    const updated = Category.findOneAndUpdate({slug}, category, { runValidators: true });
+    const updated = this.connection.query(
+      `UPDATE categories SET "name" = :name, "updatedAt" = :updatedAt WHERE "slug" = :slug`,
+      {
+        replacements: {
+          name: category.name,
+          updatedAt: new Date(),
+          slug: slug
+        },
+        type: QueryTypes.UPDATE
+      }
+    )
 
     return updated;
   }

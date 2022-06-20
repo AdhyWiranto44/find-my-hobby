@@ -9,7 +9,7 @@ const authentication = new Authentication();
 
 router.get("/categories", categoryController.getAll);
 router.get("/categories/:slug", categoryController.getOne);
-router.post("/categories", authentication.authenticate, categoryController.create);
+router.post("/categories", categoryController.create);
 router.patch("/categories/:slug", authentication.authenticate, categoryController.update);
 router.delete("/categories/:slug", authentication.authenticate, categoryController.delete);
 
