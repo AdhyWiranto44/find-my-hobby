@@ -27,7 +27,7 @@ export default class HobbyService {
   }
 
   async getOne(slug: string = "") {
-    let hobby = await new HobbyRepository().getOne(slug);
+    let hobby: any = await new HobbyRepository().getOne(slug);
 
     if (hobby == null) throw createError(StatusCodes.NOT_FOUND, "Hobby not found.");
 

@@ -38,9 +38,9 @@ export default class CategoryRepository {
 
   async insertOne(category: CategoryInterface) {
     Category(this.connection, DataTypes)
-    .create(
-      {...category, createdAt: new Date(), updatedAt: new Date()}
-    );
+      .create(
+        {...category, createdAt: new Date(), updatedAt: new Date()}
+      );
 
     const created = Category(this.connection, DataTypes)
       .findOne(

@@ -20,7 +20,7 @@ export default class SuggestionService {
   async getByCategory(category: string) {
     let suggestions = await new SuggestionRepository().getAll();
     
-    suggestions = suggestions.filter(suggestion => {
+    suggestions = suggestions.filter((suggestion: any) => {
       return suggestion.category == category;
     });
 

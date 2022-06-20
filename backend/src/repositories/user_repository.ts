@@ -1,44 +1,80 @@
+import ConnectionPostgres from "../database/ConnectionPostgres";
 import DatabaseHelper from "../database/DatabaseHelper";
 import UserInterface from "../interfaces/user_interface";
-import User from "../models/User";
+import User from "../../models/User";
+import { DataTypes, Op } from "sequelize";
 
 class UserRepository {
 
   connection: any = null;
 
   constructor() {
-    this.connection = DatabaseHelper.getConnection();
+    this.connection = ConnectionPostgres.connect();
   }
 
   async getAll(filter: any = {}, limit: number = 1, skip: number = 0) {
-    const users = await User.find(filter)
-    .limit(limit)
-    .skip(skip)
-    .sort({ created_at: -1 })
-    .exec();
+    const users = User(this.connection, DataTypes)
+    .findAll({
+      where: {
+        ...filter,
+        name: {
+          [Op.like]: filter.username !== undefined ? `${filter.username}%` : `%`
+        }
+      }, limit: limit, offset: skip,
+      order: [['createdAt', 'DESC']]
+    });
 
     return users;
   }
 
   async getOne(username: string) {
-    let user = await User.findOne({ "username": username });
+    const user = User(this.connection, DataTypes)
+    .findOne({
+      where: {username}
+    });
+
     return user;
   }
 
   async insertOne(user: UserInterface) {
-    const created = await new User(user).save();
+    User(this.connection, DataTypes)
+      .create(
+        {...user, createdAt: new Date(), updatedAt: new Date()}
+      );
+
+    const created = User(this.connection, DataTypes)
+      .findOne(
+        {where: {slug: user.username}}
+      );
 
     return created;
   }
 
   async update(username: string, user: UserInterface) {
-    const updated = User.findOneAndUpdate({username}, user, { runValidators: true });
+    User(this.connection, DataTypes)
+      .update(
+        {...user, updatedAt: new Date()}, 
+        {where: {username: username}
+      });
+
+    const updated = User(this.connection, DataTypes)
+      .findOne(
+        {where: {username}}
+      );
 
     return updated;
   }
 
   async remove(username: string) {
-    const removed = User.findOneAndRemove({username});
+    const removed = User(this.connection, DataTypes)
+    .findOne(
+      {where: {username}}
+    );
+
+    User(this.connection, DataTypes)
+      .destroy({
+        where: {username}
+      });
 
     return removed;
   }
