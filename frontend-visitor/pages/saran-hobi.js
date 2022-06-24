@@ -6,16 +6,18 @@ import { createSuggestion } from "./api/suggestion"
 import NavbarLogoOnly from "../components/navbarLogoOnly"
 import notificationSuccess from "../helpers/notificationSuccess"
 import notificationFailed from "../helpers/notificationFailed"
+import { TIMEOUT } from "../constants/timeout"
 
 
 export default function SaranHobi() {
   const router = useRouter()
   const [categories, setCategories] = useState([])
-  const [form, setForm] = useState({
+  const defaultForm = {
     "name": "",
     "description": "",
     "category": ""
-  })
+  }
+  const [form, setForm] = useState(defaultForm)
 
   const handleCreateNewSuggestion = async (e) => {
     e.preventDefault()
@@ -29,6 +31,9 @@ export default function SaranHobi() {
         message: err.response.data.message
       })
     }
+    setTimeout(() => {
+      router.reload()
+    }, TIMEOUT)
   }
 
   const handleGetCategories = async () => {
