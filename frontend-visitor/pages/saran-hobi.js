@@ -24,7 +24,6 @@ export default function SaranHobi() {
       notificationSuccess({
         message: suggestion.data.message
       })
-      router.reload()
     } catch (err) {
       notificationFailed({
         message: err.response.data.message
