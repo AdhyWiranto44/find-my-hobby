@@ -10,7 +10,7 @@ class ConnectionPostgres {
   static connect() {
     if (ConnectionPostgres.connection === null) {
       console.log("Creating new connection...");
-      ConnectionPostgres.connection = new Sequelize('postgres://postgres:12345@localhost:5432/findmyhobby_development');
+      ConnectionPostgres.connection = new Sequelize(`postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`);
       console.log("New connetion created.");
     }
 
