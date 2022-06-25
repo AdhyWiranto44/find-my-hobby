@@ -12,6 +12,7 @@ export default function CariAcak() {
       return router.push(`/hobby/${randomHobby.slug}`);
     }).catch(err => {
       console.log(err);
+      router.push("/");
     });
   }
 
