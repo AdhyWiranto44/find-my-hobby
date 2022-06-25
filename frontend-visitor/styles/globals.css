@@ -118,6 +118,16 @@ body {
   width: 35px;
 }
 
+.myLink {
+  text-decoration: none;
+  color: #333;
+  transition: .3s;
+}
+
+.myLink:hover {
+  color: #666;
+}
+
 @media(min-width: 992px) {
   a.nav-link {
       margin-top: 4px;
