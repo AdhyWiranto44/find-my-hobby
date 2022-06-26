@@ -66,6 +66,9 @@ export default function Login() {
             </form>
           </div>
           <div className="col-lg-6 d-none d-lg-block p-0 overflow-hidden">
+            <div className="d-flex justify-content-center align-items-end position-absolute h-100 w-50 pb-3">
+              <small className="text-light mr-2"><b>Find My Hobby</b> &#169; {new Date().getFullYear()}. Made with &#10084; By <a className="link-warning text-decoration-none" href="https://github.com/adhywiranto44" target="_blank" rel="noreferrer">Adhy Wiranto</a></small>
+            </div>
             <img className="w-100 h-100" src="/img/login_bg.jpg" alt="login_bg" style={{ objectFit: "cover" }} />
           </div>
         </div>
