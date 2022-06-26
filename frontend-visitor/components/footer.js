@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   const domain = process.env.NEXT_PUBLIC_ADMIN_DOMAIN || "http://localhost:3001"
@@ -9,21 +10,27 @@ export default function Footer() {
         <div className="row mb-3">
           <div className="col-md-3">
             <p className="mb-1 fw-bold">Technologies</p>
-            <a className="myLink mb-1 d-block" href="#">NextJS</a>
-            <a className="myLink mb-1 d-block" href="#">NodeJS</a>
-            <a className="myLink mb-1 d-block" href="#">PostgreSQL</a>
-            <a className="myLink mb-1 d-block" href="#">Google Cloud Platform</a>
+            <a className="myLink mb-1 d-block" href="https://nextjs.org/">NextJS</a>
+            <a className="myLink mb-1 d-block" href="https://nodejs.org/">NodeJS</a>
+            <a className="myLink mb-1 d-block" href="https://www.postgresql.org/">PostgreSQL</a>
+            <a className="myLink mb-1 d-block" href="https://cloud.google.com/">Google Cloud Platform</a>
           </div>
           <div className="col-md-3">
             <p className="mb-1 fw-bold">Menus</p>
-            <a className="myLink mb-1 d-block" href="#">Rekomendasi</a>
-            <a className="myLink mb-1 d-block" href="#">Kategori</a>
-            <a className="myLink mb-1 d-block" href="#">Cari Acak</a>
+            <Link href="/#rekomendasi">
+              <a className="myLink mb-1 d-block">Rekomendasi</a>
+            </Link>
+            <Link href="/#kategori">
+              <a className="myLink mb-1 d-block">Kategori</a>
+            </Link>
+            <Link href="/cari-acak">
+              <a className="myLink mb-1 d-block">Cari Acak</a>
+            </Link>
           </div>
           <div className="col-md-3">
             <p className="mb-1 fw-bold">Kontribusi</p>
-            <a className="myLink mb-1 d-block" href="#">Masukkan idemu di sini</a>
-            <a className="myLink mb-1 d-block" href="#">Github</a>
+            <a className="myLink mb-1 d-block" href="/saran-hobi">Masukkan idemu di sini</a>
+            <a className="myLink mb-1 d-block" href="https://github.com/AdhyWiranto44/find-my-hobby">Github</a>
           </div>
           <div className="col-md-3">
             <Image src="/img/logo.webp" width={50} height={50} alt="Logo Find My Hobby" />
