@@ -20,7 +20,7 @@ export default function Navbar(props) {
   const handleLogout = async (e) => {
     e.preventDefault()
     const isConfirmed = await notificationWarning({
-      message: "Yakin ingin logout?"
+      title: "Yakin ingin logout?"
     })
     if (isConfirmed) {
       notificationSuccess({
