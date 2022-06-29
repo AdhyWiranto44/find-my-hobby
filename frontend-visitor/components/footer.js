@@ -8,14 +8,14 @@ export default function Footer() {
     <footer id="footer" className="bg-warning mt-auto border-top border-light">
       <div className="container pt-5">
         <div className="row mb-3">
-          <div className="col-md-3">
+          <div className="col-md-3 mb-3 mb-md-0">
             <p className="mb-1 fw-bold">Technologies</p>
             <a className="myLink mb-1 d-block" href="https://nextjs.org/">NextJS</a>
             <a className="myLink mb-1 d-block" href="https://nodejs.org/">NodeJS</a>
             <a className="myLink mb-1 d-block" href="https://www.postgresql.org/">PostgreSQL</a>
             <a className="myLink mb-1 d-block" href="https://cloud.google.com/">Google Cloud Platform</a>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 mb-3 mb-md-0">
             <p className="mb-1 fw-bold">Menus</p>
             <Link href={`${process.env.NEXT_PUBLIC_ADMIN_DOMAIN}/login`}>
               <a className="myLink mb-1 d-block">Login</a>
@@ -30,7 +30,7 @@ export default function Footer() {
               <a className="myLink mb-1 d-block">Cari Acak</a>
             </Link>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 mb-3 mb-md-0">
             <p className="mb-1 fw-bold">Kontribusi</p>
             <a className="myLink mb-1 d-block" href="/saran-hobi">Masukkan idemu di sini</a>
             <a className="myLink mb-1 d-block" href="https://github.com/AdhyWiranto44/find-my-hobby">Github</a>
