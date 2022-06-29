@@ -84,7 +84,7 @@ class HobbyController {
 
   async create(req: any, res: any) {
     try {
-      const hobby = await new HobbyService().create(req.body);
+      const hobby = await new HobbyService().create(req);
 
       return new ApiService(
         res, StatusCodes.OK, true, 

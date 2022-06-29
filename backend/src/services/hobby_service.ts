@@ -37,7 +37,10 @@ export default class HobbyService {
     return hobby;
   }
 
-  async create(newHobby: HobbyInterface) {
+  async create(req: any) {
+    const newHobby = req.body;
+    newHobby.img = req.file ? req.file.filename : "";
+
     if (Object.keys(newHobby).length === 0) {
       throw createError(StatusCodes.BAD_REQUEST, "Data can't be empty.");
     }
