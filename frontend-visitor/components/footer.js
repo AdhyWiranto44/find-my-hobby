@@ -17,6 +17,9 @@ export default function Footer() {
           </div>
           <div className="col-md-3">
             <p className="mb-1 fw-bold">Menus</p>
+            <Link href={`${process.env.NEXT_PUBLIC_ADMIN_DOMAIN}/login`}>
+              <a className="myLink mb-1 d-block">Login</a>
+            </Link>
             <Link href="/#rekomendasi">
               <a className="myLink mb-1 d-block">Rekomendasi</a>
             </Link>
