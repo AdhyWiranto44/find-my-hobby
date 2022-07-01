@@ -15,7 +15,8 @@ export default function AddNew() {
     "description": "",
     "community_name": "",
     "community_link": "",
-    "category": ""
+    "category": "",
+    "img": {}
   }
   const [form, setForm] = useState(defaultForm)
 
@@ -52,7 +53,7 @@ export default function AddNew() {
             <div className="col-md-8">
               <div className="card shadow-sm border-0">
                 <div className="card-body">
-                  <form onSubmit={(e) => handleCreateNewHobby(e)}>
+                  <form onSubmit={(e) => handleCreateNewHobby(e)} encType="multipart/form-data">
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
                       <input type="text" className="form-control p-3" id="name" name="name" onChange={(e) => setForm({...form, "name": e.target.value})} autoFocus required />
@@ -81,6 +82,20 @@ export default function AddNew() {
                           })
                         }
                       </select>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="img" className="form-label small mb-1 text-capitalize">Gambar</label>
+                      <input 
+                        type="file" 
+                        className="form-control p-3" 
+                        id="img" 
+                        name="img" 
+                        onChange={(e) => {
+                            setForm({...form, "img": e.target.files[0]}); 
+                          }
+                        } 
+                        />
+                        {form.img.name}
                     </div>
                     <button type="submit" className="btn btn-salmon w-100 p-3 mt-3 fw-bold text-uppercase"><i className="bi bi-plus-circle me-2"></i> tambah</button>
                   </form>
