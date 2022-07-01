@@ -9,11 +9,12 @@ const hobbyController = new HobbyController();
 const authentication = new Authentication();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, process.env.FILE_DIRECTORY || `${__dirname}/uploads/`)
+    cb(null, process.env.FILE_DIRECTORY || `${__dirname}/uploads/`);
   },
   filename: function (req, file, cb) {
-    const date = Date.now()
-    cb(null, `hobby-${date}.jpg`)
+    const date = Date.now();
+    const randNum = Math.floor(Math.random() * 1000);
+    cb(null, `hobby-${date}-${randNum}.jpg`);
   }
 });
 const upload = multer({ storage });
