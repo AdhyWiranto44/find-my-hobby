@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "ts-node app.ts",
     "build": "tsc -p ./tsconfig.json",
-    "dev": "tsc -p ./tsconfig.json && node dist/app.js",
+    "dev": "nodemon",
     "insertDefaultData": "curl -X POST http://localhost:8080/api/v1/insertDefaultData",
     "watch": "tsc -p ./tsconfig.json -w",
     "test": "jest --detectOpenHandles",
@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^6.2.0",
+    "@google-cloud/storage": "^6.2.2",
     "@types/http-errors": "^1.8.2",
     "@types/multer": "^1.4.7",
     "axios": "^0.27.2",
