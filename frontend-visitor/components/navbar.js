@@ -4,7 +4,7 @@ import LoginButton from "./loginButton";
 
 export default function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light border-bottom fixed-top" style={{
+    <nav className="navbar navbar-expand-lg navbar-light border-bottom sticky-top" style={{
       backgroundColor: "rgba(255,255,255,0.9)",
       backdropFilter: "blur(10px)"
       }}>

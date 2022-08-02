@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function NavbarLogoOnly() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light border-bottom" style={{
+    <nav className="navbar navbar-expand-lg navbar-light border-bottom sticky-top" style={{
       backgroundColor: "rgba(255,255,255,0.9)",
       backdropFilter: "blur(10px)"
       }}>

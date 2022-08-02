@@ -51,7 +51,7 @@ export default function NavbarHobby() {
   }, [categories]);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light fixed-top border-bottom" style={{
+    <nav className="navbar navbar-expand-lg navbar-light fixed-top border-bottom sticky-top" style={{
       backgroundColor: "rgba(255,255,255,0.9)",
       backdropFilter: "blur(10px)"
     }}>
