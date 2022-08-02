@@ -1,6 +1,6 @@
 export default function SearchBar(props) {
   return (
-    <div className="d-flex bg-white border shadow p-2" style={{ borderRadius: "15px" }}>
+    <div className="d-flex bg-white border p-2" style={{ borderRadius: "15px" }}>
       <input
         type="text"
         className="search-bar form-control border-0"

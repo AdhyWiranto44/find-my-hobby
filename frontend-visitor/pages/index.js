@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { Roller } from 'react-awesome-spinners';
 import { default_categories, default_hobby } from '../helpers/constants';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   const [hobbies, setHobbies] = useState([default_hobby]);
@@ -122,24 +123,23 @@ export default function Home() {
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
 
-      <div id="welcome" className="container-fluid bg-warning">
-        <div className="container">
-          <div className="row text-center">
-            <div className="col-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
-              <h1 className="fw-bold text-light"><span className="text-warning">Find</span> My <u style={{textDecorationColor: "#FFC107"}}>Hobby</u></h1>
-              <p className="text-light mb-4">Cari kegemaranmu sekarang!</p>
-              <SearchBar 
+      <div id='jumbotron' className="container mt-3">
+        <div className='row d-flex align-items-center'>
+          <div className='col-md-6 py-3 order-2 order-md-1'>
+            <small>Cari Kegemaranmu <div className='d-inline border-bottom border-4 border-warning fw-bold'>sekarang!</div></small>
+            <h1 className='display-4 fw-bold mb-4'>Find My Hobby</h1>
+            <SearchBar 
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onClick={(e) => handleFilterHobby(e, searchTerm)}
                 onKeyUp={(e) => e.key == "Enter" && handleFilterHobby(e, searchTerm)}
               />
-            </div>
-            <div className="col-lg-4 offset-lg-4 mt-3">
-              <h6 className="text-light">Ingin berkontribusi? <Link href={"/saran-hobi"}>
+              <small className="d-block mt-4">Atau ingin berkontribusi? <Link href={"/saran-hobi"}>
                   <a className="btn-sm btn-warning text-decoration-none rounded-pill">kirim ke sini</a>
                 </Link>
-              </h6>
-            </div>
+              </small>
+          </div>
+          <div className='col-md-6 order-1 order-md-2 d-flex justify-content-center'>
+          <img className='w-75 rounded-circle' src="/img/illustration.jpg" alt="Just an illustration" />
           </div>
         </div>
       </div>
@@ -147,8 +147,8 @@ export default function Home() {
       <div id="rekomendasi" className="container">
         <div className="row mt-5 mb-3">
           <div className="col-md">
-            <small className="fw-bold text-secondary d-block mb-2">Temukan hal baru</small>
-            <h4 className="fw-bold"><u style={{textDecorationColor: "#FFC107"}}>Rekomendasi Hobi</u></h4>
+            <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'>hal baru</div></small>
+            <h4 className="fw-bold">Rekomendasi Hobi</h4>
           </div>
         </div>
         <div className="row">
@@ -160,8 +160,8 @@ export default function Home() {
       <div id="kategori" className="container">
         <div className="row mt-5 mb-3">
           <div className="col-md">
-            <small className="fw-bold text-secondary d-block mb-2">Temukan <i>circle</i>-mu</small>
-            <h4 className="fw-bold"><u style={{textDecorationColor: "#FFC107"}}>Daftar Kategori</u></h4>
+            <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'><i>circle</i>-mu</div></small>
+            <h4 className="fw-bold">Daftar Kategori</h4>
           </div>
         </div>
         <div className="row mb-5">
