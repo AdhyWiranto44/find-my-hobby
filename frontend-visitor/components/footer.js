@@ -32,7 +32,7 @@ export default function Footer() {
           </div>
           <div className="col-md-3 mb-3 mb-md-0">
             <p className="mb-1 fw-bold">Kontribusi</p>
-            <a className="myLink mb-1 d-block" href="/saran-hobi">Masukkan idemu di sini</a>
+            <Link className="myLink mb-1 d-block" href="/saran-hobi">Masukkan idemu di sini</Link>
             <a className="myLink mb-1 d-block" href="https://github.com/AdhyWiranto44/find-my-hobby">Github</a>
           </div>
           <div className="col-md-3">
