@@ -70,7 +70,7 @@ export default function Hobbies() {
     <div className="d-flex flex-column min-vh-100">
       <NavbarHobby />
 
-      <div className="container" style={{ marginTop: "100px" }}>
+      <div className="container my-4">
         <div className="row mb-3">
           <div className="col-md-6 offset-md-3">
             <SearchBar
