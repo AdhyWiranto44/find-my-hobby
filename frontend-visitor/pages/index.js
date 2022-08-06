@@ -59,10 +59,23 @@ export default function Home() {
         }).map((hobby, idx) => {
           if (idx < 4) {
             return (
-              <HobbyItem
-                key={idx}
-                hobby={hobby}
-              />
+              <div id="hobbyItem" className="col-4" style={{ marginRight: "15px" }}>
+                <Link href={`/hobby/${hobby.slug}`}>
+                  <a>
+                    <div className="card bg-dark text-white border-0 shadow overflow-hidden mb-4" style={{ borderRadius: "15px" }}>
+                      <img src="/img/hobi.webp" className="card-img w-100" alt="Gambar Hobi" />
+                      <div className="card-img-overlay d-flex">
+                        <div className="mt-auto">
+                          <h6 className="card-title fw-bold">{hobby.name}</h6>
+                          <Link href={`/hobby/${hobby.slug}`}>
+                            <a className="btn btn-sm btn-outline-light fw-bold" style={{borderRadius: "10px"}}>Detail</a>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </Link>
+              </div>
             );
           }
         })
@@ -94,13 +107,9 @@ export default function Home() {
   const renderMoreButton = () => {
     if (loading !== true) {
       return (
-        <div className="row mt-3">
-          <div className="col-md text-center">
-            <Link href="/hobbies">
-              <a className="btn btn-outline-danger" style={{ borderRadius: "15px" }}>Lebih banyak</a>
-            </Link>
-          </div>
-        </div>
+        <Link href="/hobbies">
+          <a className="btn btn-outline-danger" style={{ borderRadius: "15px" }}>Lebih banyak</a>
+        </Link>
       );
     }
   }
@@ -139,13 +148,35 @@ export default function Home() {
               </small>
           </div>
           <div className='col-md-6 order-1 order-md-2 d-flex justify-content-center'>
-          <img className='w-75 rounded-circle' src="/img/illustration.jpg" alt="Just an illustration" />
+            <img className='w-75 rounded-circle' src="/img/illustration.jpg" alt="Just an illustration" />
           </div>
         </div>
       </div>
 
-      <div id="rekomendasi" className="container">
-        <div className="row mt-5 mb-3">
+      <div id="rekomendasi" className="container my-4">
+        <div className='row'>
+          <div className='col-md-6 mx-auto'>
+            <img className='w-100' src="/img/finding_illustration.jpg" alt="Just an illustration" />
+          </div>
+          <div className='col-md-6'>
+            <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'>hal baru</div></small>
+            <h4 className="fw-bold">Rekomendasi Hobi</h4>
+            <p>Kamu ingin mencari hobi yang baru untuk mengganti yang lama? Atau hanya ingin sekedar mencari hal baru? Di sini tempatnya!</p>
+            <div className='d-flex overflow-scroll'>
+              {renderHobbies()}
+            </div>
+            <div className='d-flex justify-content-between align-items-center'>
+              {renderMoreButton()}
+              <small>
+                Scroll
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                </svg>
+              </small>
+            </div>
+          </div>
+        </div>
+        {/* <div className="row mt-5 mb-3">
           <div className="col-md">
             <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'>hal baru</div></small>
             <h4 className="fw-bold">Rekomendasi Hobi</h4>
@@ -154,7 +185,7 @@ export default function Home() {
         <div className="row">
           {renderHobbies()}
         </div>
-        {renderMoreButton()}
+        {renderMoreButton()} */}
       </div>
 
       <div id="kategori" className="container">
