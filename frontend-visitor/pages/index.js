@@ -132,7 +132,7 @@ export default function Home() {
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
 
-      <div id='jumbotron' className="container mt-3">
+      <div id='jumbotron' className="container my-5">
         <div className='row d-flex align-items-center'>
           <div className='col-md-6 py-3 order-2 order-md-1'>
             <small>Cari Kegemaranmu <div className='d-inline border-bottom border-4 border-warning fw-bold'>sekarang!</div></small>
@@ -153,7 +153,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div id="rekomendasi" className="container my-4">
+      <div id="rekomendasi" className="container my-5">
         <div className='row'>
           <div className='col-md-6 mx-auto'>
             <img className='w-100' src="/img/finding_illustration.jpg" alt="Just an illustration" />
@@ -176,19 +176,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* <div className="row mt-5 mb-3">
-          <div className="col-md">
-            <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'>hal baru</div></small>
-            <h4 className="fw-bold">Rekomendasi Hobi</h4>
-          </div>
-        </div>
-        <div className="row">
-          {renderHobbies()}
-        </div>
-        {renderMoreButton()} */}
       </div>
 
-      <div id="kategori" className="container">
+      <div id="kategori" className="container my-3">
         <div className="row mt-5 mb-3">
           <div className="col-md">
             <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'><i>circle</i>-mu</div></small>
