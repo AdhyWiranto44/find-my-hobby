@@ -32,6 +32,18 @@ module.exports = {
         slug: "otomotif",
         "createdAt": new Date(),
         "updatedAt": new Date(),
+      },
+      {
+        name: "Olahraga",
+        slug: "olahraga",
+        "createdAt": new Date(),
+        "updatedAt": new Date(),
+      },
+      {
+        name: "Lainnya",
+        slug: "lainnya",
+        "createdAt": new Date(),
+        "updatedAt": new Date(),
       }
     ], {});
   },
