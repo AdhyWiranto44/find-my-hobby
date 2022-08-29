@@ -13,7 +13,6 @@ export default function Footer() {
             <a className="myLink mb-1 d-block" href="https://nextjs.org/">NextJS</a>
             <a className="myLink mb-1 d-block" href="https://nodejs.org/">NodeJS</a>
             <a className="myLink mb-1 d-block" href="https://www.postgresql.org/">PostgreSQL</a>
-            <a className="myLink mb-1 d-block" href="https://cloud.google.com/">Google Cloud Platform</a>
           </div>
           <div className="col-md-3 mb-3 mb-md-0">
             <p className="mb-1 fw-bold">Menus</p>

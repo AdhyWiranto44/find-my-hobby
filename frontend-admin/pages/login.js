@@ -19,8 +19,7 @@ export default function Login() {
 
   if (token) router.push("/")
 
-  const handleLogin = async (e) => {
-    e.preventDefault()
+  const handleLogin = async () => {
     try {
       let jwt = await login(form)
       notificationSuccess({
@@ -41,7 +40,10 @@ export default function Login() {
       <div className="container-fluid">
         <div className="row position-absolute h-100 w-100 overflow-hidden">
           <div className="col-lg-6 login d-flex align-items-center justify-content-center">
-            <form className="login-form" onSubmit={(e) => handleLogin(e)}>
+            <form className="login-form" onSubmit={(e) => {
+              e.preventDefault()
+              handleLogin(e)
+            }}>
               <div className="text-center text-uppercase" style={{ letterSpacing: "3px" }}>
                 <Title title="Login" />
               </div>
