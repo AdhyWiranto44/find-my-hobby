@@ -10,7 +10,20 @@ class ConnectionPostgres {
   static connect() {
     if (ConnectionPostgres.connection === null) {
       console.log("Creating new connection...");
-      ConnectionPostgres.connection = new Sequelize(`postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`);
+
+      if (process.env.NODE_ENV === "production") {
+        ConnectionPostgres.connection = new Sequelize(`postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, {
+          dialectOptions: {
+            ssl: {
+              require: true,
+              rejectUnauthorized: false
+            }
+          }
+        });
+      } else {
+        ConnectionPostgres.connection = new Sequelize(`postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`);
+      }
+      
       console.log("New connetion created.");
     }
 
