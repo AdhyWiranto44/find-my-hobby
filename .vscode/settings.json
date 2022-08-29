@@ -1,4 +1,7 @@
 {
   "workbench.colorTheme": "Gruvbox Dark Medium",
-  "workbench.iconTheme": "eq-material-theme-icons-palenight"
+  "workbench.iconTheme": "eq-material-theme-icons-palenight",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  }
 }

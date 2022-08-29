@@ -1,5 +1,7 @@
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { tokenCookie, usernameCookie } from "../../../../constants/cookies";
 import notificationFailed from "../../../../helpers/notificationFailed";
 import notificationSuccess from "../../../../helpers/notificationSuccess";
 import MainLayout from "../../../../layouts/main";
@@ -28,7 +30,19 @@ export default function Edit() {
       notificationSuccess({
         message: User.data.message
       })
-      router.push("/users")
+
+      if (username === Cookies.get(usernameCookie)) {
+        Cookies.remove(tokenCookie)
+        Cookies.remove(usernameCookie)
+
+        notificationSuccess({
+          message: "Password berhasil diganti, silahkan login ulang."
+        })
+
+        router.push("/login")
+      } else {
+        router.push("/users")
+      }
     } catch (err) {
       notificationFailed({
         message: err.response.data.message

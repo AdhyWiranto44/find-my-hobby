@@ -47,6 +47,11 @@ export default function Sidebar(props) {
       "href": "/roles",
       "icon": "bi bi-person-rolodex",
     },
+    {
+      "title": "Pengaturan",
+      "href": "/settings",
+      "icon": "bi bi-gear",
+    },
     // {
     //   "title": "Ubah Password",
     //   "href": "/users/username/change-password",
