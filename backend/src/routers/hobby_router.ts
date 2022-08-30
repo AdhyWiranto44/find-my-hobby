@@ -22,7 +22,7 @@ router.get("/hobbies", hobbyController.getAll);
 router.get("/hobbies/:slug", hobbyController.getOne);
 router.get("/hobbies/categories/:category", hobbyController.getByCategory);
 router.post("/hobbies", authentication.authenticate, upload.single("file"), hobbyController.create);
-router.patch("/hobbies/:slug", authentication.authenticate, hobbyController.update);
+router.patch("/hobbies/:slug", authentication.authenticate, upload.single("file"), hobbyController.update);
 router.delete("/hobbies/:slug", authentication.authenticate, hobbyController.delete);
 
 

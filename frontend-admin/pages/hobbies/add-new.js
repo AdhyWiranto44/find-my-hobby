@@ -20,7 +20,6 @@ export default function AddNew() {
     "category": ""
   }
   const [form, setForm] = useState(defaultForm)
-  const [uploadImage, setUploadImage] = useState({})
 
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
@@ -29,8 +28,6 @@ export default function AddNew() {
 
   const handleCreateNewHobby = async () => {
     try {
-      const formData = new FormData()
-      for (const field in form) formData.append(field, form[field])
       const hobby = await createHobby(form)
 
       notificationSuccess({
@@ -41,17 +38,6 @@ export default function AddNew() {
       notificationFailed({
         message: err.response.data.message
       })
-    }
-  }
-
-  const handleUploadFile = async () => {
-    try {
-      let formData = new FormData();
-      formData.append("file", uploadImage);
-      console.log(formData.getAll("file"));
-      await uploadFile(formData);
-    } catch (err) {
-      console.log(err);
     }
   }
 

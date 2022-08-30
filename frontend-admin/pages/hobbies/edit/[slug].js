@@ -27,8 +27,7 @@ export default function Edit() {
     setCategories(foundCategories.data.data.categories)
   }
 
-  const handleUpdateHobby = async (e) => {
-    e.preventDefault()
+  const handleUpdateHobby = async () => {
     try {
       const hobby = await updateHobby(slug, form)
       notificationSuccess({
@@ -66,7 +65,10 @@ export default function Edit() {
             <div className="col-md-8">
               <div className="card shadow-sm border-0">
                 <div className="card-body">
-                  <form onSubmit={(e) => handleUpdateHobby(e)}>
+                  <form onSubmit={(e) => {
+                    e.preventDefault()
+                    handleUpdateHobby()
+                  }}>
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
                       <input type="text" className="form-control p-3" id="name" name="name" value={form.name} onChange={(e) => setForm({...form, "name": e.target.value})} autoFocus required />
@@ -95,6 +97,12 @@ export default function Edit() {
                           })
                         }
                       </select>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="img" className="form-label small mb-1 text-capitalize">gambar</label>
+                      <input type="file" className="form-control p-3" id="img" name="img" onChange={(e) => {
+                        setForm({...form, "file": e.target.files[0]});
+                      }} />
                     </div>
                     <div className="row gx-3">
                       <div className="col-sm-2">

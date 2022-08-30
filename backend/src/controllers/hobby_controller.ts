@@ -103,7 +103,10 @@ class HobbyController {
 
   async update(req: any, res: any) {
     try {
-      const hobby = await new HobbyService().update(req.body, req.params.slug);
+      const hobby = await new HobbyService().update({
+        ...req.body, 
+        "img": req.file ? req.file.filename : ""
+      }, req.params.slug);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
