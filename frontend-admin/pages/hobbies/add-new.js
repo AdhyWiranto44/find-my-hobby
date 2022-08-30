@@ -5,6 +5,7 @@ import notificationFailed from "../../helpers/notificationFailed";
 import notificationSuccess from "../../helpers/notificationSuccess";
 import MainLayout from "../../layouts/main";
 import { getCategories } from "../api/category";
+import { uploadFile } from "../api/file";
 import { createHobby } from "../api/hobby";
 
 
@@ -19,16 +20,19 @@ export default function AddNew() {
     "category": ""
   }
   const [form, setForm] = useState(defaultForm)
+  const [uploadImage, setUploadImage] = useState({})
 
   const handleGetCategories = async () => {
     const foundCategories = await getCategories()
     setCategories(foundCategories.data.data.categories)
   }
 
-  const handleCreateNewHobby = async (e) => {
-    e.preventDefault()
+  const handleCreateNewHobby = async () => {
     try {
+      const formData = new FormData()
+      for (const field in form) formData.append(field, form[field])
       const hobby = await createHobby(form)
+
       notificationSuccess({
         message: hobby.data.message
       })
@@ -37,6 +41,17 @@ export default function AddNew() {
       notificationFailed({
         message: err.response.data.message
       })
+    }
+  }
+
+  const handleUploadFile = async () => {
+    try {
+      let formData = new FormData();
+      formData.append("file", uploadImage);
+      console.log(formData.getAll("file"));
+      await uploadFile(formData);
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -53,7 +68,10 @@ export default function AddNew() {
             <div className="col-md-8">
               <div className="card shadow-sm border-0">
                 <div className="card-body">
-                  <form onSubmit={(e) => handleCreateNewHobby(e)}>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleCreateNewHobby();
+                  }}>
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
                       <input type="text" className="form-control p-3" id="name" name="name" onChange={(e) => setForm({...form, "name": e.target.value})} autoFocus required />
@@ -82,6 +100,12 @@ export default function AddNew() {
                           })
                         }
                       </select>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="img" className="form-label small mb-1 text-capitalize">gambar</label>
+                      <input type="file" className="form-control p-3" id="img" name="img" onChange={(e) => {
+                        setForm({...form, "file": e.target.files[0]});
+                      }} />
                     </div>
                     <div className="row gx-3">
                       <div className="col-sm-2">
