@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getHobby } from "../api/hobby";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navbar";
+import domain from "../../constants/domain";
 
 export default function HobbyPage() {
   const [hobby, setHobby] = useState({
@@ -49,7 +50,7 @@ export default function HobbyPage() {
 
       <div className="container my-3">
         <div className="row my-3">
-          <div className="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
+          <div className="col-lg-6 offset-lg-1">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
                 <Link href="/">
@@ -60,8 +61,11 @@ export default function HobbyPage() {
             </ol>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-8 offset-md-1">
+        <div className="row mb-5">
+          <div className="col-lg-6 offset-lg-1">
+            <div className="overflow-hidden mb-3" style={{height: "200px"}}>
+              <img src={hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/hobi.webp"} className="card-img w-100" alt="Gambar Hobi" />
+            </div>
             {hobby.description}
           </div>
         </div>
