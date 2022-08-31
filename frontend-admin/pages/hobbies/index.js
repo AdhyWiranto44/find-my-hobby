@@ -44,7 +44,7 @@ export default function Index() {
             <tr key={i}>
               <th scope="row">{i+1}.</th>
               <td>
-                <a href={imgSrc} target="_blank">
+                <a href={imgSrc}>
                   <img src={imgSrc} width={48} height={48} />
                 </a>
               </td>
