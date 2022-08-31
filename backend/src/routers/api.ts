@@ -14,6 +14,7 @@ import Connection from '../database/Connection';
 import ApiService from '../services/api_service';
 import { LOCAL_ENV } from '../helpers/constants';
 import Role from '../models/Role';
+import { readFileSync } from 'fs';
 
 
 const router = express.Router();
@@ -26,6 +27,14 @@ router.use(suggestionRouter);
 router.use(authRouter);
 router.use(userRouter);
 router.use(roleRouter);
+router.get("/getFile/:path", (req, res) => {
+  try {
+    const image = readFileSync(`./public/uploads/images/${req.params.path}`);
+    res.end(image);
+  } catch (err: any) {
+    console.log(err);
+  }
+});
 router.post("/insertDefaultData", async (req, res) => {
   try {
     if (process.env.ENVIRONMENT != LOCAL_ENV) {

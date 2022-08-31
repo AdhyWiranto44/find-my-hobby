@@ -7,6 +7,6 @@
 - [x] Upload image
 - [] Image view
   - [] homepage
-  - [] hobby page in table
+  - [x] hobby page in table
   - [] tampil hobi
   - [] edit hobi for previous image

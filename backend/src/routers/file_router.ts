@@ -17,7 +17,9 @@ router.post("/uploadFile", upload.single("file"), async (req: any, res: any) => 
   console.log(req.file);
   
 });
-// router.get("/categories", categoryController.getAll);
+router.get("/getFile/:path", (req, res) => {
+  res.download(`./public/uploads/images/${req.params.path}`);
+});
 // router.get("/categories/:slug", categoryController.getOne);
 // router.patch("/categories/:slug", authentication.authenticate, categoryController.update);
 // router.delete("/categories/:slug", authentication.authenticate, categoryController.delete);

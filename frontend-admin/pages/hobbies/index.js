@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import MainLayout from "../../layouts/main"
 import moment from 'moment'
@@ -8,6 +9,7 @@ import { TIMEOUT_HALF_A_SECOND } from "../../constants/timeout"
 import notificationWarning from "../../helpers/notificationWarning"
 import notificationSuccess from "../../helpers/notificationSuccess"
 import notificationFailed from "../../helpers/notificationFailed"
+import domain from "../../constants/domain"
 
 
 export default function Index() {
@@ -37,9 +39,15 @@ export default function Index() {
     } else {
       return (
         hobbies.map((hobby, i) => {
+          let imgSrc = hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/default.jpg"
           return (
             <tr key={i}>
               <th scope="row">{i+1}.</th>
+              <td>
+                <a href={imgSrc} target="_blank">
+                  <img src={imgSrc} width={48} height={48} />
+                </a>
+              </td>
               <td>
                 {hobby.name || <small className="text-muted">[Kosong]</small>}
               </td>
@@ -136,6 +144,7 @@ export default function Index() {
                       <thead className="thead-dark">
                         <tr>
                           <th scope="col">No</th>
+                          <th scope="col">Gambar</th>
                           <th scope="col">Judul</th>
                           <th scope="col">Deskripsi</th>
                           <th scope="col">Dilihat</th>
@@ -151,6 +160,7 @@ export default function Index() {
                       <tfoot className="tfoot-dark">
                         <tr>
                           <th scope="col">No</th>
+                          <th scope="col">Gambar</th>
                           <th scope="col">Judul</th>
                           <th scope="col">Deskripsi</th>
                           <th scope="col">Dilihat</th>
