@@ -86,7 +86,7 @@ class HobbyController {
     try {
       const form: any = { ...req.body }
 
-      if (process.env.NODE_ENV !== "development") {
+      if (process.env.NODE_ENV === "development") {
         form.img = req.file ? req.file.filename : ""
       }
 
@@ -108,7 +108,7 @@ class HobbyController {
     try {
       const form: any = { ...req.body }
 
-      if (process.env.NODE_ENV !== "development") {
+      if (process.env.NODE_ENV === "development") {
         form.img = req.file ? req.file.filename : ""
       }
 
