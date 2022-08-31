@@ -9,4 +9,4 @@
   - [] homepage
   - [x] hobby page in table
   - [] tampil hobi
-  - [] edit hobi for previous image
+  - [x] edit hobi for previous image

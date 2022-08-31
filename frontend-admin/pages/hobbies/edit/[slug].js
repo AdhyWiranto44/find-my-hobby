@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import domain from "../../../constants/domain";
 import { TIMEOUT } from "../../../constants/timeout";
 import notificationFailed from "../../../helpers/notificationFailed";
 import notificationSuccess from "../../../helpers/notificationSuccess";
@@ -103,6 +104,10 @@ export default function Edit() {
                       <input type="file" className="form-control p-3" id="img" name="img" onChange={(e) => {
                         setForm({...form, "file": e.target.files[0]});
                       }} />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="" className="form-label small mb-1 text-capitalize">gambar sebelumnya</label><br />
+                      <img src={hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/default.jpg"} width={48} height={48} />
                     </div>
                     <div className="row gx-3">
                       <div className="col-sm-2">
