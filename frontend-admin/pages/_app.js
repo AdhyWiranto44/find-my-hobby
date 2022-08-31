@@ -18,6 +18,9 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script>
+          UPLOADCARE_PUBLIC_KEY = `${process.env.NEXT_PUBLIC_PUBLIC_KEY}`;
+        </script>
         <title>Find My Hobby</title>
       </Head>
 
