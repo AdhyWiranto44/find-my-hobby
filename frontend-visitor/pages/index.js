@@ -11,6 +11,7 @@ import { Roller } from 'react-awesome-spinners';
 import { default_categories, default_hobby } from '../helpers/constants';
 import Link from 'next/link';
 import Image from 'next/image';
+import domain from '../constants/domain';
 
 export default function Home() {
   const [hobbies, setHobbies] = useState([default_hobby]);
@@ -62,8 +63,8 @@ export default function Home() {
               <div id="hobbyItem" className="col-4" style={{ marginRight: "15px" }}>
                 <Link href={`/hobby/${hobby.slug}`}>
                   <a>
-                    <div className="card bg-dark text-white border-0 shadow overflow-hidden mb-4" style={{ borderRadius: "15px" }}>
-                      <img src="/img/hobi.webp" className="card-img w-100" alt="Gambar Hobi" />
+                    <div className="card bg-dark bg-opacity-50 text-white border-0 shadow overflow-hidden mb-4" style={{ borderRadius: "15px", height: "90%" }}>
+                      <img src={hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/hobi.webp"} className="card-img h-100" alt="Gambar Hobi" />
                       <div className="card-img-overlay d-flex">
                         <div className="mt-auto">
                           <h6 className="card-title fw-bold">{hobby.name}</h6>
