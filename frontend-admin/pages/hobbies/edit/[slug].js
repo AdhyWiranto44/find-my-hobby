@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import UploadField from "../../../components/uploadField";
 import domain from "../../../constants/domain";
-import { TIMEOUT } from "../../../constants/timeout";
 import notificationFailed from "../../../helpers/notificationFailed";
 import notificationSuccess from "../../../helpers/notificationSuccess";
 import MainLayout from "../../../layouts/main";
@@ -20,7 +20,8 @@ export default function Edit() {
     "description": "",
     "community_name": "",
     "community_link": "",
-    "category": ""
+    "category": "",
+    "img": ""
   })
 
   const handleGetCategories = async () => {
@@ -49,6 +50,24 @@ export default function Edit() {
     setForm(foundHobby)
   }
 
+  const renderPreviousImage = () => {
+    if (process.env.NEXT_PUBLIC_NODE_ENV === "development") {
+      return (
+        <div className="mb-3">
+          <label htmlFor="" className="form-label small mb-1 text-capitalize">gambar sebelumnya</label><br />
+          <img src={hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/default.jpg"} width={48} height={48} />
+        </div>
+      )
+    } else {
+      return (
+        <div className="mb-3">
+          <label htmlFor="" className="form-label small mb-1 text-capitalize">gambar sebelumnya</label><br />
+          <img src={hobby.img !== "" ? `https://ucarecdn.com/${hobby.img}/-/preview/48x48/` : "/img/default.jpg"} width={48} height={48} />
+        </div>
+      )
+    }
+  }
+
   useEffect(() => {
     handleGetCategories()
   }, [])
@@ -67,8 +86,8 @@ export default function Edit() {
               <div className="card shadow-sm border-0">
                 <div className="card-body">
                   <form onSubmit={(e) => {
-                    e.preventDefault()
-                    handleUpdateHobby()
+                    e.preventDefault();
+                    handleUpdateHobby();
                   }}>
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label small mb-1 text-capitalize">nama</label>
@@ -99,16 +118,8 @@ export default function Edit() {
                         }
                       </select>
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="img" className="form-label small mb-1 text-capitalize">gambar</label>
-                      <input type="file" className="form-control p-3" id="img" name="img" onChange={(e) => {
-                        setForm({...form, "file": e.target.files[0]});
-                      }} />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="" className="form-label small mb-1 text-capitalize">gambar sebelumnya</label><br />
-                      <img src={hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/default.jpg"} width={48} height={48} />
-                    </div>
+                    <UploadField form={form} setForm={setForm} />
+                    {renderPreviousImage()}
                     <div className="row gx-3">
                       <div className="col-sm-2">
                         <Link href="/hobbies">

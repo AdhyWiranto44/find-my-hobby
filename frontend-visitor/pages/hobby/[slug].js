@@ -5,6 +5,7 @@ import { getHobby } from "../api/hobby";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navbar";
 import domain from "../../constants/domain";
+import getImgSrc from "../../helpers/getImgSrc";
 
 export default function HobbyPage() {
   const [hobby, setHobby] = useState({
@@ -64,7 +65,7 @@ export default function HobbyPage() {
         <div className="row mb-5">
           <div className="col-lg-6 offset-lg-1">
             <div className="overflow-hidden mb-3" style={{height: "200px"}}>
-              <img src={hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/hobi.webp"} className="card-img w-100" alt="Gambar Hobi" />
+              <img src={getImgSrc(hobby)} className="card-img w-100" alt="Gambar Hobi" />
             </div>
             {hobby.description}
           </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from 'next/image'
 import domain from "../constants/domain";
+import getImgSrc from "../helpers/getImgSrc";
 
 
 export default function HobbyItem(props) {
@@ -9,7 +10,7 @@ export default function HobbyItem(props) {
       <Link href={`/hobby/${props.hobby.slug}`}>
         <a>
           <div className="card bg-dark bg-opacity-50 text-white border-0 shadow overflow-hidden mb-4" style={{ borderRadius: "15px" }}>
-            <img src={props.hobby.img !== "" ? `${domain}/getFile/${props.hobby.img}` : "/img/hobi.webp"} className="card-img w-100" width={100} height={300} alt="Gambar Hobi" />
+            <img src={getImgSrc(props.hobby)} className="card-img w-100" width={100} height={300} alt="Gambar Hobi" />
             <div className="card-img-overlay d-flex">
               <div className="mt-auto">
                 <h6 className="card-title fw-bold">{props.hobby.name}</h6>

@@ -39,7 +39,13 @@ export default function Index() {
     } else {
       return (
         hobbies.map((hobby, i) => {
-          let imgSrc = hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/default.jpg"
+          let imgSrc = "";
+          if (process.env.NEXT_PUBLIC_NODE_ENV === "development") {
+            imgSrc = hobby.img !== "" ? `${domain}/getFile/${hobby.img}` : "/img/default.jpg"
+          } else {
+            imgSrc = hobby.img !== "" ? `https://ucarecdn.com/${hobby.img}/-/preview/48x48/` : "/img/default.jpg"
+          }
+          
           return (
             <tr key={i}>
               <th scope="row">{i+1}.</th>

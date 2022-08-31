@@ -84,10 +84,13 @@ class HobbyController {
 
   async create(req: any, res: any) {
     try {
-      const hobby = await new HobbyService().create({
-        ...req.body, 
-        "img": req.file ? req.file.filename : ""
-      });
+      const form: any = { ...req.body }
+
+      if (process.env.NODE_ENV !== "development") {
+        form.img = req.file ? req.file.filename : ""
+      }
+
+      const hobby = await new HobbyService().create(form);
 
       return new ApiService(
         res, StatusCodes.OK, true, 
@@ -103,10 +106,13 @@ class HobbyController {
 
   async update(req: any, res: any) {
     try {
-      const hobby = await new HobbyService().update({
-        ...req.body, 
-        "img": req.file ? req.file.filename : ""
-      }, req.params.slug);
+      const form: any = { ...req.body }
+
+      if (process.env.NODE_ENV !== "development") {
+        form.img = req.file ? req.file.filename : ""
+      }
+
+      const hobby = await new HobbyService().update(form, req.params.slug);
 
       return new ApiService(
         res, StatusCodes.OK, true, 

@@ -5,8 +5,8 @@ import notificationFailed from "../../helpers/notificationFailed";
 import notificationSuccess from "../../helpers/notificationSuccess";
 import MainLayout from "../../layouts/main";
 import { getCategories } from "../api/category";
-import { uploadFile } from "../api/file";
 import { createHobby } from "../api/hobby";
+import UploadField from "../../components/uploadField";
 
 
 export default function AddNew() {
@@ -17,7 +17,8 @@ export default function AddNew() {
     "description": "",
     "community_name": "",
     "community_link": "",
-    "category": ""
+    "category": "",
+    "img": ""
   }
   const [form, setForm] = useState(defaultForm)
 
@@ -87,12 +88,7 @@ export default function AddNew() {
                         }
                       </select>
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="img" className="form-label small mb-1 text-capitalize">gambar</label>
-                      <input type="file" className="form-control p-3" id="img" name="img" onChange={(e) => {
-                        setForm({...form, "file": e.target.files[0]});
-                      }} />
-                    </div>
+                    <UploadField form={form} setForm={setForm} />
                     <div className="row gx-3">
                       <div className="col-sm-2">
                         <Link href="/hobbies">
