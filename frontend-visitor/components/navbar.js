@@ -49,7 +49,7 @@ export default function Navbar() {
                 Cari Acak
               </a>
             </Link>
-            {/* <LoginButton /> */}
+            <LoginButton />
           </div>
         </div>
       </div>
