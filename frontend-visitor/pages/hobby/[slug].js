@@ -34,7 +34,7 @@ export default function HobbyPage() {
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
 
-      <div id="welcome" className="bg-warning">
+      <div id="welcome" className="bg-warning" style={{backgroundImage: `linear-gradient(rgba(50, 50, 50, 0.8),rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2)), url(${getImgSrc(hobby)})`}}>
         <div className="container">
           <div className="row">
             <div className="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
@@ -64,9 +64,6 @@ export default function HobbyPage() {
         </div>
         <div className="row mb-5">
           <div className="col-lg-6 offset-lg-1">
-            <div className="overflow-hidden mb-3" style={{width: "400px"}}>
-              <img src={getImgSrc(hobby)} className="card-img w-100" alt="Gambar Hobi" />
-            </div>
             {hobby.description}
           </div>
         </div>
