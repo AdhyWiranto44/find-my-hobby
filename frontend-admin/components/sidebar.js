@@ -70,7 +70,11 @@ export default function Sidebar(props) {
         <div id="company-image" className="d-flex justify-content-center my-4 overflow-hidden position-relative">
           <Image className="rounded-circle" src="/img/default.jpg" alt="default" width="64" height="64" />
         </div>
-        <h5 className="company-name fw-bold text-center">Find My Hobby</h5>
+        <a className='text-decoration-none text-dark' href={process.env.NEXT_PUBLIC_VISITOR_DOMAIN}>
+          <h5 className="company-name fw-bold text-center">
+            Find My Hobby
+          </h5>
+        </a>
         <ul className="sidebar-menu-container">
         <li className="sidebar-menu-section mt-3">
           <ul>
