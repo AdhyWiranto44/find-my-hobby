@@ -64,8 +64,14 @@ export default function Home() {
               <div id="hobbyItem" className="col-4" style={{ marginRight: "15px" }}>
                 <Link href={`/hobby/${hobby.slug}`}>
                   <a>
-                    <div className="card bg-dark bg-opacity-50 text-white border-0 shadow overflow-hidden mb-4" style={{ borderRadius: "15px", height: "90%" }}>
-                      <img src={getImgSrc(hobby)} className="card-img h-100" alt="Gambar Hobi" />
+                    <div className="card bg-dark bg-opacity-50 text-white border-0 shadow overflow-hidden mb-4" style={{ 
+                      borderRadius: "15px", 
+                      height: "150pt",
+                      backgroundImage: `linear-gradient(rgba(25, 25, 25, 0.3),rgba(25, 25, 25, 0.3), rgba(25, 25, 25, 0.2)), url(${getImgSrc(hobby)})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center"
+                    }}>
+                      {/* <img src={getImgSrc(hobby)} className="card-img h-100" alt="Gambar Hobi" /> */}
                       <div className="card-img-overlay d-flex">
                         <div className="mt-auto">
                           <h6 className="card-title fw-bold">{hobby.name}</h6>
