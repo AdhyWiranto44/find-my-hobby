@@ -64,7 +64,7 @@ export default function HobbyPage() {
         </div>
         <div className="row mb-5">
           <div className="col-lg-6 offset-lg-1">
-            <div className="overflow-hidden mb-3" style={{height: "200px"}}>
+            <div className="overflow-hidden mb-3" style={{width: "400px"}}>
               <img src={getImgSrc(hobby)} className="card-img w-100" alt="Gambar Hobi" />
             </div>
             {hobby.description}
