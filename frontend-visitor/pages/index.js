@@ -57,7 +57,7 @@ export default function Home() {
         }).map((hobby, idx) => {
           if (idx < 4) {
             return (
-              <div id="hobbyItem" className="col-4" style={{ marginRight: "15px" }}>
+              <div id="hobbyItem" className="col-6 col-lg-4" style={{ marginRight: "15px" }}>
                 <Link href={`/hobby/${hobby.slug}`}>
                   <a>
                     <div className="card bg-dark bg-opacity-50 text-white border-0 shadow overflow-hidden mb-4" style={{ 
