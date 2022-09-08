@@ -1,5 +1,7 @@
 # TODO
 
+- [x] hobby page, background size cover
+- [] homepage, reduce margins
 - [x] Setting
   - [x] User management
     - [x] Change Password (logged out automatically after password changed)

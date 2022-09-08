@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getHobby } from "../api/hobby";
 import Footer from "../../components/footer";
-import Navbar from "../../components/navbar";
+import NavbarHobby from "../../components/navbarHobby";
 import domain from "../../constants/domain";
 import getImgSrc from "../../helpers/getImgSrc";
 
@@ -32,9 +32,13 @@ export default function HobbyPage() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Navbar />
+      <NavbarHobby />
 
-      <div id="welcome" className="bg-warning" style={{backgroundImage: `linear-gradient(rgba(50, 50, 50, 0.8),rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2)), url(${getImgSrc(hobby)})`}}>
+      <div id="welcome" className="bg-warning" style={{
+        backgroundImage: `linear-gradient(rgba(50, 50, 50, 0.8),rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2)), url(${getImgSrc(hobby)})`,
+        backgroundAttachment: "initial",
+        backgroundSize: "cover"
+      }}>
         <div className="container">
           <div className="row">
             <div className="col-12 col-sm-10 col-md-8 col-lg-5 offset-md-1">
