@@ -52,12 +52,8 @@ export default function Home() {
     } else {
       return (
         hobbies.sort((a, b) => {
-          if (a.visited_count > b.visited_count) {
-            return -1;
-          } else {
-            return 1;
-          }
-          return 0;
+          if (a.visited_count > b.visited_count) return -1;
+          return 1;
         }).map((hobby, idx) => {
           if (idx < 4) {
             return (
@@ -71,7 +67,6 @@ export default function Home() {
                       backgroundSize: "cover",
                       backgroundPosition: "center"
                     }}>
-                      {/* <img src={getImgSrc(hobby)} className="card-img h-100" alt="Gambar Hobi" /> */}
                       <div className="card-img-overlay d-flex">
                         <div className="mt-auto">
                           <h6 className="card-title fw-bold">{hobby.name}</h6>
@@ -140,7 +135,7 @@ export default function Home() {
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
 
-      <div id='jumbotron' className="container my-5">
+      <div id='jumbotron' className="container my-3">
         <div className='row d-flex align-items-center'>
           <div className='col-md-6 py-3 order-2 order-md-1'>
             <small>Cari Kegemaranmu <div className='d-inline border-bottom border-4 border-warning fw-bold'>sekarang!</div></small>
@@ -161,16 +156,16 @@ export default function Home() {
         </div>
       </div>
 
-      <div id="rekomendasi" className="container my-5">
+      <div id="rekomendasi" className="container my-3">
         <div className='row'>
-          <div className='col-md-6 mx-auto'>
+          <div className='col-md-6 mx-auto mb-2'>
             <img className='w-100' src="/img/finding_illustration.jpg" alt="Just an illustration" />
           </div>
           <div className='col-md-6'>
             <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'>hal baru</div></small>
             <h4 className="fw-bold">Rekomendasi Hobi</h4>
             <p>Kamu ingin mencari hobi yang baru untuk mengganti yang lama? Atau hanya ingin sekedar mencari hal baru? Di sini tempatnya!</p>
-            <div className='d-flex overflow-scroll'>
+            <div className='d-flex overflow-scroll mt-4'>
               {renderHobbies()}
             </div>
             <div className='d-flex justify-content-between align-items-center'>
@@ -187,13 +182,13 @@ export default function Home() {
       </div>
 
       <div id="kategori" className="container my-3">
-        <div className="row mt-5 mb-3">
+        <div className="row mb-3">
           <div className="col-md">
             <small className="fw-bold text-secondary d-block mb-2">Temukan <div className='d-inline border-bottom border-warning border-4'><i>circle</i>-mu</div></small>
             <h4 className="fw-bold">Daftar Kategori</h4>
           </div>
         </div>
-        <div className="row mb-5">
+        <div className="row">
           {renderCategories()}
         </div>
       </div>
