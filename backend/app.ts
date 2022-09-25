@@ -3,8 +3,10 @@ import express from "express";
 import v1 from './src/routers/api';
 import cors from 'cors';
 
+const whitelist = JSON.parse(`${process.env.ORIGIN}`);
+
 const corsOptions = {
-  origin: process.env.ORIGIN,
+  origin: whitelist,
   optionsSuccessStatus: 200 // For legacy browser support
 }
 const PORT = 8080;
