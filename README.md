@@ -1,5 +1,5 @@
 # Definisi
-Find My Hobby merupakan website yang berisi daftar hobi, dimana pengunjung dapat mencari hobi secara manual, mencari hobi secara acak/random, mencari hobi berdasarkan kategori, dan website ini menyediakan rekomendasi hobi yang populer digemari orang-orang.
+Find My Hobby merupakan aplikasi berbasis web yang berisi daftar hobi, dimana pengunjung dapat mencari hobi secara manual, mencari hobi secara acak/random, mencari hobi berdasarkan kategori, dan website ini menyediakan rekomendasi hobi yang populer digemari orang-orang.
 
 # Teknologi Yang Digunakan
 - Next JS
